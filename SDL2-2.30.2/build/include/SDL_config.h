@@ -231,7 +231,7 @@
 /* #undef HAVE_INOTIFY_INIT1 */
 /* #undef HAVE_INOTIFY */
 /* #undef HAVE_IBUS_IBUS_H */
-#define HAVE_IMMINTRIN_H 1
+/* #undef HAVE_IMMINTRIN_H */
 /* #undef HAVE_LIBUDEV_H */
 /* #undef HAVE_LIBUSB */
 /* #undef HAVE_LIBSAMPLERATE_H */

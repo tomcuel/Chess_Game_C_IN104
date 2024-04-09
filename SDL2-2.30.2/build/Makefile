@@ -1,7 +1,7 @@
 # Makefile to build and install the SDL library
 
 top_builddir = .
-srcdir  = /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2
+srcdir  = /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2
 objects = build
 gen = gen
 prefix = /usr/local
@@ -20,9 +20,9 @@ distfile = $(distdir).tar.gz
 SHELL	= /bin/sh
 CC      = gcc
 CXX     = g++
-INCLUDE = -Iinclude -I/Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/include -idirafter /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/video/khronos
+INCLUDE = -Iinclude -I/Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/include -idirafter /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/video/khronos
 CFLAGS  = -g -O3 -DUSING_GENERATED_CONFIG_H
-EXTRA_CFLAGS = -Iinclude -I/Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/include -idirafter /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/video/khronos  -DSDL_BUILD_MAJOR_VERSION=2 -DSDL_BUILD_MINOR_VERSION=30 -DSDL_BUILD_MICRO_VERSION=2 -mmmx -m3dnow -msse -msse2 -msse3 -Wall -Wno-unused-local-typedefs -fno-strict-aliasing -DTARGET_API_MAC_CARBON -DTARGET_API_MAC_OSX -fobjc-arc -fvisibility=hidden -Wno-error=deprecated-declarations -Wdeclaration-after-statement -Werror=declaration-after-statement -DMESA_EGL_NO_X11_HEADERS -DEGL_NO_X11 -D_THREAD_SAFE -fobjc-weak -Wno-unused-command-line-argument
+EXTRA_CFLAGS = -Iinclude -I/Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/include -idirafter /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/video/khronos  -DSDL_BUILD_MAJOR_VERSION=2 -DSDL_BUILD_MINOR_VERSION=30 -DSDL_BUILD_MICRO_VERSION=2 -Wall -Wno-unused-local-typedefs -fno-strict-aliasing -DTARGET_API_MAC_CARBON -DTARGET_API_MAC_OSX -fobjc-arc -fvisibility=hidden -Wno-error=deprecated-declarations -Wdeclaration-after-statement -Werror=declaration-after-statement -DMESA_EGL_NO_X11_HEADERS -DEGL_NO_X11 -D_THREAD_SAFE -fobjc-weak -Wno-unused-command-line-argument
 LDFLAGS = 
 EXTRA_LDFLAGS =  -lm -liconv  -Wl,-framework,CoreAudio -Wl,-framework,AudioToolbox -Wl,-weak_framework,CoreHaptics -Wl,-weak_framework,GameController -Wl,-framework,ForceFeedback -lobjc -Wl,-framework,CoreVideo -Wl,-framework,Cocoa -Wl,-framework,Carbon -Wl,-framework,IOKit -Wl,-weak_framework,QuartzCore -Wl,-weak_framework,Metal
 LIBTOOL = $(SHELL) $(top_builddir)/libtool
@@ -266,600 +266,600 @@ rpm: $(distfile)
 -include $(OBJECTS:.lo=.d)
 
 # Special dependency for SDL.c, since it depends on SDL_revision.h
-/Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/SDL.c: update-revision
+/Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/SDL.c: update-revision
 
-$(objects)/SDL.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/SDL.c $(objects)/.created
+$(objects)/SDL.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/SDL.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_assert.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/SDL_assert.c $(objects)/.created
+$(objects)/SDL_assert.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/SDL_assert.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_dataqueue.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/SDL_dataqueue.c $(objects)/.created
+$(objects)/SDL_dataqueue.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/SDL_dataqueue.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_error.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/SDL_error.c $(objects)/.created
+$(objects)/SDL_error.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/SDL_error.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_guid.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/SDL_guid.c $(objects)/.created
+$(objects)/SDL_guid.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/SDL_guid.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_hints.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/SDL_hints.c $(objects)/.created
+$(objects)/SDL_hints.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/SDL_hints.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_list.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/SDL_list.c $(objects)/.created
+$(objects)/SDL_list.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/SDL_list.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_log.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/SDL_log.c $(objects)/.created
+$(objects)/SDL_log.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/SDL_log.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_utils.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/SDL_utils.c $(objects)/.created
+$(objects)/SDL_utils.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/SDL_utils.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_atomic.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/atomic/SDL_atomic.c $(objects)/.created
+$(objects)/SDL_atomic.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/atomic/SDL_atomic.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_spinlock.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/atomic/SDL_spinlock.c $(objects)/.created
+$(objects)/SDL_spinlock.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/atomic/SDL_spinlock.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_audio.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/audio/SDL_audio.c $(objects)/.created
+$(objects)/SDL_audio.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/audio/SDL_audio.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_audiocvt.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/audio/SDL_audiocvt.c $(objects)/.created
+$(objects)/SDL_audiocvt.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/audio/SDL_audiocvt.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_audiodev.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/audio/SDL_audiodev.c $(objects)/.created
+$(objects)/SDL_audiodev.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/audio/SDL_audiodev.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_audiotypecvt.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/audio/SDL_audiotypecvt.c $(objects)/.created
+$(objects)/SDL_audiotypecvt.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/audio/SDL_audiotypecvt.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_mixer.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/audio/SDL_mixer.c $(objects)/.created
+$(objects)/SDL_mixer.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/audio/SDL_mixer.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_wave.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/audio/SDL_wave.c $(objects)/.created
+$(objects)/SDL_wave.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/audio/SDL_wave.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_cpuinfo.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/cpuinfo/SDL_cpuinfo.c $(objects)/.created
+$(objects)/SDL_cpuinfo.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/cpuinfo/SDL_cpuinfo.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_dynapi.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/dynapi/SDL_dynapi.c $(objects)/.created
+$(objects)/SDL_dynapi.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/dynapi/SDL_dynapi.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_clipboardevents.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/events/SDL_clipboardevents.c $(objects)/.created
+$(objects)/SDL_clipboardevents.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/events/SDL_clipboardevents.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_displayevents.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/events/SDL_displayevents.c $(objects)/.created
+$(objects)/SDL_displayevents.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/events/SDL_displayevents.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_dropevents.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/events/SDL_dropevents.c $(objects)/.created
+$(objects)/SDL_dropevents.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/events/SDL_dropevents.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_events.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/events/SDL_events.c $(objects)/.created
+$(objects)/SDL_events.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/events/SDL_events.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_gesture.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/events/SDL_gesture.c $(objects)/.created
+$(objects)/SDL_gesture.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/events/SDL_gesture.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_keyboard.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/events/SDL_keyboard.c $(objects)/.created
+$(objects)/SDL_keyboard.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/events/SDL_keyboard.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_keysym_to_scancode.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/events/SDL_keysym_to_scancode.c $(objects)/.created
+$(objects)/SDL_keysym_to_scancode.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/events/SDL_keysym_to_scancode.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_mouse.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/events/SDL_mouse.c $(objects)/.created
+$(objects)/SDL_mouse.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/events/SDL_mouse.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_quit.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/events/SDL_quit.c $(objects)/.created
+$(objects)/SDL_quit.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/events/SDL_quit.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_scancode_tables.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/events/SDL_scancode_tables.c $(objects)/.created
+$(objects)/SDL_scancode_tables.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/events/SDL_scancode_tables.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_touch.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/events/SDL_touch.c $(objects)/.created
+$(objects)/SDL_touch.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/events/SDL_touch.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_windowevents.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/events/SDL_windowevents.c $(objects)/.created
+$(objects)/SDL_windowevents.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/events/SDL_windowevents.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/imKStoUCS.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/events/imKStoUCS.c $(objects)/.created
+$(objects)/imKStoUCS.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/events/imKStoUCS.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_rwops.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/file/SDL_rwops.c $(objects)/.created
+$(objects)/SDL_rwops.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/file/SDL_rwops.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_haptic.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/haptic/SDL_haptic.c $(objects)/.created
+$(objects)/SDL_haptic.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/haptic/SDL_haptic.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_hidapi.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/hidapi/SDL_hidapi.c $(objects)/.created
+$(objects)/SDL_hidapi.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/hidapi/SDL_hidapi.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_gamecontroller.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/joystick/SDL_gamecontroller.c $(objects)/.created
+$(objects)/SDL_gamecontroller.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/joystick/SDL_gamecontroller.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_joystick.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/joystick/SDL_joystick.c $(objects)/.created
+$(objects)/SDL_joystick.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/joystick/SDL_joystick.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_steam_virtual_gamepad.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/joystick/SDL_steam_virtual_gamepad.c $(objects)/.created
+$(objects)/SDL_steam_virtual_gamepad.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/joystick/SDL_steam_virtual_gamepad.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/controller_type.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/joystick/controller_type.c $(objects)/.created
+$(objects)/controller_type.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/joystick/controller_type.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/e_atan2.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/libm/e_atan2.c $(objects)/.created
+$(objects)/e_atan2.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/libm/e_atan2.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/e_exp.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/libm/e_exp.c $(objects)/.created
+$(objects)/e_exp.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/libm/e_exp.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/e_fmod.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/libm/e_fmod.c $(objects)/.created
+$(objects)/e_fmod.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/libm/e_fmod.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/e_log.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/libm/e_log.c $(objects)/.created
+$(objects)/e_log.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/libm/e_log.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/e_log10.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/libm/e_log10.c $(objects)/.created
+$(objects)/e_log10.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/libm/e_log10.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/e_pow.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/libm/e_pow.c $(objects)/.created
+$(objects)/e_pow.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/libm/e_pow.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/e_rem_pio2.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/libm/e_rem_pio2.c $(objects)/.created
+$(objects)/e_rem_pio2.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/libm/e_rem_pio2.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/e_sqrt.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/libm/e_sqrt.c $(objects)/.created
+$(objects)/e_sqrt.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/libm/e_sqrt.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/k_cos.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/libm/k_cos.c $(objects)/.created
+$(objects)/k_cos.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/libm/k_cos.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/k_rem_pio2.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/libm/k_rem_pio2.c $(objects)/.created
+$(objects)/k_rem_pio2.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/libm/k_rem_pio2.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/k_sin.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/libm/k_sin.c $(objects)/.created
+$(objects)/k_sin.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/libm/k_sin.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/k_tan.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/libm/k_tan.c $(objects)/.created
+$(objects)/k_tan.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/libm/k_tan.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/s_atan.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/libm/s_atan.c $(objects)/.created
+$(objects)/s_atan.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/libm/s_atan.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/s_copysign.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/libm/s_copysign.c $(objects)/.created
+$(objects)/s_copysign.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/libm/s_copysign.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/s_cos.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/libm/s_cos.c $(objects)/.created
+$(objects)/s_cos.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/libm/s_cos.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/s_fabs.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/libm/s_fabs.c $(objects)/.created
+$(objects)/s_fabs.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/libm/s_fabs.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/s_floor.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/libm/s_floor.c $(objects)/.created
+$(objects)/s_floor.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/libm/s_floor.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/s_scalbn.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/libm/s_scalbn.c $(objects)/.created
+$(objects)/s_scalbn.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/libm/s_scalbn.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/s_sin.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/libm/s_sin.c $(objects)/.created
+$(objects)/s_sin.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/libm/s_sin.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/s_tan.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/libm/s_tan.c $(objects)/.created
+$(objects)/s_tan.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/libm/s_tan.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_url.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/misc/SDL_url.c $(objects)/.created
+$(objects)/SDL_url.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/misc/SDL_url.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_power.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/power/SDL_power.c $(objects)/.created
+$(objects)/SDL_power.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/power/SDL_power.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_d3dmath.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/render/SDL_d3dmath.c $(objects)/.created
+$(objects)/SDL_d3dmath.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/render/SDL_d3dmath.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_render.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/render/SDL_render.c $(objects)/.created
+$(objects)/SDL_render.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/render/SDL_render.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_yuv_sw.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/render/SDL_yuv_sw.c $(objects)/.created
+$(objects)/SDL_yuv_sw.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/render/SDL_yuv_sw.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_render_d3d.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/render/direct3d/SDL_render_d3d.c $(objects)/.created
+$(objects)/SDL_render_d3d.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/render/direct3d/SDL_render_d3d.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_shaders_d3d.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/render/direct3d/SDL_shaders_d3d.c $(objects)/.created
+$(objects)/SDL_shaders_d3d.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/render/direct3d/SDL_shaders_d3d.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_render_d3d11.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/render/direct3d11/SDL_render_d3d11.c $(objects)/.created
+$(objects)/SDL_render_d3d11.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/render/direct3d11/SDL_render_d3d11.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_shaders_d3d11.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/render/direct3d11/SDL_shaders_d3d11.c $(objects)/.created
+$(objects)/SDL_shaders_d3d11.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/render/direct3d11/SDL_shaders_d3d11.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_render_d3d12.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/render/direct3d12/SDL_render_d3d12.c $(objects)/.created
+$(objects)/SDL_render_d3d12.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/render/direct3d12/SDL_render_d3d12.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_shaders_d3d12.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/render/direct3d12/SDL_shaders_d3d12.c $(objects)/.created
+$(objects)/SDL_shaders_d3d12.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/render/direct3d12/SDL_shaders_d3d12.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_render_gl.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/render/opengl/SDL_render_gl.c $(objects)/.created
+$(objects)/SDL_render_gl.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/render/opengl/SDL_render_gl.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_shaders_gl.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/render/opengl/SDL_shaders_gl.c $(objects)/.created
+$(objects)/SDL_shaders_gl.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/render/opengl/SDL_shaders_gl.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_render_gles.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/render/opengles/SDL_render_gles.c $(objects)/.created
+$(objects)/SDL_render_gles.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/render/opengles/SDL_render_gles.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_render_gles2.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/render/opengles2/SDL_render_gles2.c $(objects)/.created
+$(objects)/SDL_render_gles2.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/render/opengles2/SDL_render_gles2.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_shaders_gles2.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/render/opengles2/SDL_shaders_gles2.c $(objects)/.created
+$(objects)/SDL_shaders_gles2.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/render/opengles2/SDL_shaders_gles2.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_render_ps2.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/render/ps2/SDL_render_ps2.c $(objects)/.created
+$(objects)/SDL_render_ps2.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/render/ps2/SDL_render_ps2.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_render_psp.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/render/psp/SDL_render_psp.c $(objects)/.created
+$(objects)/SDL_render_psp.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/render/psp/SDL_render_psp.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_blendfillrect.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/render/software/SDL_blendfillrect.c $(objects)/.created
+$(objects)/SDL_blendfillrect.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/render/software/SDL_blendfillrect.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_blendline.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/render/software/SDL_blendline.c $(objects)/.created
+$(objects)/SDL_blendline.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/render/software/SDL_blendline.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_blendpoint.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/render/software/SDL_blendpoint.c $(objects)/.created
+$(objects)/SDL_blendpoint.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/render/software/SDL_blendpoint.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_drawline.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/render/software/SDL_drawline.c $(objects)/.created
+$(objects)/SDL_drawline.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/render/software/SDL_drawline.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_drawpoint.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/render/software/SDL_drawpoint.c $(objects)/.created
+$(objects)/SDL_drawpoint.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/render/software/SDL_drawpoint.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_render_sw.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/render/software/SDL_render_sw.c $(objects)/.created
+$(objects)/SDL_render_sw.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/render/software/SDL_render_sw.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_rotate.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/render/software/SDL_rotate.c $(objects)/.created
+$(objects)/SDL_rotate.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/render/software/SDL_rotate.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_triangle.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/render/software/SDL_triangle.c $(objects)/.created
+$(objects)/SDL_triangle.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/render/software/SDL_triangle.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_render_vita_gxm.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/render/vitagxm/SDL_render_vita_gxm.c $(objects)/.created
+$(objects)/SDL_render_vita_gxm.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/render/vitagxm/SDL_render_vita_gxm.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_render_vita_gxm_memory.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/render/vitagxm/SDL_render_vita_gxm_memory.c $(objects)/.created
+$(objects)/SDL_render_vita_gxm_memory.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/render/vitagxm/SDL_render_vita_gxm_memory.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_render_vita_gxm_tools.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/render/vitagxm/SDL_render_vita_gxm_tools.c $(objects)/.created
+$(objects)/SDL_render_vita_gxm_tools.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/render/vitagxm/SDL_render_vita_gxm_tools.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_sensor.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/sensor/SDL_sensor.c $(objects)/.created
+$(objects)/SDL_sensor.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/sensor/SDL_sensor.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_crc16.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/stdlib/SDL_crc16.c $(objects)/.created
+$(objects)/SDL_crc16.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/stdlib/SDL_crc16.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_crc32.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/stdlib/SDL_crc32.c $(objects)/.created
+$(objects)/SDL_crc32.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/stdlib/SDL_crc32.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_getenv.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/stdlib/SDL_getenv.c $(objects)/.created
+$(objects)/SDL_getenv.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/stdlib/SDL_getenv.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_iconv.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/stdlib/SDL_iconv.c $(objects)/.created
+$(objects)/SDL_iconv.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/stdlib/SDL_iconv.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_malloc.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/stdlib/SDL_malloc.c $(objects)/.created
+$(objects)/SDL_malloc.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/stdlib/SDL_malloc.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_mslibc.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/stdlib/SDL_mslibc.c $(objects)/.created
+$(objects)/SDL_mslibc.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/stdlib/SDL_mslibc.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_qsort.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/stdlib/SDL_qsort.c $(objects)/.created
+$(objects)/SDL_qsort.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/stdlib/SDL_qsort.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_stdlib.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/stdlib/SDL_stdlib.c $(objects)/.created
+$(objects)/SDL_stdlib.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/stdlib/SDL_stdlib.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_string.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/stdlib/SDL_string.c $(objects)/.created
+$(objects)/SDL_string.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/stdlib/SDL_string.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_strtokr.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/stdlib/SDL_strtokr.c $(objects)/.created
+$(objects)/SDL_strtokr.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/stdlib/SDL_strtokr.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_thread.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/thread/SDL_thread.c $(objects)/.created
+$(objects)/SDL_thread.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/thread/SDL_thread.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_timer.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/timer/SDL_timer.c $(objects)/.created
+$(objects)/SDL_timer.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/timer/SDL_timer.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_RLEaccel.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/video/SDL_RLEaccel.c $(objects)/.created
+$(objects)/SDL_RLEaccel.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/video/SDL_RLEaccel.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_blit.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/video/SDL_blit.c $(objects)/.created
+$(objects)/SDL_blit.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/video/SDL_blit.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_blit_0.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/video/SDL_blit_0.c $(objects)/.created
+$(objects)/SDL_blit_0.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/video/SDL_blit_0.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_blit_1.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/video/SDL_blit_1.c $(objects)/.created
+$(objects)/SDL_blit_1.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/video/SDL_blit_1.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_blit_A.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/video/SDL_blit_A.c $(objects)/.created
+$(objects)/SDL_blit_A.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/video/SDL_blit_A.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_blit_N.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/video/SDL_blit_N.c $(objects)/.created
+$(objects)/SDL_blit_N.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/video/SDL_blit_N.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_blit_auto.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/video/SDL_blit_auto.c $(objects)/.created
+$(objects)/SDL_blit_auto.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/video/SDL_blit_auto.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_blit_copy.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/video/SDL_blit_copy.c $(objects)/.created
+$(objects)/SDL_blit_copy.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/video/SDL_blit_copy.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_blit_slow.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/video/SDL_blit_slow.c $(objects)/.created
+$(objects)/SDL_blit_slow.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/video/SDL_blit_slow.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_bmp.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/video/SDL_bmp.c $(objects)/.created
+$(objects)/SDL_bmp.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/video/SDL_bmp.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_clipboard.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/video/SDL_clipboard.c $(objects)/.created
+$(objects)/SDL_clipboard.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/video/SDL_clipboard.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_egl.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/video/SDL_egl.c $(objects)/.created
+$(objects)/SDL_egl.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/video/SDL_egl.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_fillrect.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/video/SDL_fillrect.c $(objects)/.created
+$(objects)/SDL_fillrect.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/video/SDL_fillrect.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_pixels.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/video/SDL_pixels.c $(objects)/.created
+$(objects)/SDL_pixels.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/video/SDL_pixels.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_rect.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/video/SDL_rect.c $(objects)/.created
+$(objects)/SDL_rect.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/video/SDL_rect.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_shape.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/video/SDL_shape.c $(objects)/.created
+$(objects)/SDL_shape.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/video/SDL_shape.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_stretch.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/video/SDL_stretch.c $(objects)/.created
+$(objects)/SDL_stretch.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/video/SDL_stretch.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_surface.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/video/SDL_surface.c $(objects)/.created
+$(objects)/SDL_surface.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/video/SDL_surface.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_video.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/video/SDL_video.c $(objects)/.created
+$(objects)/SDL_video.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/video/SDL_video.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_vulkan_utils.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/video/SDL_vulkan_utils.c $(objects)/.created
+$(objects)/SDL_vulkan_utils.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/video/SDL_vulkan_utils.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_yuv.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/video/SDL_yuv.c $(objects)/.created
+$(objects)/SDL_yuv.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/video/SDL_yuv.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/yuv_rgb_lsx.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/video/yuv2rgb/yuv_rgb_lsx.c $(objects)/.created
+$(objects)/yuv_rgb_lsx.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/video/yuv2rgb/yuv_rgb_lsx.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/yuv_rgb_sse.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/video/yuv2rgb/yuv_rgb_sse.c $(objects)/.created
+$(objects)/yuv_rgb_sse.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/video/yuv2rgb/yuv_rgb_sse.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/yuv_rgb_std.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/video/yuv2rgb/yuv_rgb_std.c $(objects)/.created
+$(objects)/yuv_rgb_std.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/video/yuv2rgb/yuv_rgb_std.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_locale.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/locale/SDL_locale.c $(objects)/.created
+$(objects)/SDL_locale.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/locale/SDL_locale.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_nullevents.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/video/dummy/SDL_nullevents.c $(objects)/.created
+$(objects)/SDL_nullevents.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/video/dummy/SDL_nullevents.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_nullframebuffer.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/video/dummy/SDL_nullframebuffer.c $(objects)/.created
+$(objects)/SDL_nullframebuffer.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/video/dummy/SDL_nullframebuffer.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_nullvideo.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/video/dummy/SDL_nullvideo.c $(objects)/.created
+$(objects)/SDL_nullvideo.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/video/dummy/SDL_nullvideo.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_offscreenevents.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/video/offscreen/SDL_offscreenevents.c $(objects)/.created
+$(objects)/SDL_offscreenevents.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/video/offscreen/SDL_offscreenevents.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_offscreenframebuffer.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/video/offscreen/SDL_offscreenframebuffer.c $(objects)/.created
+$(objects)/SDL_offscreenframebuffer.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/video/offscreen/SDL_offscreenframebuffer.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_offscreenopengles.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/video/offscreen/SDL_offscreenopengles.c $(objects)/.created
+$(objects)/SDL_offscreenopengles.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/video/offscreen/SDL_offscreenopengles.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_offscreenvideo.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/video/offscreen/SDL_offscreenvideo.c $(objects)/.created
+$(objects)/SDL_offscreenvideo.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/video/offscreen/SDL_offscreenvideo.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_offscreenwindow.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/video/offscreen/SDL_offscreenwindow.c $(objects)/.created
+$(objects)/SDL_offscreenwindow.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/video/offscreen/SDL_offscreenwindow.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_diskaudio.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/audio/disk/SDL_diskaudio.c $(objects)/.created
+$(objects)/SDL_diskaudio.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/audio/disk/SDL_diskaudio.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_dummyaudio.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/audio/dummy/SDL_dummyaudio.c $(objects)/.created
+$(objects)/SDL_dummyaudio.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/audio/dummy/SDL_dummyaudio.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_sysloadso.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/loadso/dlopen/SDL_sysloadso.c $(objects)/.created
+$(objects)/SDL_sysloadso.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/loadso/dlopen/SDL_sysloadso.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_cocoaclipboard.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/video/cocoa/SDL_cocoaclipboard.m $(objects)/.created
+$(objects)/SDL_cocoaclipboard.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/video/cocoa/SDL_cocoaclipboard.m $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_cocoaevents.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/video/cocoa/SDL_cocoaevents.m $(objects)/.created
+$(objects)/SDL_cocoaevents.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/video/cocoa/SDL_cocoaevents.m $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_cocoakeyboard.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/video/cocoa/SDL_cocoakeyboard.m $(objects)/.created
+$(objects)/SDL_cocoakeyboard.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/video/cocoa/SDL_cocoakeyboard.m $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_cocoamessagebox.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/video/cocoa/SDL_cocoamessagebox.m $(objects)/.created
+$(objects)/SDL_cocoamessagebox.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/video/cocoa/SDL_cocoamessagebox.m $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_cocoametalview.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/video/cocoa/SDL_cocoametalview.m $(objects)/.created
+$(objects)/SDL_cocoametalview.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/video/cocoa/SDL_cocoametalview.m $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_cocoamodes.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/video/cocoa/SDL_cocoamodes.m $(objects)/.created
+$(objects)/SDL_cocoamodes.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/video/cocoa/SDL_cocoamodes.m $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_cocoamouse.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/video/cocoa/SDL_cocoamouse.m $(objects)/.created
+$(objects)/SDL_cocoamouse.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/video/cocoa/SDL_cocoamouse.m $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_cocoaopengl.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/video/cocoa/SDL_cocoaopengl.m $(objects)/.created
+$(objects)/SDL_cocoaopengl.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/video/cocoa/SDL_cocoaopengl.m $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_cocoaopengles.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/video/cocoa/SDL_cocoaopengles.m $(objects)/.created
+$(objects)/SDL_cocoaopengles.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/video/cocoa/SDL_cocoaopengles.m $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_cocoashape.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/video/cocoa/SDL_cocoashape.m $(objects)/.created
+$(objects)/SDL_cocoashape.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/video/cocoa/SDL_cocoashape.m $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_cocoavideo.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/video/cocoa/SDL_cocoavideo.m $(objects)/.created
+$(objects)/SDL_cocoavideo.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/video/cocoa/SDL_cocoavideo.m $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_cocoavulkan.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/video/cocoa/SDL_cocoavulkan.m $(objects)/.created
+$(objects)/SDL_cocoavulkan.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/video/cocoa/SDL_cocoavulkan.m $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_cocoawindow.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/video/cocoa/SDL_cocoawindow.m $(objects)/.created
+$(objects)/SDL_cocoawindow.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/video/cocoa/SDL_cocoawindow.m $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_render_metal.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/render/metal/SDL_render_metal.m $(objects)/.created
+$(objects)/SDL_render_metal.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/render/metal/SDL_render_metal.m $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_systhread.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/thread/pthread/SDL_systhread.c $(objects)/.created
+$(objects)/SDL_systhread.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/thread/pthread/SDL_systhread.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_syssem.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/thread/pthread/SDL_syssem.c $(objects)/.created
+$(objects)/SDL_syssem.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/thread/pthread/SDL_syssem.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_sysmutex.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/thread/pthread/SDL_sysmutex.c $(objects)/.created
+$(objects)/SDL_sysmutex.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/thread/pthread/SDL_sysmutex.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_syscond.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/thread/pthread/SDL_syscond.c $(objects)/.created
+$(objects)/SDL_syscond.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/thread/pthread/SDL_syscond.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_systls.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/thread/pthread/SDL_systls.c $(objects)/.created
+$(objects)/SDL_systls.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/thread/pthread/SDL_systls.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_hidapi_combined.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/joystick/hidapi/SDL_hidapi_combined.c $(objects)/.created
+$(objects)/SDL_hidapi_combined.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/joystick/hidapi/SDL_hidapi_combined.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_hidapi_gamecube.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/joystick/hidapi/SDL_hidapi_gamecube.c $(objects)/.created
+$(objects)/SDL_hidapi_gamecube.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/joystick/hidapi/SDL_hidapi_gamecube.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_hidapi_luna.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/joystick/hidapi/SDL_hidapi_luna.c $(objects)/.created
+$(objects)/SDL_hidapi_luna.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/joystick/hidapi/SDL_hidapi_luna.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_hidapi_ps3.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/joystick/hidapi/SDL_hidapi_ps3.c $(objects)/.created
+$(objects)/SDL_hidapi_ps3.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/joystick/hidapi/SDL_hidapi_ps3.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_hidapi_ps4.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/joystick/hidapi/SDL_hidapi_ps4.c $(objects)/.created
+$(objects)/SDL_hidapi_ps4.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/joystick/hidapi/SDL_hidapi_ps4.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_hidapi_ps5.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/joystick/hidapi/SDL_hidapi_ps5.c $(objects)/.created
+$(objects)/SDL_hidapi_ps5.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/joystick/hidapi/SDL_hidapi_ps5.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_hidapi_rumble.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/joystick/hidapi/SDL_hidapi_rumble.c $(objects)/.created
+$(objects)/SDL_hidapi_rumble.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/joystick/hidapi/SDL_hidapi_rumble.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_hidapi_shield.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/joystick/hidapi/SDL_hidapi_shield.c $(objects)/.created
+$(objects)/SDL_hidapi_shield.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/joystick/hidapi/SDL_hidapi_shield.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_hidapi_stadia.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/joystick/hidapi/SDL_hidapi_stadia.c $(objects)/.created
+$(objects)/SDL_hidapi_stadia.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/joystick/hidapi/SDL_hidapi_stadia.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_hidapi_steam.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/joystick/hidapi/SDL_hidapi_steam.c $(objects)/.created
+$(objects)/SDL_hidapi_steam.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/joystick/hidapi/SDL_hidapi_steam.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_hidapi_steamdeck.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/joystick/hidapi/SDL_hidapi_steamdeck.c $(objects)/.created
+$(objects)/SDL_hidapi_steamdeck.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/joystick/hidapi/SDL_hidapi_steamdeck.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_hidapi_switch.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/joystick/hidapi/SDL_hidapi_switch.c $(objects)/.created
+$(objects)/SDL_hidapi_switch.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/joystick/hidapi/SDL_hidapi_switch.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_hidapi_wii.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/joystick/hidapi/SDL_hidapi_wii.c $(objects)/.created
+$(objects)/SDL_hidapi_wii.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/joystick/hidapi/SDL_hidapi_wii.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_hidapi_xbox360.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/joystick/hidapi/SDL_hidapi_xbox360.c $(objects)/.created
+$(objects)/SDL_hidapi_xbox360.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/joystick/hidapi/SDL_hidapi_xbox360.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_hidapi_xbox360w.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/joystick/hidapi/SDL_hidapi_xbox360w.c $(objects)/.created
+$(objects)/SDL_hidapi_xbox360w.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/joystick/hidapi/SDL_hidapi_xbox360w.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_hidapi_xboxone.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/joystick/hidapi/SDL_hidapi_xboxone.c $(objects)/.created
+$(objects)/SDL_hidapi_xboxone.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/joystick/hidapi/SDL_hidapi_xboxone.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_hidapijoystick.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/joystick/hidapi/SDL_hidapijoystick.c $(objects)/.created
+$(objects)/SDL_hidapijoystick.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/joystick/hidapi/SDL_hidapijoystick.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_sysurl.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/misc/macosx/SDL_sysurl.m $(objects)/.created
+$(objects)/SDL_sysurl.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/misc/macosx/SDL_sysurl.m $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_syslocale.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/locale/macosx/SDL_syslocale.m $(objects)/.created
+$(objects)/SDL_syslocale.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/locale/macosx/SDL_syslocale.m $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_coreaudio.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/audio/coreaudio/SDL_coreaudio.m $(objects)/.created
+$(objects)/SDL_coreaudio.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/audio/coreaudio/SDL_coreaudio.m $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_iokitjoystick.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/joystick/darwin/SDL_iokitjoystick.c $(objects)/.created
+$(objects)/SDL_iokitjoystick.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/joystick/darwin/SDL_iokitjoystick.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_mfijoystick.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/joystick/iphoneos/SDL_mfijoystick.m $(objects)/.created
+$(objects)/SDL_mfijoystick.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/joystick/iphoneos/SDL_mfijoystick.m $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_syshaptic.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/haptic/darwin/SDL_syshaptic.c $(objects)/.created
+$(objects)/SDL_syshaptic.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/haptic/darwin/SDL_syshaptic.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_syspower.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/power/macosx/SDL_syspower.c $(objects)/.created
+$(objects)/SDL_syspower.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/power/macosx/SDL_syspower.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_sysfilesystem.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/filesystem/cocoa/SDL_sysfilesystem.m $(objects)/.created
+$(objects)/SDL_sysfilesystem.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/filesystem/cocoa/SDL_sysfilesystem.m $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_systimer.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/timer/unix/SDL_systimer.c $(objects)/.created
+$(objects)/SDL_systimer.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/timer/unix/SDL_systimer.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_rwopsbundlesupport.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/file/cocoa/SDL_rwopsbundlesupport.m $(objects)/.created
+$(objects)/SDL_rwopsbundlesupport.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/file/cocoa/SDL_rwopsbundlesupport.m $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_poll.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/core/unix/SDL_poll.c $(objects)/.created
+$(objects)/SDL_poll.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/core/unix/SDL_poll.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_virtualjoystick.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/joystick/virtual/SDL_virtualjoystick.c $(objects)/.created
+$(objects)/SDL_virtualjoystick.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/joystick/virtual/SDL_virtualjoystick.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_dummysensor.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/sensor/dummy/SDL_dummysensor.c $(objects)/.created
+$(objects)/SDL_dummysensor.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/sensor/dummy/SDL_dummysensor.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
 
-$(objects)/SDL_dummy_main.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/main/dummy/SDL_dummy_main.c $(objects)/.created
+$(objects)/SDL_dummy_main.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/main/dummy/SDL_dummy_main.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 
-$(objects)/SDL_test_assert.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/test/SDL_test_assert.c $(objects)/.created
+$(objects)/SDL_test_assert.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/test/SDL_test_assert.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@ 
-$(objects)/SDL_test_common.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/test/SDL_test_common.c $(objects)/.created
+$(objects)/SDL_test_common.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/test/SDL_test_common.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@ 
-$(objects)/SDL_test_compare.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/test/SDL_test_compare.c $(objects)/.created
+$(objects)/SDL_test_compare.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/test/SDL_test_compare.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@ 
-$(objects)/SDL_test_crc32.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/test/SDL_test_crc32.c $(objects)/.created
+$(objects)/SDL_test_crc32.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/test/SDL_test_crc32.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@ 
-$(objects)/SDL_test_font.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/test/SDL_test_font.c $(objects)/.created
+$(objects)/SDL_test_font.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/test/SDL_test_font.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@ 
-$(objects)/SDL_test_fuzzer.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/test/SDL_test_fuzzer.c $(objects)/.created
+$(objects)/SDL_test_fuzzer.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/test/SDL_test_fuzzer.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@ 
-$(objects)/SDL_test_harness.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/test/SDL_test_harness.c $(objects)/.created
+$(objects)/SDL_test_harness.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/test/SDL_test_harness.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@ 
-$(objects)/SDL_test_imageBlit.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/test/SDL_test_imageBlit.c $(objects)/.created
+$(objects)/SDL_test_imageBlit.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/test/SDL_test_imageBlit.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@ 
-$(objects)/SDL_test_imageBlitBlend.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/test/SDL_test_imageBlitBlend.c $(objects)/.created
+$(objects)/SDL_test_imageBlitBlend.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/test/SDL_test_imageBlitBlend.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@ 
-$(objects)/SDL_test_imageFace.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/test/SDL_test_imageFace.c $(objects)/.created
+$(objects)/SDL_test_imageFace.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/test/SDL_test_imageFace.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@ 
-$(objects)/SDL_test_imagePrimitives.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/test/SDL_test_imagePrimitives.c $(objects)/.created
+$(objects)/SDL_test_imagePrimitives.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/test/SDL_test_imagePrimitives.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@ 
-$(objects)/SDL_test_imagePrimitivesBlend.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/test/SDL_test_imagePrimitivesBlend.c $(objects)/.created
+$(objects)/SDL_test_imagePrimitivesBlend.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/test/SDL_test_imagePrimitivesBlend.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@ 
-$(objects)/SDL_test_log.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/test/SDL_test_log.c $(objects)/.created
+$(objects)/SDL_test_log.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/test/SDL_test_log.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@ 
-$(objects)/SDL_test_md5.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/test/SDL_test_md5.c $(objects)/.created
+$(objects)/SDL_test_md5.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/test/SDL_test_md5.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@ 
-$(objects)/SDL_test_memory.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/test/SDL_test_memory.c $(objects)/.created
+$(objects)/SDL_test_memory.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/test/SDL_test_memory.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@ 
-$(objects)/SDL_test_random.lo: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/test/SDL_test_random.c $(objects)/.created
+$(objects)/SDL_test_random.lo: /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/test/SDL_test_random.c $(objects)/.created
 	$(RUN_CMD_CC)$(LIBTOOL) --tag=CC --mode=compile $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MMD -MT $@ -c $< -o $@
 

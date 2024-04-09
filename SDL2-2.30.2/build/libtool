@@ -1,6 +1,6 @@
 #! /bin/sh
 # Generated automatically by config.status () 
-# Libtool was configured on host MacBook-Pro-de-Thomas.local:
+# Libtool was configured on host MacBook-Pro-de-Tom.local:
 # NOTE: Changes made to this file will be lost: look at ltmain.sh.
 
 # Provide generalized library-building support services.
@@ -76,12 +76,12 @@ PATH_SEPARATOR=":"
 
 # The host system.
 host_alias=
-host=x86_64-apple-darwin23.4.0
+host=aarch64-apple-darwin23.4.0
 host_os=darwin23.4.0
 
 # The build system.
 build_alias=
-build=x86_64-apple-darwin23.4.0
+build=aarch64-apple-darwin23.4.0
 build_os=darwin23.4.0
 
 # A sed program that does not truncate output.
@@ -168,7 +168,7 @@ lock_old_archive_extraction=yes
 LTCC="gcc"
 
 # LTCC compiler flags.
-LTCFLAGS="-g -O2 -Iinclude -I/Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/include -idirafter /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/SDL2-2.30.2/src/video/khronos "
+LTCFLAGS="-g -O2 -Iinclude -I/Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/include -idirafter /Users/tomcuel/Documents/Ensta-Paris/1A/Informatique/IN104/Chess_Game_C_IN104/SDL2-2.30.2/src/video/khronos "
 
 # Take the output of nm and produce a listing of raw symbols and C names.
 global_symbol_pipe="sed -n -e 's/^.*[	 ]\\([ABCDGIRSTW][ABCDGIRSTW]*\\)[	 ][	 ]*_\\([_A-Za-z][_A-Za-z0-9]*\\)\$/\\1 _\\2 \\2/p' | sed '/ __gnu_lto/d'"
