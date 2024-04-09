@@ -4,8 +4,8 @@ LDFLAGS = `pkg-config --libs sdl2` -lm
 
 all: game
 
-game: src/main.c
-	$(CC) $(CFLAGS) src/main.c -o game $(LDFLAGS)
+game: /Users/thomas/Documents/Scolarité/ENSTA/Info/in104/echecs/Chess_Game_C_IN104/jeuch/main.c
+	$(CC) $(CFLAGS) jeuch/main.c -o game $(LDFLAGS)
 
 run: game
 	./game
