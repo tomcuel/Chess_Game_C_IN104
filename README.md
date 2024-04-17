@@ -10,5 +10,5 @@ Here's the website to find out more about this library (which allows us to make 
 
 We will have various tasks to complete as part of this project: 
 - reproduce the game of chess and its many rules 
-- create a graphical interface that is fun to play on (with first some tests on it)
+- create a graphical interface that is fun to play on (with some tests to try, know how to use it)
 - code an AI to play against, with different levels 
