@@ -147,6 +147,8 @@ void process_keyboard_mouse_input(void) {
                         break;
                 }
             } 
+
+            // in the end, for our chess game, the get_state_mouse will be more useful than using the motion of the mouse, even if a cursor will be displayed and use this type of function 
             else if (event.type == SDL_MOUSEMOTION) {
                 block.x = event.motion.x;
                 block.y = event.motion.y;
