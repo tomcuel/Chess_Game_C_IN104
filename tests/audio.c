@@ -1,10 +1,7 @@
 #include <SDL2/SDL.h>
 
-#define MUS_PATH "take.wav"
+#define FILENAME "take.wav"
 
-/*
-** PLAYING A SOUND IS MUCH MORE COMPLICATED THAN IT SHOULD BE
-*/
 int main(int argc, char* argv[]){
 
 	// Initialize SDL.
@@ -18,7 +15,7 @@ int main(int argc, char* argv[]){
 	
 	/* Load the WAV */
 	// the specs, length and buffer of our wav are filled
-	if( SDL_LoadWAV(MUS_PATH, &wav_spec, &wav_buffer, &wav_length) == NULL ){
+	if( SDL_LoadWAV(FILENAME, &wav_spec, &wav_buffer, &wav_length) == NULL ){
         printf("Failed to load wav file: %s\n", SDL_GetError());
         SDL_FreeWAV(wav_buffer);
 	    goto cleanup;
