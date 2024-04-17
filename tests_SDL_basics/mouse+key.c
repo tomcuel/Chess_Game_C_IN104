@@ -50,7 +50,7 @@ int initialize_window(void) {
         SDL_WINDOWPOS_CENTERED,
         WINDOW_WIDTH,
         WINDOW_HEIGHT,
-        0
+        SDL_WINDOW_FULLSCREEN
     );
     if (!window) {
         fprintf(stderr, "Error creating SDL Window.\n");
@@ -93,7 +93,7 @@ void setup(void) {
 // Change the position of the block object
 ///////////////////////////////////////////////////////////////////////////////
 void render(void) {
-    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255); // black color
+    SDL_SetRenderDrawColor(renderer, 125, 125, 125, 255); // grey color
     SDL_RenderClear(renderer);
 
     // Draw a rectangle for the ball object
