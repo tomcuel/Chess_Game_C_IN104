@@ -16,6 +16,7 @@ We will have various tasks to complete as part of this project:
 
 
 Structure of the code : 
+
 - .h file : 
 - - will have the explications concerning the description of the function and what I will used for 
 - - will also give the parameters the function is taking 
@@ -69,6 +70,7 @@ header of the function
 
 
 #endif /* __FILENAME_H__ */
+
 
 - .c file  : 
 - - will not include the header, but it will be commented to know what are the things done inside the function
