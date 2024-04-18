@@ -30,7 +30,9 @@ Structure of the code :
 /**
  *
  * 
- … Resume of the different functions we can find on this file
+ … 
+ Resume of the different functions we can find on this file
+ …
  *
 **/
 /////////////////////////////////////////////////////////////////////////////////////
