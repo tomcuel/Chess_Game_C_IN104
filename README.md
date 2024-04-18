@@ -72,4 +72,20 @@ header of the function
 
 - .c file  : 
 - - will not include the header, but it will be commented to know what are the things done inside the function
-- - code structure : at least 2 empty lines between the function, no others special rules, appart from spacing the code to make it easy to read and understand 
+- - code structure : (spacing the code to make it easy to copy and to understand)
+
+#include "filename.h"
+
+
+function_1
+
+
+function_2
+
+
+…
+…
+
+
+
+function_n
