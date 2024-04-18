@@ -7,7 +7,7 @@ void play_sound(const char* filename) {
 	static Uint8 *wav_buffer; // buffer containing our audio file
 	static SDL_AudioSpec wav_spec; // the specs of our piece of music
 	
-	/* Load the WAV */
+	// Load the WAV
 	// the specs, length and buffer of our wav are filled
     // check if the file is loaded
 	if( SDL_LoadWAV(filename, &wav_spec, &wav_buffer, &wav_length) == NULL ){
