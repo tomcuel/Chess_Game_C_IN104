@@ -19,7 +19,7 @@
 /////////////////////////////////////////////////////////////////////////////////////
 // Structure that define what a piece is 
 /////////////////////////////////////////////////////////////////////////////////////
-typedef struct{
+typedef struct Piece {
     int row; // position on the board, concerning the rows (from 0 to 7)
     int col; // position on the board, concerning the columns (from 0 to 7) (or A to H)
     int type; // NOTHING, PAWN, ROOK, KNIGHT, BISHOP, QUEEN, KING
@@ -32,7 +32,7 @@ typedef struct{
 /////////////////////////////////////////////////////////////////////////////////////
 // Structure that the array of the captured pieces 
 /////////////////////////////////////////////////////////////////////////////////////
-typedef struct{
+typedef struct Captured_Piece_and_Score {
     Piece* pieces_captured; // array of the pieces that are captured
     int number_of_pieces_captured; // number of pieces that have been captured yet 
     int score; // score difference 
