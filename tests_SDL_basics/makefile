@@ -4,5 +4,5 @@ build:
 	gcc -Wall mouse+key.c `sdl2-config --libs --cflags` -lm -o mouse+key
 	gcc mouse+key.c -o prog -Iinclude -lSDL2main -lSDL2
 
-clean:
+realclean:
 	rm -f image audio mouse+key prog
