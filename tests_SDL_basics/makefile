@@ -5,8 +5,5 @@ build:
 	gcc double_window.c -o double_window -Iinclude -lSDL2main -lSDL2
 	gcc mouse+key.c -o mouse+key.x -Iinclude -lSDL2main -lSDL2
 
-run:
-	./game
-
 clean:
-	rm game
+	rm -f image audio mouse+key double_window mouse+key.x
