@@ -280,7 +280,7 @@ Move* Create_King_Move_during_Rock(Piece* piece, Move* move, Piece*** board);
  * @param Move_Log - the log of the moves that have been made
 **/
 /////////////////////////////////////////////////////////////////////////////////////
-void Undo_Rook_during_Rock(Move* move, Piece*** board, State_Of_Rock_and_Check* State_Of_Rock_and_Check, Move_Log* Move_Log);
+void Undo_Rook_during_Rock(Move* move, Piece*** board, State_Of_Rock_and_Check* State_Of_Rock_and_Check, Move_Log_array* Move_Log);
 
 
 /////////////////////////////////////////////////////////////////////////////////////
