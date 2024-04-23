@@ -92,8 +92,8 @@ void setup(void) {
 // Render function to draw game objects in the SDL window
 // Change the position of the block object
 ///////////////////////////////////////////////////////////////////////////////
-void render(void) {
-    SDL_SetRenderDrawColor(renderer, 125, 125, 125, 255); // grey color
+void render(int color_r, int color_g, int color_b) {
+    SDL_SetRenderDrawColor(renderer, color_r, color_g, color_b, 255);
     SDL_RenderClear(renderer);
 
     // Draw a rectangle for the ball object
@@ -117,21 +117,22 @@ void render(void) {
 void process_keyboard_mouse_input(void) {
     SDL_Event event;
     int quit = 0;
-    while (!quit){
+    int kit = 0;
+    while (quit < 2){
         while (SDL_PollEvent(&event)) {
-            
-            if (event.type == SDL_QUIT) {
-                is_running = false;
-                quit = 1;
-            } 
 
             // there is the need for an else if to avoid the case where the event is both a keydown and a mousemotion
             // because mouse motion is always true, the block will always be moved by the mouse
-            else if (event.type == SDL_KEYDOWN) {
+            if (event.type == SDL_KEYDOWN) {
                 switch (event.key.keysym.sym) {
                     case SDLK_ESCAPE:
-                        is_running = false;
-                        quit = 1;
+                        if (quit ==1){
+                            is_running = false;
+                            quit = 2;
+                        }
+                        else {
+                            quit = 1;
+                        }
                         break;
                     case SDLK_UP:
                         block.y -= 10;
@@ -154,8 +155,14 @@ void process_keyboard_mouse_input(void) {
                 block.y = event.motion.y;
             }
         }
-
-        render();
+        if (quit == 1){
+            // dark chocolate color
+            render(94, 38, 18);
+            
+        }
+        else {
+            render(139, 90, 43); // Lindt chocolate color
+        }
     }
 }
 
