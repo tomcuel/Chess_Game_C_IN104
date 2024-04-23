@@ -56,7 +56,7 @@ int initialize_window(void) {
         fprintf(stderr, "Error creating SDL Window.\n");
         return false;
     }
-    renderer = SDL_CreateRenderer(window, -1, 0);
+    renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
     if (!renderer) {
         fprintf(stderr, "Error creating SDL Renderer.\n");
         return false;
