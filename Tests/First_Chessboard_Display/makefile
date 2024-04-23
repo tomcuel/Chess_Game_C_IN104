@@ -2,12 +2,12 @@ CC = gcc
 CFLAGS = -Wall -Wfatal-errors
 LDFLAGS = -Iinclude -lSDL2main -lSDL2
 
-all: main_test_1.x aff.x
+all: main_test_1.x Win_Screen_Load
 
-main_test_1.x: Piece.o Image.o Audio.o main_test_1.o
+main_test_1.x: Piece.o Image.o Audio.o main_test_1.o 
 	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
 
-aff.x: Image.o affichage_fin.o
+Win_Screen_Load: Image.o Win_Screen_Load.o
 	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
 
 %.o: %.c

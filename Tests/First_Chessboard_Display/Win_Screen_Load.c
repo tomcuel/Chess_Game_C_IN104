@@ -44,9 +44,9 @@ int main() {
     //Défaite : result = 2
     int result = 1;
     if (result == 1)
-        {add_image_to_render("victoire.bmp", renderer, destRect);}
+        {add_image_to_render("victory.bmp", renderer, destRect);}
     else
-        {add_image_to_render("défaite.bmp", renderer, destRect);}
+        {add_image_to_render("defeat.bmp", renderer, destRect);}
 
 
     SDL_RenderPresent(renderer);
