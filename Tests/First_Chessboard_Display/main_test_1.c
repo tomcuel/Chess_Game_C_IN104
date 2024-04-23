@@ -119,7 +119,7 @@ int main (){
     }
 
     // Creation of the window
-    SDL_Window* window = SDL_CreateWindow("Jeu SDL", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_FULLSCREEN);
+    SDL_Window* window = SDL_CreateWindow("Jeu SDL", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WINDOW_WIDTH, WINDOW_HEIGHT, 0);
     if (window == NULL) {
         fprintf(stderr, "Erreur lors de la création de la fenêtre : %s\n", SDL_GetError());
         goto Quit;
