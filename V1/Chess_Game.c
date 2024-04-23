@@ -100,8 +100,8 @@ int main (){
     int max_size_captured_pieces_array = NUMBER_OF_PIECES;
     Captured_Piece_and_Score* Captured_Pieces_and_Score = Create_Captured_Piece_and_Score(max_size_captured_pieces_array);
 
-
-
+    // initialize the structure to have the state of the game concerning rock and check
+    State_Of_Rock_and_Check* State_Of_RockandCheck = Create_State_Of_Rock_and_Check();
 
 
     /*
@@ -127,6 +127,9 @@ int main (){
 
     // clear the captured pieces
     Destroy_Captured_Piece_and_Score(Captured_Pieces_and_Score, max_size_captured_pieces_array);
+
+    // clear the state of the rock and check
+    Destroy_State_Of_Rock_and_Check(State_Of_RockandCheck);
 
     // clear the graphics and quit the SDL
     clear_graphics(window, renderer);
