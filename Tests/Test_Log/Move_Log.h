@@ -54,28 +54,30 @@
 /////////////////////////////////////////////////////////////////////////////////////
 // Structure that represents an element in the history log
 /////////////////////////////////////////////////////////////////////////////////////
-typedef struct Move_Log_Element {
+typedef struct {
 	Move* move; // the move that has been done, a pointer to a move structure
 	int taken_piece_type; // the captured piece type : NOTHING, PAWN, ROOK, KNIGHT, BISHOP, QUEEN, KING
 	int taken_piece_color; // the captured piece color : WHITE or BLACK
 	int check_state; //check state before move is done : NO_CHECK for no check, BLACK_CHECK for black check, WHITE_CHECK for white check
+	int rock_type; // the type of the rock move : NOROCK or SHORT_ROCK or LONG_ROCK (allows to know if the rock has been done to be able to undo it)
 } Move_Log_Element;
 
 
 /////////////////////////////////////////////////////////////////////////////////////
 // Structure that represents the history log of each move in the game (it's an array of moves)
 /////////////////////////////////////////////////////////////////////////////////////
-typedef struct Move_Log_array {
+typedef struct {
 	Move_Log_Element** Move_Log; //an array of history's elements, a pointer to it
 	int actual_size;
 	int max_size;
 } Move_Log_array;
+// don't need to get the color of the piece, since we just have to go the index of the piece in the board (%2==0 for white, %2==1 for black)
 
 
 /////////////////////////////////////////////////////////////////////////////////////
 // A type used for errors
 /////////////////////////////////////////////////////////////////////////////////////
-typedef enum Move_Log_array_MESSAGE_TYPE {
+typedef enum {
 	LOG_LIST_SUCCESS,
 	LOG_LIST_INVALID_ARGUMENT,
 	LOG_LIST_FULL,
@@ -126,9 +128,10 @@ Move_Log_Element* Copy_Move_Log_Element(Move_Log_Element* elem);
  * @param check_state - the check state before move is done : NO_CHECK for no check, BLACK_CHECK for black check, WHITE_CHECK for white check
  * @param taken_piece_type - the captured piece type : NOTHING, PAWN, ROOK, KNIGHT, BISHOP, QUEEN, KING
  * @param taken_piece_color - the captured piece color : WHITE or BLACK
+ * @param rock_type - the type of the rock move : NOROCK or SHORT_ROCK or LONG_ROCK (allows to know if the rock has been done to be able to undo it)
 **/
 /////////////////////////////////////////////////////////////////////////////////////
-void Change_Move_Log_Element(Move_Log_Element* elem, int previous_row, int previous_col, int destination_row, int destination_col, int check_state, int taken_piece_type, int taken_piece_color);
+void Change_Move_Log_Element(Move_Log_Element* elem, int previous_row, int previous_col, int destination_row, int destination_col, int check_state, int taken_piece_type, int taken_piece_color, int rock_type);
 
 
 /////////////////////////////////////////////////////////////////////////////////////

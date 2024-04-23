@@ -18,6 +18,7 @@ Move_Log_Element* Create_Element_Move_Log(){
 	elem->check_state = NO_CHECK; // initializes check_state to NO_CHECK (since no check has been made yet)
 	elem->taken_piece_type = NOTHING; // initializes taken to NOTHING (since no piece has been taken yet)
 	elem->taken_piece_color = NO_COLOR; // initializes taken to NO_COLOR (since no piece has been taken yet)
+	elem->rock_type = NO_ROCK; // initializes rock_type to NO_ROCK (since no rock has been made yet)
 
 	return elem;
 }
@@ -49,19 +50,21 @@ Move_Log_Element* Copy_Move_Log_Element(Move_Log_Element* elem){
 	copy->check_state = elem->check_state;
 	copy->taken_piece_type = elem->taken_piece_type;
 	copy->taken_piece_color = elem->taken_piece_color;
+	copy->rock_type = elem->rock_type;
 
 	// returns the copy
 	return copy;
 }
 
 
-void Change_Move_Log_Element(Move_Log_Element* elem, int previous_row, int previous_col, int destination_row, int destination_col, int check_state, int taken_piece_type, int taken_piece_color){
+void Change_Move_Log_Element(Move_Log_Element* elem, int previous_row, int previous_col, int destination_row, int destination_col, int check_state, int taken_piece_type, int taken_piece_color, int rock_type){
 	
 	// Change the move, and the others parameters
 	Change_Move(elem->move, previous_row, previous_col, destination_row, destination_col);
 	elem->check_state = check_state;
 	elem->taken_piece_type = taken_piece_type;
 	elem->taken_piece_color = taken_piece_color;
+	elem->rock_type = rock_type;
 }
 
 
@@ -73,7 +76,7 @@ Move_Log_Element* Get_Move_Log_Element_at_Index(Move_Log_array* Moves_Log, int i
 	Move_Log_Element* result=Create_Element_Move_Log(); // creates a new element to store the result
 
 	// completes the result with the element at the given index
-	Change_Move_Log_Element(result, Moves_Log->Move_Log[index]->move->previous_row, Moves_Log->Move_Log[index]->move->previous_col, Moves_Log->Move_Log[index]->move->destination_row, Moves_Log->Move_Log[index]->move->destination_col, Moves_Log->Move_Log[index]->check_state, Moves_Log->Move_Log[index]->taken_piece_type, Moves_Log->Move_Log[index]->taken_piece_color);
+	Change_Move_Log_Element(result, Moves_Log->Move_Log[index]->move->previous_row, Moves_Log->Move_Log[index]->move->previous_col, Moves_Log->Move_Log[index]->move->destination_row, Moves_Log->Move_Log[index]->move->destination_col, Moves_Log->Move_Log[index]->check_state, Moves_Log->Move_Log[index]->taken_piece_type, Moves_Log->Move_Log[index]->taken_piece_color, Moves_Log->Move_Log[index]->rock_type);
 
 	return result; // returns the element at the given index
 }
@@ -233,10 +236,11 @@ Move_Log_array_MESSAGE_TYPE Add_Element_in_Move_Log_array_at_Index(Move_Log_arra
 			Moves_Log->Move_Log[i+1]->check_state = Moves_Log->Move_Log[i]->check_state;
 			Moves_Log->Move_Log[i+1]->taken_piece_type = Moves_Log->Move_Log[i]->taken_piece_type;
 			Moves_Log->Move_Log[i+1]->taken_piece_color = Moves_Log->Move_Log[i]->taken_piece_color;
+			Moves_Log->Move_Log[i+1]->rock_type = Moves_Log->Move_Log[i]->rock_type;
 			Change_Move(Moves_Log->Move_Log[i+1]->move, Moves_Log->Move_Log[i]->move->previous_row, Moves_Log->Move_Log[i]->move->previous_col, Moves_Log->Move_Log[i]->move->destination_row, Moves_Log->Move_Log[i]->move->destination_col);
 		}
 	// adds new element in given index
-	Change_Move_Log_Element(Moves_Log->Move_Log[index], elem->move->previous_row, elem->move->previous_col, elem->move->destination_row, elem->move->destination_col, elem->check_state, elem->taken_piece_type, elem->taken_piece_color);
+	Change_Move_Log_Element(Moves_Log->Move_Log[index], elem->move->previous_row, elem->move->previous_col, elem->move->destination_row, elem->move->destination_col, elem->check_state, elem->taken_piece_type, elem->taken_piece_color, elem->rock_type);
 	}
 
 	return LOG_LIST_SUCCESS; // returns "success" message
