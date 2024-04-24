@@ -18,12 +18,14 @@
  * - but we can print it in the terminal, even if it's not the best way to show it, and to the way we would have want it to be shown
  * - the IA isn't implemented yet, we will need to do it in the future (it will change a big part of the code since it will skip a big part of the loop concerning what the code need to go through when a player is playing)
  * - the buttons on the game board will not be implemented yet, we will need to do it in the future but the one from the menus will be implemented
- * - the check_mate, the rock will not be completed at this stage, so it could bring trouble to our code, the game will not works as expected sometimes 
+ * - the check_mate, the rock will not be completed at this stage, so it will bring trouble to our code, the game will not works as expected sometimes 
+ * - It's 
  * - We will not show the captured pieces and score yet, we will need to do it in the future, the same issue has been encountered as for the timer function 
  * - The same for the Move_Log 
  * - we can't ask yet the player names, we will need to do it in the future if possible
  * 
- * - Each function made will be tested separately in the Tests directory, but not all function will be there at the stage we're in right now
+ * - For now, everything is set up to make the game work, but it's not finished yet, things have not really been tested before being put here because it's just a draft 
+ * - It will not be the case for the next versions, we will need to test everything before putting it in the main file
 **/
 ///////////////////////////////////////////////////////////////////////////////
 
