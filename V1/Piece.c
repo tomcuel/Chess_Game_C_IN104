@@ -48,6 +48,11 @@ bool Is_Move_Valid_Bishop(Move* move, Piece* piece, Piece*** board){
         return false;
     }
 
+    // if the destination is a piece of the same color
+    if (board[move->destination_row][move->destination_col]->color == piece->color){
+        return false;
+    }
+
     // otherwise making cases depending on the direction of the move (the diagonal direction)
     
     // moving to the right and down
