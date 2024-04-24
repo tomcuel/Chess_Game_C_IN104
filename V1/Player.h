@@ -2,8 +2,11 @@
 #define __PLAYER_H__
 
 
+#include <SDL2/SDL.h>
+#include <stdio.h>
 #include <stdbool.h>
 #include "Constants.h"
+#include "Piece.h"
 
 
 /////////////////////////////////////////////////////////////////////////////////////
