@@ -11,7 +11,7 @@ void Destroy_Piece(Piece* piece){
 }
 
 
-void Get_Piece(int row, int col, Piece* piece){
+Piece* Get_Piece(int row, int col, Piece*** board){
 
 }
 

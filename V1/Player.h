@@ -36,12 +36,20 @@ typedef struct Players{
     int player2_color; // WHITE or BLACK
     char* player2_name; // name of the player 2
 
-    is_playing; // Player1 or Player2
+    int is_playing; // Player1 or Player2
 } Players;
 
 
-////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////
 // Function to create the two players
+/**
+**/
+/////////////////////////////////////////////////////////////////////////////////////
+Players* Create_Players();
+
+
+////////////////////////////////////////////////////////////////////////////////////
+// Function to chnage the two players caracteristics
 /**
  * @param player1_name : the name of the player 1
  * @param player2_name : the name of the player 2
@@ -50,7 +58,7 @@ typedef struct Players{
  * @param is_IA : the type of the player 2
 **/
 /////////////////////////////////////////////////////////////////////////////////////
-Players* Create_Players(char* player1_name, char* player2_name, int player1_color, int player2_color, int is_IA);
+void Change_Players(char* player1_name, char* player2_name, int player1_color, int player2_color, int is_IA);
 
 
 /////////////////////////////////////////////////////////////////////////////////////

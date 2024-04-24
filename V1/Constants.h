@@ -115,9 +115,9 @@ enum {NO_ROCK, SHORT_ROCK, LONG_ROCK};
 
 /////////////////////////////////////////////////////////////////////////////////////
 // Enum that represents the type the name of the different buttons in the menu, next to the chessboard
-// there are 22 buttons in total, there will do an array of buttons to get their state
+// there are 21 buttons in total, there will do an array of buttons to get their state
 /////////////////////////////////////////////////////////////////////////////////////
-#define NUMBER_OF_BUTTONS 22
+#define NUMBER_OF_BUTTONS 21
 
 enum { 
     BLACK_COLOR_BUTTON,
@@ -128,7 +128,6 @@ enum {
     LOAD_BUTTON,
     NEXT_BUTTON,
     BACK_BUTTON,
-    START_BUTTON,
     UNDO_BUTTON,
     SHORT_BLITZ_BUTTON,
     LONG_BLITZ_BUTTON,

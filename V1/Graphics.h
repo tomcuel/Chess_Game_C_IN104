@@ -13,7 +13,7 @@
 /////////////////////////////////////////////////////////////////////////////////////
 // Graphics Summary 
 /**
- * Button is a structure that represents the buttons (the one to naviguate trough the menus) and their states
+ * Button is a structure that represents the buttons (the one to naviguate through the menus) and their states
  * 
  * A summary of the supported functions is given below:
  * 
@@ -25,12 +25,13 @@
  * Show_Log - to show the log of the moves
  * Show_Updated_Timer - to show the timer, remaining for each player
  * Show_Menu_Button_in_Game - to show the menu / parameters button during the game
+ * Ask_Name - to ask the name of the players (twice for the two players game and once for the one player game)
 **/
 /////////////////////////////////////////////////////////////////////////////////////
 
 
 /////////////////////////////////////////////////////////////////////////////////////
-// Structure that represents the buttons (the one to naviguate trough the menus) and their states
+// Structure that represents the buttons (the one to naviguate through the menus) and their states
 /////////////////////////////////////////////////////////////////////////////////////
 typedef struct Button{
     SDL_Rect rect; // the rectangle of the button
@@ -123,6 +124,16 @@ void Show_Updated_Timer(SDL_Renderer* renderer, Uint32* time);
 **/
 /////////////////////////////////////////////////////////////////////////////////////
 void Show_Menu_Button_in_Game(SDL_Renderer* renderer, Button** Buttons);
+
+
+/////////////////////////////////////////////////////////////////////////////////////
+// Function to ask the name of the players (twice for the two players game and once for the one player game)
+/**
+ * @param renderer : the renderer to show the name of the players, ask it for the players to tip it on screen
+ * @param players : players array we need to complete with the names of the players
+**/
+/////////////////////////////////////////////////////////////////////////////////////
+void Ask_Name(SDL_Renderer* renderer, Players* players);
 
 
 #endif /* __GRAPHICS_H__ */

@@ -29,7 +29,7 @@
 /////////////////////////////////////////////////////////////////////////////////////
 // Function to initialize the board
 /**
- * @param board : the board to initialize
+ * @return Piece*** : the board initialized
 **/
 /////////////////////////////////////////////////////////////////////////////////////
 Piece*** Init_Board();
@@ -50,9 +50,6 @@ void Clear_Board(Piece*** board);
 /**
  * @param board : the board to make the move
  * @param move : the move to make
- * @param log : the log to modify
- * @param captured_pieces : the captured pieces to modify
- * @param player : the players (to get the player that is playing)
 **/
 /////////////////////////////////////////////////////////////////////////////////////
 void Make_Move(Piece*** board, Move* move);

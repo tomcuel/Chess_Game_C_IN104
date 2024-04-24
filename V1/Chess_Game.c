@@ -1,3 +1,33 @@
+///////////////////////////////////////////////////////////////////////////////
+// Chess_Game.c : main file of the chess game
+//  
+/**
+ * initialize the window and the renderer, is_running_game (global variable to make the game run)
+ * 
+ * A summary of the supported functions is given below:
+ * 
+ * initialize_SDL - to initialize the window and the renderer
+ * clear_graphics - to clear the graphics
+ * main - main function of the game with the game loop
+ * 
+ * A bit of comments to explain the code of this V1 to will remain incomplete :
+ * 
+ * - the game loop should work fine here 
+ * - the game isn't finished at this state 
+ * - the timer isn't implemented yet, a first step is made to know how it works in the tests_SDL_basics directory, but not being able to download the SDL2_ttf library, we can't use it for now
+ * - maybe in the future, we will be able to use it by showing the time remaining for each player either in the terminal or by printing pixel one by one on the screen
+ * - the IA isn't implemented yet, we will need to do it in the future (it will change a big part of the code since it will skip a big part of the loop concerning what the code need to go through when a player is playing)
+ * - the buttons on the game board will not be implemented yet, we will need to do it in the future but the one from the menus will be implemented
+ * - the check_mate, the rock will not be completed at this stage, so it could bring trouble to our code, the game will not works as expected sometimes 
+ * - We will not show the captured pieces and score yet, we will need to do it in the future, the same issue has been encountered as for the timer function 
+ * - The same for the Move_Log 
+ * - we can't ask yet the player names, we will need to do it in the future if possible
+ * 
+ * - Each function made will be tested separately in the Tests directory, but not all function will be there at the stage we're in right now
+**/
+///////////////////////////////////////////////////////////////////////////////
+
+
 #include <stdio.h> // pour le printf
 #include <stdlib.h> // pour le scanf
 #include <math.h> // pour les fonctions mathématiques 
@@ -8,7 +38,9 @@
 #include <ctype.h> // pour isalpha 
 #include <unistd.h> // pour getpid 
 
+
 #include "SDL2/SDL.h"
+
 
 #include "Constants.h"
 #include "Player.h"
@@ -20,12 +52,9 @@
 #include "Graphics.h"
 
 
-
-
-
 // initialize the window and the renderer
 #define max_size_log_array 1000
-int is_running_game = 0;
+int is_running_game = 0; // setup to 0 for false before the initialization of the game
 SDL_Window* window = NULL;
 SDL_Renderer* renderer = NULL;
 
@@ -35,6 +64,7 @@ SDL_Renderer* renderer = NULL;
 /**
  * @param **window : the window to initialize that is a global variable
  * @param **renderer : the renderer to initialize that is a global variable
+ * @return true (1) if the initialization is successful, false (0) otherwise
 **/
 ///////////////////////////////////////////////////////////////////////////////
 int initialize_SDL() {
@@ -103,6 +133,22 @@ int main (){
     // initialize the structure to have the state of the game concerning rock and check
     State_Of_Rock_and_Check* State_Of_RockandCheck = Create_State_Of_Rock_and_Check();
 
+    // initialize the players
+    Players* players = Create_Players();
+
+    // initialize the buttons
+    Button** Buttons = Create_Buttons(NUMBER_OF_BUTTONS);
+
+
+
+
+
+
+
+
+
+
+
 
     /*
     need to make the basics setup of everything : 
@@ -118,6 +164,24 @@ int main (){
 
     }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // clear the buttons
+    Destroy_Buttons(NUMBER_OF_BUTTONS, Buttons);
+
+    // clear the players
+    Destroy_Players(players);
 
     // clear the board
     Clear_Board(board);
