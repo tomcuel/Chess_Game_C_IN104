@@ -14,6 +14,11 @@ We will have various tasks to complete as part of this project:
 - create a graphical interface that is fun to play on (with some tests to try, know how to use it)
 - code an AI to play against, with different levels 
 
+To run this project : 
+- do the command "make" to clean all the .x and .o file everywhere in the project
+- go to the directory you want and do the command "make" to create the .o and the .x file, to run your code
+- because most of the directories will just be there for testing, to make it more practical to get used to the differents parts of the code
+
 
 Structure of the code : 
 
