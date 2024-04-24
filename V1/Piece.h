@@ -13,8 +13,41 @@
 /**
  * Piece - structure that define what a piece is
  * Captured_Piece_and_Score - structure that the array of the captured pieces, depending on the color
+ * State_Of_Rock_and_Check - structure that get the state of the rock and check state (if it has already been done or not) (if it's still possible or not)
  * 
+ * A summary of the supported functions is given below:
  * 
+ * Create_Piece - create a piece
+ * Destroy_Piece - destroy a piece
+ * Get_Piece - get the piece that is on the board at the given position
+ * 
+ * Is_Move_Valid - look if the move is valid for a certain piece on the board
+ * Is_Move_Valid_Pawn - look if the move is valid for a pawn on the board
+ * Get_State_Of_Pawn - get the state of a pawn (if it is still on its start line or not)
+ * Get_Pawn_Neighbors - get the neighbors of a pawn (the two squares in the diagonal, going up or down depending on it's color)
+ * Is_Move_Valid_Knight - look if the move is valid for a knight on the board
+ * Is_Move_Valid_Bishop - look if the move is valid for a bishop on the board
+ * Is_Move_Valid_Rook - look if the move is valid for a rook on the board
+ * Is_Move_Valid_Queen - look if the move is valid for a queen on the board
+ * Is_Move_Valid_King - look if the move is valid for a king on the board (switch case with the rock)
+ * 
+ * Create_State_Of_Rock_and_Check - function to create a structure of the state of the rock and check state
+ * Destroy_State_Of_Rock_and_Check - function to destroy a structure of the state of the rock and check state
+ * Is_Rock_Possible - function to get if the rock is possible or not (if the first line is empty and if the king is not in check) (will be used in Is_Move_Valid_King)
+ * Get_Type_Of_Rock - get the type of rock that is going to be made
+ * Create_Rook_Move_during_Rock - function that creates during the rock the move of the rook (depending on the type of rock : inside the function by calling Get_Type_Of_Rock)
+ * Create_King_Move_during_Rock - function that creates the move of the king during the rock
+ * Undo_Rook_during_Rock - function to undo the rook during the rock (will be used in the undo move)(but since the move will be considered for the king, we need to know the type of rock and change again the rook affected by the rock)
+ * 
+ * Will_Capture - tell wether a move (that will be made, so we suppose it's valid, it will only be used in those cases) will capture a piece or not
+ * Create_Captured_Piece_and_Score - create a structure of captured pieces
+ * Destroy_Captured_Piece_and_Score - destroy a structure of captured pieces
+ * Add_Piece_To_Captured_Pieces - add a piece to the list of captured pieces (will be used only when a piece is taken down by another one during a move) --> when Will_Capture is true
+ * Update_Score - function to udpate the score of the game (will be used only when a piece is taken down by another one during a move) --> when Will_Capture is true
+ * 
+ * Is_Check - function to get know if the king is in check or not
+ * Is_Check_Mate - function to get know if the king is in check mate or not
+ * Get_Pieces_That_Check_King - function to get the array of the pieces that are checking the king
 **/
 /////////////////////////////////////////////////////////////////////////////////////
 
@@ -51,7 +84,7 @@ typedef struct{
 
 
 /////////////////////////////////////////////////////////////////////////////////////
-// Structure that get the state of the rock and check state(if it has already been done or not) (if it's still possible or not)
+// Structure that get the state of the rock and check state (if it has already been done or not) (if it's still possible or not)
 /////////////////////////////////////////////////////////////////////////////////////
 typedef struct{
     bool white_rock_done; // true if the rock has already been done, false otherwise
@@ -104,6 +137,7 @@ Piece* Get_Piece(int row, int col, Piece*** board);
 /////////////////////////////////////////////////////////////////////////////////////
 // Look if the move is valid for a certain piece on the board
 // will be a huge switch case with all the pieces, but each piece will have its own function
+// Is_move_valid will be the main function that will call the others and will also check if the move don't go over the bound of the board
 /**
  * @param move - the move to check
  * @param piece - the piece that is going to move

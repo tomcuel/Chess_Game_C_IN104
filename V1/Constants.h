@@ -3,6 +3,12 @@
 
 
 /////////////////////////////////////////////////////////////////////////////////////
+// Defining all the constants that will be used in the game
+// size of things or enum to simplify the code
+/////////////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////////////
 // Defining the constants linked to the size of the window for the game
 // 
 // It can be adapted to any size to change the visuals of the game
@@ -29,14 +35,10 @@
 
 /////////////////////////////////////////////////////////////////////////////////////
 // Defining the constants linked to the size of the board (8x8 for a chess game)
+// and some of its pieces (32 pieces in total, 2 others piece a pion can be promoted to)
 /////////////////////////////////////////////////////////////////////////////////////
 #define BOARD_SIZE 8
 #define NUMBER_OF_PIECES 32
-
-
-
-
-
 #define NUMBER_OF_NEIGHBORS_PAWN 2
 
 /////////////////////////////////////////////////////////////////////////////////////
@@ -67,6 +69,12 @@ enum {Player1, Player2};
 // Defining if a player is the IA or not
 /////////////////////////////////////////////////////////////////////////////////////
 enum {HUMAN, AI};
+
+
+/////////////////////////////////////////////////////////////////////////////////////
+// Enum that represents the type of the menus to start the game : Load_Menu
+/////////////////////////////////////////////////////////////////////////////////////
+enum {GAMEPLAY_CHOICE,DIFFICULTY_CHOICE, TIME_CHOICE}; 
 
 
 /////////////////////////////////////////////////////////////////////////////////////
@@ -105,9 +113,44 @@ enum {NOTHING, PAWN, KNIGHT, BISHOP, ROOK, QUEEN, KING};
 enum {NO_ROCK, SHORT_ROCK, LONG_ROCK};
 
 
+/////////////////////////////////////////////////////////////////////////////////////
+// Enum that represents the type the name of the different buttons in the menu, next to the chessboard
+// there are 22 buttons in total, there will do an array of buttons to get their state
+/////////////////////////////////////////////////////////////////////////////////////
+#define NUMBER_OF_BUTTONS 22
+
+enum { 
+    BLACK_COLOR_BUTTON,
+    WHITE_COLOR_BUTTON,
+    EASY_DIFFICULTY_BUTTON,
+    MODERATE_DIFFICULTY_BUTTON,
+    HARD_DIFFICULTY_BUTTON,
+    LOAD_BUTTON,
+    NEXT_BUTTON,
+    BACK_BUTTON,
+    START_BUTTON,
+    UNDO_BUTTON,
+    SHORT_BLITZ_BUTTON,
+    LONG_BLITZ_BUTTON,
+    SHORT_BUTTON,
+    MODERATE_BUTTON,
+    LONG_BUTTON,
+    PLAYER_VS_PLAYER_BUTTON,
+    PLAYER_VS_AI_BUTTON, 
+    QUIT_BUTTON, 
+    NEW_GAME_BUTTON,
+    MAIN_MENU_BUTTON,
+    START_BUTTON,
+    RESTART_BUTTON
+};
 
 
-
+/////////////////////////////////////////////////////////////////////////////////////
+// Enum taht represents the state of each buttons 
+// UNACTIVE : the button is not active, it's not been clicked
+// ACTIVE : the button is active, it's been clicked
+/////////////////////////////////////////////////////////////////////////////////////
+enum {UNACTIVE, ACTIVE};
 
 
 #endif /* __CONSTANTS_H__ */

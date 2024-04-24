@@ -10,7 +10,7 @@
 
 
 /////////////////////////////////////////////////////////////////////////////////////
-// Move_Log_array summary:
+// Move_Log summary:
 /**
  * A container that represents a fixed size linked list. Each list's element contains the move that has been done
  * (source/previous and destination), the captured piece if exists (NOTHING and NO_COLOR otherwise), and check state.
