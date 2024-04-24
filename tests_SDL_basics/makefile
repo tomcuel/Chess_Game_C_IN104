@@ -5,6 +5,8 @@ build:
 	gcc double_window.c -o double_window -Iinclude -lSDL2main -lSDL2
 	gcc mouse+key.c -o mouse+key.x -Iinclude -lSDL2main -lSDL2
 	gcc timer.c -o timer.x -Iinclude -lSDL2main -lSDL2
+	gcc mouse+key_with_countdown.c -o mouse+key_with_countdown.x -Iinclude -lSDL2main -lSDL2
+	gcc double_timer.c -o double_timer.x -Iinclude -lSDL2main -lSDL2
 
 clean:
-	rm -f image audio mouse+key double_window mouse+key.x timer.x
+	rm -f image audio mouse+key double_window mouse+key.x timer.x mouse+key_with_countdown.x double_timer.x
