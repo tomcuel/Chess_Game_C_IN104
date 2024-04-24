@@ -14,8 +14,8 @@
  * 
  * - the game loop should work fine here 
  * - the game isn't finished at this state 
- * - the timer isn't implemented yet, a first step is made to know how it works in the tests_SDL_basics directory, but not being able to download the SDL2_ttf library, we can't use it for now
- * - maybe in the future, we will be able to use it by showing the time remaining for each player either in the terminal or by printing pixel one by one on the screen
+ * - the timer_showing isn't implemented yet, a first step is made to know how it works in the tests_SDL_basics directory, but not being able to download the SDL2_ttf library, we can't show it for now
+ * - but we can print it in the terminal, even if it's not the best way to show it, and to the way we would have want it to be shown
  * - the IA isn't implemented yet, we will need to do it in the future (it will change a big part of the code since it will skip a big part of the loop concerning what the code need to go through when a player is playing)
  * - the buttons on the game board will not be implemented yet, we will need to do it in the future but the one from the menus will be implemented
  * - the check_mate, the rock will not be completed at this stage, so it could bring trouble to our code, the game will not works as expected sometimes 
@@ -151,7 +151,7 @@ int main (){
 
 
     /*
-    need to make the basics setup of everything : 
+    need to make the basics setup of everything that hasnn't been done yet 
     */
 
 
@@ -160,6 +160,15 @@ int main (){
         
         /*
         doing the game loop
+
+        getting the SDL event 
+
+        make what need to be done on the chess board depending on numerous conditions
+
+
+        count the timer for each player as in double_timer 
+
+
         */
 
     }
