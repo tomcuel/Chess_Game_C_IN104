@@ -97,11 +97,28 @@ void render(int is_clicked_1, int is_clicked_2, SDL_Rect rectangle1, SDL_Rect re
             SDL_RenderFillRect(renderer, &rectangle1);
 
             SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
-            // Dessiner les contours du rectangle rouge
-            SDL_RenderDrawLine(renderer, rectangle1.x, rectangle1.y, rectangle1.x + rectangle1.w, rectangle1.y);
-            SDL_RenderDrawLine(renderer, rectangle1.x + rectangle1.w, rectangle1.y, rectangle1.x + rectangle1.w, rectangle1.y + rectangle1.h);
-            SDL_RenderDrawLine(renderer, rectangle1.x + rectangle1.w, rectangle1.y + rectangle1.h, rectangle1.x, rectangle1.y + rectangle1.h);
-            SDL_RenderDrawLine(renderer, rectangle1.x, rectangle1.y + rectangle1.h, rectangle1.x, rectangle1.y);
+            // Drawing the red boundary around the rectangle 1 to show the selected rectangle
+
+            // Draw top line
+            for (int i = 0; i < 5; ++i) {
+                SDL_RenderDrawLine(renderer, rectangle1.x, rectangle1.y + i, rectangle1.x + rectangle1.w, rectangle1.y + i);
+            }
+
+            // Draw right line
+            for (int i = 0; i < 5; ++i) {
+                SDL_RenderDrawLine(renderer, rectangle1.x + rectangle1.w - i, rectangle1.y, rectangle1.x + rectangle1.w - i, rectangle1.y + rectangle1.h);
+            }
+
+            // Draw bottom line
+            for (int i = 0; i < 5; ++i) {
+                SDL_RenderDrawLine(renderer, rectangle1.x, rectangle1.y + rectangle1.h - i, rectangle1.x + rectangle1.w, rectangle1.y + rectangle1.h - i);
+            }
+
+            // Draw left line
+            for (int i = 0; i < 5; ++i) {
+                SDL_RenderDrawLine(renderer, rectangle1.x + i, rectangle1.y, rectangle1.x + i, rectangle1.y + rectangle1.h);
+            }
+
         }
     }
 
