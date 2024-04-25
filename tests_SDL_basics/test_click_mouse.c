@@ -157,13 +157,13 @@ int main(int argc, char* args[]) {
                 }
             }
         
-        if (is_clicked_1 == 1 && is_clicked_2 == 1) {
-            is_clicked_1 = 0;
-            is_clicked_2 = 0;
-            // updating the source rectangle to the destination rectangle
-            src_rect.x = dst_rect.x;
-            src_rect.y = dst_rect.y;
-        }
+            if (is_clicked_1 == 1 && is_clicked_2 == 1) {
+                is_clicked_1 = 0;
+                is_clicked_2 = 0;
+                // updating the source rectangle to the destination rectangle
+                src_rect.x = dst_rect.x;
+                src_rect.y = dst_rect.y;
+            }
 
            
         }
