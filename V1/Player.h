@@ -17,7 +17,7 @@
  * A summary of the supported functions is given below:
  * 
  * Create_Players - to create the two players
- * Get_First_Player - to get the player that will be the first to play
+ * Change_Player_that_is_Playing - to change the player that is playing
  * Destroy_Players - to destroy the two players
  * IA_Play - to make the IA play (a move will be returned) (will need special implementation in the code to make the move)
 **/
@@ -51,24 +51,26 @@ Players* Create_Players();
 ////////////////////////////////////////////////////////////////////////////////////
 // Function to chnage the two players caracteristics
 /**
+ * @param players : the players
  * @param player1_name : the name of the player 1
  * @param player2_name : the name of the player 2
  * @param player1_color : the color of the player 1
  * @param player2_color : the color of the player 2
- * @param is_IA : the type of the player 2
+ * @param is_player1_IA : if the player 1 is an IA or not
+ * @param is_player2_IA : if the player 2 is an IA or not
 **/
 /////////////////////////////////////////////////////////////////////////////////////
-void Change_Players(char* player1_name, char* player2_name, int player1_color, int player2_color, int is_IA);
+void Change_Players(Players* players, char* player1_name, char* player2_name, int player1_color, int player2_color, int is_player1_IA, int is_player2_IA);
 
 
 /////////////////////////////////////////////////////////////////////////////////////
-// Function to get the player that will be the first to play (the one that has the white pieces)
+// Function to change the player that is playing
 /**
- * @param player : the players
- * @return the player that will play first : Player1 or Player2
+ * @param players : the players
+ * @param is_playing : the player that is playing
 **/
 /////////////////////////////////////////////////////////////////////////////////////
-int Get_First_Player(Players* player);
+void Change_Player_that_is_Playing(Players* players, int is_playing);
 
 
 /////////////////////////////////////////////////////////////////////////////////////

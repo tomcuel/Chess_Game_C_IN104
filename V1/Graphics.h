@@ -78,9 +78,12 @@ void Show_Load_Menu(SDL_Renderer* renderer, int menu_type, Button** Buttons);
 /**
  * @param renderer : the renderer to show the board
  * @param board : the board to show
+ * @param is_clicked_1 : if the first square is clicked
+ * @param is_clicked_2 : if the second square is clicked
+ * @param draw_red_boundary_move : the red boundary to draw around a piece when it's selected to make a move
 **/
 /////////////////////////////////////////////////////////////////////////////////////
-void Show_Chess_Board(SDL_Renderer* renderer, Piece*** board);
+void Show_Chess_Board(SDL_Renderer* renderer, Piece*** board, int is_clicked_1, int is_clicked_2, SDL_Rect draw_red_boundary_move);
 
 
 /////////////////////////////////////////////////////////////////////////////////////

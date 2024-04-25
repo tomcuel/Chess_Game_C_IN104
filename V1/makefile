@@ -4,7 +4,7 @@ LDFLAGS = -Iinclude -lSDL2main -lSDL2
 
 all: Chess_Game.x
 
-Chess_Game.x: Chess_Game.o Board.o Graphics.o Mouse.o Move_Log.o Move.o Piece.o Player.o Timer.o Conversion.o
+Chess_Game.x: Chess_Game.o Board.o Graphics.o Mouse.o Move_Log.o Move.o Piece.o Player.o Timer.o Conversion.o Image.o
 	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
 
 %.o: %.c

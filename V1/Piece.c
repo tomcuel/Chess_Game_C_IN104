@@ -2,12 +2,33 @@
 
 
 Piece* Create_Piece(){
+    Piece* piece = (Piece*)malloc(sizeof(Piece));
+    // looking for a malloc error
+    if (piece == NULL){
+        printf("Error: malloc failed in Create_Piece\n");
+        return NULL;
+    }
 
+    // setting the piece to 0 for each attribute
+    piece->row = 0;
+    piece->col = 0;
+    piece->type = NOTHING;
+    piece->color = NO_COLOR;
+    piece->value = 0;
+    piece->is_alive = false;
+    piece->is_checked = false;
+    piece->is_on_his_start_position = false;
+
+    // return the piece
+    return piece;
 }
 
 
 void Destroy_Piece(Piece* piece){
-
+    // if the piece is not NULL, we can free it
+    if (piece != NULL){
+        free(piece);
+    }
 }
 
 
@@ -108,5 +129,90 @@ bool Is_Move_Valid_Bishop(Move* move, Piece* piece, Piece*** board){
 
 
 bool Is_Move_Valid_Rook(Move* move, Piece* piece, Piece*** board){
+
+}
+
+
+bool Is_Move_Valid_Queen(Move* move, Piece* piece, Piece*** board){
+
+}
+
+
+bool Is_Move_Valid_King(Move* move, Piece* piece, Piece*** board){
+
+}
+
+
+State_Of_Rock_and_Check* Create_State_Of_Rock_and_Check(){
+
+}
+
+
+void Destroy_State_Of_Rock_and_Check(State_Of_Rock_and_Check* State_Of_Rock_and_Check){
+
+}
+
+
+bool Is_Rock_Possible(int color /* same as player */, State_Of_Rock_and_Check* State_Of_Rock_and_Check){
+
+}
+
+
+int Get_Type_Of_Rock(Move* move, Piece*** board){
+
+}
+
+
+Move* Create_Rook_Move_during_Rock(Piece* piece, Move* move, Piece*** board){
+
+}
+
+
+Move* Create_King_Move_during_Rock(Piece* piece, Move* move, Piece*** board){
+
+}
+
+
+void Undo_Rook_during_Rock(Move* move, Piece*** board, State_Of_Rock_and_Check* State_Of_Rock_and_Check, Move_Log_array* Move_Log){
+
+}
+
+
+bool Will_Capture(Move* move, Piece*** board){
+
+}
+
+
+Captured_Piece_and_Score* Create_Captured_Piece_and_Score(int max_number_of_pieces){
+
+}
+
+
+void Destroy_Captured_Piece_and_Score(Captured_Piece_and_Score* captured_piece_and_score, int max_number_of_pieces){
+
+}
+
+
+void Add_Piece_To_Captured_Pieces(Piece* piece, Captured_Piece_and_Score* captured_piece_and_score){
+
+}
+
+
+void Update_Score(Piece* piece, Captured_Piece_and_Score* captured_piece_and_score){
+
+}
+
+
+bool Is_Check(int color, Piece*** board){
+
+}
+
+
+bool Is_Check_Mate(int color, Piece*** board){
+
+}
+
+
+Piece** Get_Pieces_That_Check_King(int color, Piece*** board, int* number_of_pieces_that_are_checking_king){
 
 }

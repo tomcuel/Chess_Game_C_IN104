@@ -66,12 +66,10 @@ void Make_Move(Piece*** board, Move* move);
 // It modifies the board, the log and the captured pieces, and the players structure, to change the player that is playing
 /**
  * @param board : the board to undo the move
- * @param log : the log to modify
- * @param captured_pieces : the captured pieces to modify
- * @param player : the players (to get the player that is playing)
+ * @param move : the move to make
 **/
 /////////////////////////////////////////////////////////////////////////////////////
-void Undo_Move(Piece*** board, Move_Log_array* log, Captured_Piece_and_Score* captured_pieces, Players* player);
+void Undo_Move(Piece*** board, Move* move);
 
 
 /////////////////////////////////////////////////////////////////////////////////////

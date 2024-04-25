@@ -65,7 +65,9 @@ typedef struct{
     int value; // value of the piece, used to calculate the score
     bool is_alive; // true if the piece is still on the board, false if it has been taken down previously
     bool is_checked; // true if the piece is the king and is checked, false otherwise
-    bool is_on_his_start_line; // true if the piece is a pawn and is on his start line, false otherwise
+    bool is_on_his_start_position; // true if the piece is a pawn and is on his start line, false otherwise
+    // the last one is only for the pawn, to know if it can move two squares or not, 
+    // the rook and the king, to know if the rock is possible, if I prefer this solution to the one with the strucuture that is dediced to the rock
 } Piece;
 
 
