@@ -17,6 +17,7 @@
  * A summary of the supported functions is given below:
  * 
  * Init_Board - to initialize the board
+ * Reset_Board - to reset the board to the initial state
  * Clear_Board - to clear the board
  * Make_Move - to make a move on the board and update everything : the board, the state of rock and check, the captured pieces, and the players structure
  * Undo_Move - to undo a move on the board and update everything : the board, the state of rock and check, the captured pieces, and the players structure
@@ -31,6 +32,15 @@
 **/
 /////////////////////////////////////////////////////////////////////////////////////
 Piece*** Init_Board();
+
+
+/////////////////////////////////////////////////////////////////////////////////////
+// Function to reset the board to the initial state
+/**
+ * @param board : the board to reset
+**/
+/////////////////////////////////////////////////////////////////////////////////////
+void Reset_Board(Piece*** board);
 
 
 /////////////////////////////////////////////////////////////////////////////////////

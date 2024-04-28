@@ -33,6 +33,7 @@
  * Is_Move_Valid_King - look if the move is valid for a king on the board (switch case with the rock)
  * 
  * Create_State_Of_Rock_and_Check - function to create a structure of the state of the rock and check state
+ * Reset_State_Of_Rock_and_Check - function to reset a structure of the state of the rock and check state
  * Destroy_State_Of_Rock_and_Check - function to destroy a structure of the state of the rock and check state
  * Is_Rock_Possible - function to get if the rock is possible or not (if the first line is empty and if the king is not in check) (will be used in Is_Move_Valid_King)
  * Get_Type_Of_Rock - get the type of rock that is going to be made
@@ -42,6 +43,7 @@
  * 
  * Will_Capture - tell wether a move (that will be made, so we suppose it's valid, it will only be used in those cases) will capture a piece or not
  * Create_Captured_Piece_and_Score - create a structure of captured pieces
+ * Reset_Captured_Piece_and_Score - function to reset the structure of captured pieces and score
  * Destroy_Captured_Piece_and_Score - destroy a structure of captured pieces
  * Get_Value_Of_Piece - function to get the value of a piece
  * 
@@ -82,7 +84,7 @@ typedef struct{
     int number_of_black_pieces_captured; // number of black pieces that have been captured yet
     int max_number_of_pieces; // maximum number of pieces that can be captured, used to allocate the memory
     int score; // score difference 
-    int player_that_is_winning; // Player1 or Player2, so we can print the score and the winning player
+    int player_that_is_winning; // WHITE or BLACK, so we can print the score and the winning player (initialised with NO_COLOR)
 } Captured_Piece_and_Score;
 
 
@@ -262,6 +264,14 @@ State_Of_Rock_and_Check* Create_State_Of_Rock_and_Check();
 
 
 /////////////////////////////////////////////////////////////////////////////////////
+// function to reset a structure of the state of the rock and check state
+/**
+ * @param State_Of_Rock_and_Check - the structure to reset
+**/
+/////////////////////////////////////////////////////////////////////////////////////
+void Reset_State_Of_Rock_and_Check(State_Of_Rock_and_Check* State_Of_Rock_and_Check);
+
+/////////////////////////////////////////////////////////////////////////////////////
 // function to destroy a structure of the state of the rock and check state
 /**
  * @param State_Of_Rock_and_Check - the structure to destroy
@@ -345,6 +355,15 @@ bool Will_Capture(Move* move, Piece*** board);
 **/
 /////////////////////////////////////////////////////////////////////////////////////
 Captured_Piece_and_Score* Create_Captured_Piece_and_Score(int max_number_of_pieces);
+
+
+/////////////////////////////////////////////////////////////////////////////////////
+// Function to reset the structure of captured pieces and score
+/**
+ * @param captured_piece_and_score - the structure to reset
+**/
+/////////////////////////////////////////////////////////////////////////////////////
+void Reset_Captured_Piece_and_Score(Captured_Piece_and_Score* captured_piece_and_score);
 
 
 /////////////////////////////////////////////////////////////////////////////////////

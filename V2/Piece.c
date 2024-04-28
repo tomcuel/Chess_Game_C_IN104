@@ -303,6 +303,27 @@ State_Of_Rock_and_Check* Create_State_Of_Rock_and_Check(){
 }
 
 
+void Reset_State_Of_Rock_and_Check(State_Of_Rock_and_Check* State_Of_Rock_and_Check){
+    // if the state of the rock and the check is not NULL, we can reset it
+    if (State_Of_Rock_and_Check != NULL){
+        // setting the state of the rock and the check to false
+        State_Of_Rock_and_Check->white_rock_done = false;
+        State_Of_Rock_and_Check->white_king_moved = false;
+        State_Of_Rock_and_Check->white_left_rook_moved = false;
+        State_Of_Rock_and_Check->white_right_rook_moved = false;
+
+        State_Of_Rock_and_Check->is_white_king_checked = false;
+                    
+        State_Of_Rock_and_Check->black_rock_done = false;
+        State_Of_Rock_and_Check->black_king_moved = false;
+        State_Of_Rock_and_Check->black_left_rook_moved = false;
+        State_Of_Rock_and_Check->black_right_rook_moved = false;
+
+        State_Of_Rock_and_Check->is_black_king_checked = false;
+    }
+}
+
+
 void Destroy_State_Of_Rock_and_Check(State_Of_Rock_and_Check* State_Of_Rock_and_Check){
     // if the state of the rock and the check is not NULL, we can free it
     if (State_Of_Rock_and_Check != NULL){
@@ -374,10 +395,23 @@ Captured_Piece_and_Score* Create_Captured_Piece_and_Score(int max_number_of_piec
     // setting the score to 0
     captured_piece_and_score->score = 0;
     // setting the player that is winning to Player1
-    captured_piece_and_score->player_that_is_winning = Player1;
+    captured_piece_and_score->player_that_is_winning = NO_COLOR;
 
     // return the captured piece and score
     return captured_piece_and_score;
+}
+
+
+void Reset_Captured_Piece_and_Score(Captured_Piece_and_Score* captured_piece_and_score){
+    // setting the number of white pieces captured to 0
+    captured_piece_and_score->number_of_white_pieces_captured = 0;
+    // setting the number of black pieces captured to 0
+    captured_piece_and_score->number_of_black_pieces_captured = 0;
+
+    // setting the score to 0
+    captured_piece_and_score->score = 0;
+    // setting the player that is winning to Player1
+    captured_piece_and_score->player_that_is_winning = NO_COLOR;
 }
 
 

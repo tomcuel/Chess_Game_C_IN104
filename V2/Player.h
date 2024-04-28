@@ -17,6 +17,7 @@
  * A summary of the supported functions is given below:
  * 
  * Create_Players - to create the two players
+ * Reset_Players - to reset the two players structure
  * Setup_Players - to change the two players caracteristics
  * Change_Player_that_is_Playing - to change the player that is playing
  * Destroy_Players - to destroy the two players
@@ -48,6 +49,15 @@ typedef struct Players{
 **/
 /////////////////////////////////////////////////////////////////////////////////////
 Players* Create_Players();
+
+
+/////////////////////////////////////////////////////////////////////////////////////   
+// Function to reset the two players structure
+/**
+ * @param players : the players to reset
+**/
+/////////////////////////////////////////////////////////////////////////////////////
+void Reset_Players(Players* players);
 
 
 ////////////////////////////////////////////////////////////////////////////////////

@@ -166,11 +166,14 @@ int main (){
 
     */
 
+    // making the timer for each player, the time mode will be asked after so this constant here will have no effect later 
+    int timer_game_mode=5;
+
     // time remaining for each player
-    int seconds_remaining_player_2 = 5;
+    int seconds_remaining_player_2 = timer_game_mode;
     int last_second_player_2 = 0;
 
-    int seconds_remaining_player_1 = 5;
+    int seconds_remaining_player_1 = timer_game_mode;
     int last_second_player_1 = 0;
 
     // player 0 begin to play 
@@ -351,8 +354,23 @@ int main (){
             loosing_player = -1;
             is_clicked_1 = 0;
             is_clicked_2 = 0;
-            seconds_remaining_player_1 = 5;
-            seconds_remaining_player_2 = 5;
+            seconds_remaining_player_1 = timer_game_mode;
+            seconds_remaining_player_2 = timer_game_mode;
+
+            // reset the board
+            Reset_Board(board);
+
+            // reset the log (putting the size to 0 is enough)
+            Log->actual_size = 0;
+
+            // reset the captured pieces
+            Reset_Captured_Piece_and_Score(Captured_Pieces_and_Score);
+
+            // reset the state of the rock and the check
+            Reset_State_Of_Rock_and_Check(State_Of_RockandCheck);
+
+            // reset the players
+            Reset_Players(players);
         }
 
         // if we're in the game, we show the chess board

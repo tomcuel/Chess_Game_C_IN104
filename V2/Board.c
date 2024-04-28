@@ -189,8 +189,188 @@ Piece*** Init_Board(){
         board[6][i]->is_on_his_start_position = true;
     }
 
+    // completing the board with the other pieces
+    for (int i = 2; i < 6; i++){
+        for (int j = 0; j < BOARD_SIZE; j++){
+            board[i][j]->type = NOTHING;
+            board[i][j]->color = NO_COLOR;
+            board[i][j]->value = 0;
+            board[i][j]->is_alive = false;
+            board[i][j]->is_checked = false;
+            board[i][j]->is_on_his_start_position = false;
+        }
+    }
+
     // finally, we can return the board
     return board;
+}
+
+
+void Reset_Board(Piece*** board){
+     for (int i = 0; i < BOARD_SIZE; i++){
+        for (int j = 0; j < BOARD_SIZE; j++){
+            board[i][j]->row = i;
+            board[i][j]->col = j;
+        }
+    }
+
+    // placing all the piece 
+    // black pieces
+    // rooks
+    board[0][0]->type = ROOK;
+    board[0][0]->color = BLACK;
+    board[0][0]->value = ROOK_VALUE;
+    board[0][0]->is_alive = true;
+    board[0][0]->is_checked = false;
+    board[0][0]->is_on_his_start_position = true;
+
+    board[0][7]->type = ROOK;
+    board[0][7]->color = BLACK;
+    board[0][7]->value = ROOK_VALUE;
+    board[0][7]->is_alive = true;
+    board[0][7]->is_checked = false;
+    board[0][7]->is_on_his_start_position = true;
+
+    // knights
+    board[0][1]->type = KNIGHT;
+    board[0][1]->color = BLACK;
+    board[0][1]->value = KNIGHT_VALUE;
+    board[0][1]->is_alive = true;
+    board[0][1]->is_checked = false;
+    board[0][1]->is_on_his_start_position = true;
+
+    board[0][6]->type = KNIGHT;
+    board[0][6]->color = BLACK;
+    board[0][6]->value = KNIGHT_VALUE;
+    board[0][6]->is_alive = true;
+    board[0][6]->is_checked = false;
+    board[0][6]->is_on_his_start_position = true;
+
+    // bishops
+    board[0][2]->type = BISHOP;
+    board[0][2]->color = BLACK;
+    board[0][2]->value = BISHOP_VALUE;
+    board[0][2]->is_alive = true;
+    board[0][2]->is_checked = false;
+    board[0][2]->is_on_his_start_position = true;
+
+    board[0][5]->type = BISHOP;
+    board[0][5]->color = BLACK;
+    board[0][5]->value = BISHOP_VALUE;
+    board[0][5]->is_alive = true;
+    board[0][5]->is_checked = false;
+    board[0][5]->is_on_his_start_position = true;
+
+    // queen
+    board[0][3]->type = QUEEN;
+    board[0][3]->color = BLACK;
+    board[0][3]->value = QUEEN_VALUE;
+    board[0][3]->is_alive = true;
+    board[0][3]->is_checked = false;
+    board[0][3]->is_on_his_start_position = true;
+
+    // king
+    board[0][4]->type = KING;
+    board[0][4]->color = BLACK;
+    board[0][4]->value = KING_VALUE;
+    board[0][4]->is_alive = true;
+    board[0][4]->is_checked = false;
+    board[0][4]->is_on_his_start_position = true;
+
+    // pawns
+    for (int i = 0; i < BOARD_SIZE; i++){
+        board[1][i]->type = PAWN;
+        board[1][i]->color = BLACK;
+        board[1][i]->value = PAWN_VALUE;
+        board[1][i]->is_alive = true;
+        board[1][i]->is_checked = false;
+        board[1][i]->is_on_his_start_position = true;
+    }
+
+
+    // white pieces
+    // rooks
+    board[7][0]->type = ROOK;
+    board[7][0]->color = WHITE;
+    board[7][0]->value = ROOK_VALUE;
+    board[7][0]->is_alive = true;
+    board[7][0]->is_checked = false;
+    board[7][0]->is_on_his_start_position = true;
+
+    board[7][7]->type = ROOK;
+    board[7][7]->color = WHITE;
+    board[7][7]->value = ROOK_VALUE;
+    board[7][7]->is_alive = true;
+    board[7][7]->is_checked = false;
+    board[7][7]->is_on_his_start_position = true;
+
+    // knights
+    board[7][1]->type = KNIGHT;
+    board[7][1]->color = WHITE;
+    board[7][1]->value = KNIGHT_VALUE;
+    board[7][1]->is_alive = true;
+    board[7][1]->is_checked = false;
+    board[7][1]->is_on_his_start_position = true;
+
+    board[7][6]->type = KNIGHT;
+    board[7][6]->color = WHITE;
+    board[7][6]->value = KNIGHT_VALUE;
+    board[7][6]->is_alive = true;
+    board[7][6]->is_checked = false;
+    board[7][6]->is_on_his_start_position = true;
+
+    // bishops
+    board[7][2]->type = BISHOP;
+    board[7][2]->color = WHITE;
+    board[7][2]->value = BISHOP_VALUE;
+    board[7][2]->is_alive = true;
+    board[7][2]->is_checked = false;
+    board[7][2]->is_on_his_start_position = true;
+
+    board[7][5]->type = BISHOP;
+    board[7][5]->color = WHITE;
+    board[7][5]->value = BISHOP_VALUE;
+    board[7][5]->is_alive = true;
+    board[7][5]->is_checked = false;
+    board[7][5]->is_on_his_start_position = true;
+
+    // queen
+    board[7][3]->type = QUEEN;
+    board[7][3]->color = WHITE;
+    board[7][3]->value = QUEEN_VALUE;
+    board[7][3]->is_alive = true;
+    board[7][3]->is_checked = false;
+    board[7][3]->is_on_his_start_position = true;
+
+    // king
+    board[7][4]->type = KING;
+    board[7][4]->color = WHITE;
+    board[7][4]->value = KING_VALUE;
+    board[7][4]->is_alive = true;
+    board[7][4]->is_checked = false;
+    board[7][4]->is_on_his_start_position = true;
+
+    // pawns
+    for (int i = 0; i < BOARD_SIZE; i++){
+        board[6][i]->type = PAWN;
+        board[6][i]->color = WHITE;
+        board[6][i]->value = PAWN_VALUE;
+        board[6][i]->is_alive = true;
+        board[6][i]->is_checked = false;
+        board[6][i]->is_on_his_start_position = true;
+    }
+
+    // completing the board with the other pieces
+    for (int i = 2; i < 6; i++){
+        for (int j = 0; j < BOARD_SIZE; j++){
+            board[i][j]->type = NOTHING;
+            board[i][j]->color = NO_COLOR;
+            board[i][j]->value = 0;
+            board[i][j]->is_alive = false;
+            board[i][j]->is_checked = false;
+            board[i][j]->is_on_his_start_position = false;
+        }
+    }
 }
 
 

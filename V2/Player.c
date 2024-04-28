@@ -28,6 +28,28 @@ Players* Create_Players() {
 }
 
 
+void Reset_Players(Players* players){
+    // we can't reset the players if the players are not created
+    if (players == NULL){
+        printf("Error: the players are not created\n");
+        return;
+    }
+
+    // resetting the players caracteristics to the ones that are set by default
+    players->is_player1_an_IA = HUMAN;
+    players->player1_color = WHITE;
+    players->player1_name = "Player1"; // for now we do that since I don't know how go ask it in game
+    
+    players->is_player2_an_IA = HUMAN;
+    players->player2_color = BLACK;
+    players->player2_name = "Player2"; // for now we do that since I don't know how go ask it in game
+
+    // the first player to play is the player 1, the one who has the white pieces
+    players->is_playing = Player1;
+    players->color_player_that_is_playing = WHITE;
+}
+
+
 void Setup_Players(Players* players, char* player1_name, char* player2_name, int player1_color, int player2_color, int is_player1_IA, int is_player2_IA){
     // we can't change the players if the players are not created
     if (players == NULL){
