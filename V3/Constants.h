@@ -39,7 +39,7 @@
 /////////////////////////////////////////////////////////////////////////////////////
 #define BOARD_SIZE 8
 #define NUMBER_OF_PIECES 32
-#define NUMBER_OF_NEIGHBORS_PAWN 2
+#define NUMBER_OF_NEIGHBORS_PAWN 4 // number of neighbors a pawn can have : here we consider one for each diagonal, one on its right and one on its left
 
 /////////////////////////////////////////////////////////////////////////////////////
 // Defining the game mode

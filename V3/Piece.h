@@ -24,7 +24,6 @@
  * 
  * Is_Move_Valid - look if the move is valid for a certain piece on the board
  * Is_Move_Valid_Pawn - look if the move is valid for a pawn on the board
- * Get_State_Of_Pawn - get the state of a pawn (if it is still on its start line or not)
  * Get_Pawn_Neighbors - get the neighbors of a pawn (the two squares in the diagonal, going up or down depending on it's color)
  * Is_Move_Valid_Pawn_En_Passant - look if the move is valid for a pawn on the board (en passant)
  * Taken_En_Passant - get the piece that is going to be taken en passant
@@ -161,10 +160,12 @@ bool Is_Piece_on_its_start_position(Piece* piece);
 /**
  * @param move - the move to check
  * @param board - the board where the piece is
+ * @param State_Of_Rock_and_Check - the state of the rock and check state to be able to say if can move the king or not
+ * @param Move_Log - the log of the moves that have been made
  * @return bool - true if the move is valid, false otherwise
 **/
 /////////////////////////////////////////////////////////////////////////////////////
-bool Is_Move_Valid(Move* move, Piece*** board);
+bool Is_Move_Valid(Move* move, Piece*** board, State_Of_Rock_and_Check* State_Of_Rock_and_Check, Move_Log_array* Move_Log);
 
 
 /////////////////////////////////////////////////////////////////////////////////////
@@ -176,17 +177,6 @@ bool Is_Move_Valid(Move* move, Piece*** board);
 **/
 /////////////////////////////////////////////////////////////////////////////////////
 bool Is_Move_Valid_Pawn(Move* move, Piece*** board);
-
-
-/////////////////////////////////////////////////////////////////////////////////////
-// Get the state of a pawn (if it is still on its start line or not), so I can help to know if it can move two squares or not (need an if else depending on the color)
-/**
- * @param piece - the piece (pawn) that is going to be selected (to know its coordinates and its color) useful to know if it's on its start line
- * @param board - the board where the piece is
- * @return bool - true if the pawn is still on its start line, false otherwise
-**/
-/////////////////////////////////////////////////////////////////////////////////////
-bool Get_State_Of_Pawn(Piece* piece, Piece*** board);
 
 
 /////////////////////////////////////////////////////////////////////////////////////
@@ -219,6 +209,7 @@ bool Is_Move_Valid_Pawn_En_Passant(Move* move, Piece*** board);
  * @return Piece* - the piece that is going to be taken en passant
 **/
 /////////////////////////////////////////////////////////////////////////////////////
+Piece* Taken_En_Passant(Move* move, Piece*** board);
 
 
 /////////////////////////////////////////////////////////////////////////////////////
@@ -266,14 +257,16 @@ bool Is_Move_Valid_Queen(Move* move, Piece*** board);
 
 
 /////////////////////////////////////////////////////////////////////////////////////
-// Look if the move is valid for a king on the board (switch case with the rock)
+// Look if the move is valid for a king on the board (switch case with the rock needs a special treatment)
 /**
  * @param move - the move to check
  * @param board - the board where the piece is
+ * @param State_Of_Rock_and_Check - the state of the rock and check state to be able to say if can move the king or not
+ * @param Move_Log - the log of the moves that have been made
  * @return bool - true if the move is valid, false otherwise
 **/
 /////////////////////////////////////////////////////////////////////////////////////
-bool Is_Move_Valid_King(Move* move, Piece*** board);
+bool Is_Move_Valid_King(Move* move, Piece*** board, State_Of_Rock_and_Check* State_Of_Rock_and_Check, Move_Log_array* Move_Log);
 
 
 /////////////////////////////////////////////////////////////////////////////////////
@@ -293,6 +286,7 @@ State_Of_Rock_and_Check* Create_State_Of_Rock_and_Check();
 **/
 /////////////////////////////////////////////////////////////////////////////////////
 void Reset_State_Of_Rock_and_Check(State_Of_Rock_and_Check* State_Of_Rock_and_Check);
+
 
 /////////////////////////////////////////////////////////////////////////////////////
 // function to destroy a structure of the state of the rock and check state
