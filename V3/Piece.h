@@ -309,7 +309,7 @@ bool Is_Rock_Possible(int color /* same as player */, State_Of_Rock_and_Check* S
 
 
 /////////////////////////////////////////////////////////////////////////////////////
-// Get the type of rock that is going to be made
+// Get the type of rock that is going to be made 
 /**
  * @param move - the move that is going to be made (the one from the king)
  * @param board - the board where the move will be made
