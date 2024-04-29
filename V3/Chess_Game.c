@@ -14,7 +14,7 @@
  * 
  * - the game loop should work fine here 
  * - the game isn't finished at this state 
- * - the piece will not be restricted in their moves, it's just some coding, here we're focusing on the architecture of the code 
+ * - by adding the en passant to the pawn movement possibilities, in this version th goal is to use the buttons on the menu and do the move only if they're valid without considering the special moves and the check 
  * - an effort has been made here to use the log, the state of the rock, the captured pieces (we have checked yet if it works correctly, but it should work in theory, so we will test that in the future)
  * - the part (V2) will focus on the implementation of the differents menus during the game
  * - the timer_showing isn't implemented yet, a first step is made to know how it works in the tests_SDL_basics directory, but not being able to download the SDL2_ttf library, we can't show it for now
