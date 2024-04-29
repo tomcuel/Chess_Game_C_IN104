@@ -167,7 +167,7 @@ int main (){
     */
 
     // making the timer for each player, the time mode will be asked after so this constant here will have no effect later 
-    int timer_game_mode=5;
+    int timer_game_mode=100;
 
     // time remaining for each player
     int seconds_remaining_player_2 = timer_game_mode;
@@ -284,10 +284,12 @@ int main (){
                 Destroy_Move_Log_Element(element);
 
                 // if you touch the piece once, as in the real game, you're forced to play this piece, there isn't any way to cancel the move
-                // making the move
-                Make_Move(board, move, Log, Captured_Pieces_and_Score, State_Of_RockandCheck, players);
+                // making the move if it's valid, here we don't care about the special moves and what it does to other pieces
+                // we will need to do it in the future, here we also don't care about the check
+                if (Is_Move_Valid(move, board, State_Of_RockandCheck, Log) == true){
+                    Make_Move(board, move, Log, Captured_Pieces_and_Score, State_Of_RockandCheck, players);
                 // changing the player that is playing is included in the Make_Move function
-               
+                }
             }
         
         }
