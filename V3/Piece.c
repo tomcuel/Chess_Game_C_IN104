@@ -127,7 +127,7 @@ bool Is_Piece_on_its_start_position(Piece* piece){
             }
         }
     }
-
+    
     // if the piece is a queen
     else if (piece->type == QUEEN){
         // if the piece is white
