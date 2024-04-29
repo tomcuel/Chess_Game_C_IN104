@@ -8,5 +8,6 @@ realclean:
 	make -C Tests/Test_Piece/Test_Piece_Movement realclean
 	make -C V1 realclean
 	make -C V2 realclean
+	make -C V3 realclean
 
 .PHONY:realclean
