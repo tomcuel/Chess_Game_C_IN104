@@ -29,7 +29,7 @@ int main() {
     // Remplissage de l'écran avec la couleur beige
     SDL_SetRenderDrawColor(renderer, 245, 245, 220, 255);
     SDL_RenderClear(renderer);
-
+x
     //Ajouter image victoire.bmp
 
     SDL_Rect destRect;
