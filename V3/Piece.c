@@ -221,56 +221,8 @@ bool Is_Move_Valid_Pawn(Move* move, Piece*** board){
         return false;
     }
 
-    // if the pawn is moving forward
-    if (move->previous_col == move->destination_col){
-        // if the pawn is moving forward by 1 square
-        if (abs(move->previous_row - move->destination_row) == 1){
-            // if the destination square is empty
-            if (board[move->destination_row][move->destination_col]->type == NOTHING){
-                return true;
-            }
-        }
+    // depending on the color of the pawn we want to move, different cases are to be considered
 
-        // if the pawn is moving forward by 2 squares
-        else if (abs(move->previous_row - move->destination_row) == 2){
-            // if the pawn is on his start position
-            if (Is_Piece_on_its_start_position(board[move->previous_row][move->previous_col])){
-                // if the destination square is empty and if the square between the start and destination squares is empty
-                if (board[move->destination_row][move->destination_col]->type == NOTHING && board[(move->previous_row + move->destination_row) / 2][move->destination_col]->type == NOTHING){
-                    return true;
-                }
-            }
-        }
-    }
-
-    // if the pawn is movin diagonnaly one case on the right or to the left
-    else if (abs(move->previous_col - move->destination_col) == 1){
-        // if the piece is white, we can only move up
-            // getting the neighbors of the pawn
-            Piece** neighbors_of_pawn = Get_Pawn_Neighbors(board[move->previous_row][move->previous_col], board);
-            // going through the neighbors
-            for (int i=0; i<NUMBER_OF_NEIGHBORS_PAWN; i++){
-                // for the two diagonals
-                // first the move need to correspond to the position of the neighbor on the diagonal
-                if (neighbors_of_pawn[i]->row == move->destination_row && neighbors_of_pawn[i]->col == move->destination_col){
-                    // if the destination square is not empty and if it contains a piece of a different color
-                    if (board[move->destination_row][move->destination_col]->type != NOTHING && board[move->destination_row][move->destination_col]->color != board[move->previous_row][move->previous_col]->color){
-                        free(neighbors_of_pawn);
-                        return true;
-                    }
-                } 
-                // for the two possible neighbors on the right and on the left that we make the "en passant" move
-                else if (neighbors_of_pawn[i]->row == move->previous_row && neighbors_of_pawn[i]->col == move->destination_col){
-                    // if the destination square is empty and if the square between the start and destination squares contains a pawn of the opposite color
-                    if (board[move->destination_row][move->destination_col]->type == NOTHING && board[move->previous_row][move->destination_col]->type == PAWN && board[move->previous_row][move->destination_col]->color != board[move->previous_row][move->previous_col]->color){
-                        free(neighbors_of_pawn);
-                        return true;
-                    }
-                }
-                
-            }
-            free(neighbors_of_pawn);
-    }
 
 }
 
