@@ -176,7 +176,7 @@ bool Is_Move_Valid(Move* move, Piece*** board, State_Of_Rock_and_Check* State_Of
     }
 
     // if the move is out of the board
-    if (move->previous_row < 0 || move->previous_row > 7 || move->previous_col < 0 || move->previous_col > 7 || move->destination_row < 0 || move->destination_row > 7 || move->destination_col < 0 || move->destination_col > 7){
+    if (move->previous_row < 0 || move->previous_row > BOARD_SIZE-1 || move->previous_col < 0 || move->previous_col > BOARD_SIZE-1 || move->destination_row < 0 || move->destination_row > BOARD_SIZE-1 || move->destination_col < 0 || move->destination_col > BOARD_SIZE-1){
         return false;
     }
 
