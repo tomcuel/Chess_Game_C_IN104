@@ -404,12 +404,14 @@ void Make_Move(Piece*** board, Move* move, Move_Log_array* log, Captured_Piece_a
     board[move->destination_row][move->destination_col]->is_checked = board[move->previous_row][move->previous_col]->is_checked;
     board[move->destination_row][move->destination_col]->is_on_his_start_position = Is_Piece_on_its_start_position(board[move->previous_row][move->previous_col]); // here we don't have any others choice than to check if the piece is on its start position or not, not with a smart way
     // suppressing the source piece
+
     board[move->previous_row][move->previous_col]->type = NOTHING;
     board[move->previous_row][move->previous_col]->color = NO_COLOR;
     board[move->previous_row][move->previous_col]->value = 0;
     board[move->previous_row][move->previous_col]->is_alive = false;
     board[move->previous_row][move->previous_col]->is_checked = false;
     board[move->previous_row][move->previous_col]->is_on_his_start_position = false;
+
 
     // updating the captured pieces and the score
 
@@ -458,6 +460,7 @@ void Make_Move(Piece*** board, Move* move, Move_Log_array* log, Captured_Piece_a
             captured_piece_and_score->number_of_black_pieces_captured++;
         }
     }
+
 
     // updating the state of the rock and the check 
 
@@ -508,7 +511,7 @@ void Make_Move(Piece*** board, Move* move, Move_Log_array* log, Captured_Piece_a
         state_of_rock_and_check->is_black_king_checked = true;
     }
 
-    // updating the players
+    // updating the players that be the next to play
     Change_Players_that_is_Playing(players);
 
 }

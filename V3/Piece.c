@@ -223,123 +223,99 @@ bool Is_Move_Valid_Pawn(Move* move, Piece*** board){
 
     // depending on the color of the pawn we want to move, different cases are to be considered
 
+    // if it's a white pawn
+    if (board[move->previous_row][move->previous_col]->color == WHITE){
+        // if the pawn if moving forward (up for a white pawn)
+        // if it's one case 
+        if (move->previous_col == move->destination_col && move->previous_row-1 == move->destination_row){
+            // if the destination is empty
+            if (board[move->destination_row][move->destination_col]->type == NOTHING){
+                return true;
+            }
+        }
+        // if it want to go up two cases (It need to be one its starting line) and the destination need to be empty, as well as the cases bewteen the pawn and the destination
+        else if (move->previous_col == move->destination_col && move->previous_row-2 == move->destination_row && board[move->previous_row][move->previous_col]->is_on_his_start_position == true){
+            if (board[move->destination_row][move->destination_col]->type == NOTHING && board[move->previous_row-1][move->previous_col]->type == NOTHING){
+                return true;
+            }
+        }
 
+        // now we need to consider the diagonal moves
+        // if the pawn is moving to the right (up and right)
+        if (move->previous_row-1 == move->destination_row && move->previous_col+1 == move->destination_col){
+            // if the destination is not empty and the piece is of the opposite color
+            if (board[move->destination_row][move->destination_col]->type != NOTHING && board[move->destination_row][move->destination_col]->color != board[move->previous_row][move->previous_col]->color){
+                return true;
+            }
+        }
+        // if the pawn is moving to the left (up and left)
+        if (move->previous_row-1 == move->destination_row && move->previous_col-1 == move->destination_col){
+            // if the destination is not empty and the piece is of the opposite color
+            if (board[move->destination_row][move->destination_col]->type != NOTHING && board[move->destination_row][move->destination_col]->color != board[move->previous_row][move->previous_col]->color){
+                return true;
+            }
+        }
+    }
+
+    // if it's a black pawn 
+    if (board[move->previous_row][move->previous_col]->color == BLACK){
+        // if the pawn if moving forward (down for a black pawn)
+        // if it's one case
+        if (move->previous_col == move->destination_col && move->previous_row+1 == move->destination_row){
+            // if the destination is empty
+            if (board[move->destination_row][move->destination_col]->type == NOTHING){
+                return true;
+            }
+        }
+        // if it want to go down two cases (It need to be one its starting line) and the destination need to be empty, as well as the cases bewteen the pawn and the destination
+        else if (move->previous_col == move->destination_col && move->previous_row+2 == move->destination_row && board[move->previous_row][move->previous_col]->is_on_his_start_position == true){
+            if (board[move->destination_row][move->destination_col]->type == NOTHING && board[move->previous_row+1][move->previous_col]->type == NOTHING){
+                return true;
+            }
+        }
+
+        // now we need to consider the diagonal moves
+        // if the pawn is moving to the right (down and right)
+        if (move->previous_row+1 == move->destination_row && move->previous_col+1 == move->destination_col){
+            // if the destination is not empty and the piece is of the opposite color
+            if (board[move->destination_row][move->destination_col]->type != NOTHING && board[move->destination_row][move->destination_col]->color != board[move->previous_row][move->previous_col]->color){
+                return true;
+            }
+        }
+        // if the pawn is moving to the left (down and left)
+        if (move->previous_row+1 == move->destination_row && move->previous_col-1 == move->destination_col){
+            // if the destination is not empty and the piece is of the opposite color
+            if (board[move->destination_row][move->destination_col]->type != NOTHING && board[move->destination_row][move->destination_col]->color != board[move->previous_row][move->previous_col]->color){
+                return true;
+            }
+        }
+    }
+
+    // en passant remain to be implemented here
+
+    // return false by default
+    return false;
 }
 
 
-Piece** Get_Pawn_Neighbors(Piece* piece, Piece*** board){
-    // creating an array of 4 pieces
-    Piece** neighbors_of_pawn = (Piece**)malloc(NUMBER_OF_NEIGHBORS_PAWN * sizeof(Piece*));
-    // looking for a malloc error
-    if (neighbors_of_pawn == NULL){
-        printf("Error: malloc failed in Get_Pawn_Neighbors\n");
-        return NULL;
-    }
+// function needs to be implemented for the enpassant 
 
-    // setting the neighbors to a piece to 0 for each attribute
-    for (int i=0; i<NUMBER_OF_NEIGHBORS_PAWN; i++){
-        neighbors_of_pawn[i] = Create_Piece();
-        // looking for a malloc error
-        if (neighbors_of_pawn[i] == NULL){
-            printf("Error: malloc failed in Get_Pawn_Neighbors\n");
-            return NULL;
-        }
-    }
-
-    // looking at the neighbor one case on the left and adding it to the array
-    if (piece->row -1 >= 0){
-        neighbors_of_pawn[0]->row = piece->row -1;
-        neighbors_of_pawn[0]->col = piece->col;
-        neighbors_of_pawn[0]->type = board[piece->row -1][piece->col]->type;
-        neighbors_of_pawn[0]->color = board[piece->row -1][piece->col]->color;
-        neighbors_of_pawn[0]->value = board[piece->row -1][piece->col]->value;
-        neighbors_of_pawn[0]->is_alive = board[piece->row -1][piece->col]->is_alive;
-        neighbors_of_pawn[0]->is_checked = board[piece->row -1][piece->col]->is_checked;
-        neighbors_of_pawn[0]->is_on_his_start_position = board[piece->row -1][piece->col]->is_on_his_start_position;
-    }
-
-    // looking at the neighbor one case on the right and adding it to the array
-    else if (piece->row +1 <= 7){
-        neighbors_of_pawn[1]->row = piece->row +1;
-        neighbors_of_pawn[1]->col = piece->col;
-        neighbors_of_pawn[1]->type = board[piece->row +1][piece->col]->type;
-        neighbors_of_pawn[1]->color = board[piece->row +1][piece->col]->color;
-        neighbors_of_pawn[1]->value = board[piece->row +1][piece->col]->value;
-        neighbors_of_pawn[1]->is_alive = board[piece->row +1][piece->col]->is_alive;
-        neighbors_of_pawn[1]->is_checked = board[piece->row +1][piece->col]->is_checked;
-        neighbors_of_pawn[1]->is_on_his_start_position = board[piece->row +1][piece->col]->is_on_his_start_position;
-    }
-
-    // the two diagonals depend on the color of the piece we want to move 
-    // if the piece is white
-    if (piece->color == WHITE){
-        // the one up and on the left of the piece
-        if (piece->row -1 >= 0 && piece->col -1 >= 0){
-            neighbors_of_pawn[2]->row = piece->row -1;
-            neighbors_of_pawn[2]->col = piece->col -1;
-            neighbors_of_pawn[2]->type = board[piece->row -1][piece->col -1]->type;
-            neighbors_of_pawn[2]->color = board[piece->row -1][piece->col -1]->color;
-            neighbors_of_pawn[2]->value = board[piece->row -1][piece->col -1]->value;
-            neighbors_of_pawn[2]->is_alive = board[piece->row -1][piece->col -1]->is_alive;
-            neighbors_of_pawn[2]->is_checked = board[piece->row -1][piece->col -1]->is_checked;
-            neighbors_of_pawn[2]->is_on_his_start_position = board[piece->row -1][piece->col -1]->is_on_his_start_position;
-        }
-
-        // the one up and on the right of the piece
-        if (piece->row -1 >= 0 && piece->col +1 <= 7){
-            neighbors_of_pawn[3]->row = piece->row -1;
-            neighbors_of_pawn[3]->col = piece->col +1;
-            neighbors_of_pawn[3]->type = board[piece->row -1][piece->col +1]->type;
-            neighbors_of_pawn[3]->color = board[piece->row -1][piece->col +1]->color;
-            neighbors_of_pawn[3]->value = board[piece->row -1][piece->col +1]->value;
-            neighbors_of_pawn[3]->is_alive = board[piece->row -1][piece->col +1]->is_alive;
-            neighbors_of_pawn[3]->is_checked = board[piece->row -1][piece->col +1]->is_checked;
-            neighbors_of_pawn[3]->is_on_his_start_position = board[piece->row -1][piece->col +1]->is_on_his_start_position;
-        }
-
-    }
-
-    // if the piece is black 
-    if (piece->color == BLACK){
-        // the one down and on the left of the piece
-        if (piece->row +1 <= 7 && piece->col -1 >= 0){
-            neighbors_of_pawn[2]->row = piece->row +1;
-            neighbors_of_pawn[2]->col = piece->col -1;
-            neighbors_of_pawn[2]->type = board[piece->row +1][piece->col -1]->type;
-            neighbors_of_pawn[2]->color = board[piece->row +1][piece->col -1]->color;
-            neighbors_of_pawn[2]->value = board[piece->row +1][piece->col -1]->value;
-            neighbors_of_pawn[2]->is_alive = board[piece->row +1][piece->col -1]->is_alive;
-            neighbors_of_pawn[2]->is_checked = board[piece->row +1][piece->col -1]->is_checked;
-            neighbors_of_pawn[2]->is_on_his_start_position = board[piece->row +1][piece->col -1]->is_on_his_start_position;
-        }
-
-        // the one down and on the right of the piece
-        if (piece->row +1 <= 7 && piece->col +1 <= 7){
-            neighbors_of_pawn[3]->row = piece->row +1;
-            neighbors_of_pawn[3]->col = piece->col +1;
-            neighbors_of_pawn[3]->type = board[piece->row +1][piece->col +1]->type;
-            neighbors_of_pawn[3]->color = board[piece->row +1][piece->col +1]->color;
-            neighbors_of_pawn[3]->value = board[piece->row +1][piece->col +1]->value;
-            neighbors_of_pawn[3]->is_alive = board[piece->row +1][piece->col +1]->is_alive;
-            neighbors_of_pawn[3]->is_checked = board[piece->row +1][piece->col +1]->is_checked;
-            neighbors_of_pawn[3]->is_on_his_start_position = board[piece->row +1][piece->col +1]->is_on_his_start_position;
-        }
-
-    }
-
-
-    // returning the neighbors
-    return neighbors_of_pawn;
-}
-
-
-bool Is_Move_Valid_Pawn_En_Passant(Move* move, Piece*** board){
-    
-}
 
 
 Piece* Taken_En_Passant(Move* move, Piece*** board){
-    
+    // this function supposes that the moves is valid and will take a pawn en passant
+
+    // if the pawn is white
+    if (board[move->previous_row][move->previous_col]->color == WHITE){
+        // the pawn to take is the one that is on the same row before its moving and on the column of the destination
+        return board[move->previous_row][move->destination_col];
+    }
+
+    // if the pawn is black
+    else if (board[move->previous_row][move->previous_col]->color == BLACK){
+        // the pawn to take is the one that is on the same row before its moving and on the column of the destination
+        return board[move->previous_row][move->destination_col];
+    }
 }
 
 
@@ -368,8 +344,8 @@ bool Is_Move_Valid_Knight(Move* move, Piece*** board){
 
 bool Is_Move_Valid_Bishop(Move* move, Piece*** board){
     
-    // if it's not a diagonal move
-    if (abs(move->previous_row - move->destination_row) == abs(move->previous_col - move->destination_col)){
+    // if it's a not a diagonal move
+    if (abs(move->previous_row - move->destination_row) != abs(move->previous_col - move->destination_col)){
         return false;
     }
 
@@ -435,7 +411,7 @@ bool Is_Move_Valid_Bishop(Move* move, Piece*** board){
 bool Is_Move_Valid_Rook(Move* move, Piece*** board){
 
     // check if the move is not horizontal or vertical
-    if (move->previous_row != move->destination_row || move->previous_col != move->destination_col){
+    if (move->previous_row != move->destination_row && move->previous_col != move->destination_col){
         return false;
     }
 
@@ -498,98 +474,20 @@ bool Is_Move_Valid_Rook(Move* move, Piece*** board){
 bool Is_Move_Valid_Queen(Move* move, Piece*** board){
 
     // Check if the destination is occupied by a piece of the same color
-    if (board[move->destination_row][move->destination_col]->type != NOTHING && board[move->destination_row][move->destination_col]->color == board[move->previous_row][move->previous_col]->color){
+    if (board[move->destination_row][move->destination_col]->color == board[move->previous_row][move->previous_col]->color){
         return false;
     }
 
-    // Check horizontal moves to the right
-    if (move->previous_row == move->destination_row && move->previous_col < move->destination_col){
-        for (int j = move->previous_col + 1; j < move->destination_col; j++){
-            // if the queen found a piece in the horizontal move to the right (it can be of any color)
-            if (board[move->previous_row][j]->type != NOTHING){
-                return false;
-            }
-        }
+    // a queen is both a rook and a bishop 
+    // so we can use the functions we already implemented for the rook and the bishop
+    if (Is_Move_Valid_Rook(move, board) || Is_Move_Valid_Bishop(move, board)){
         return true;
     }
-
-    // Check horizontal moves to the left
-    else if (move->previous_row == move->destination_row && move->previous_col > move->destination_col){
-        for (int j = move->previous_col - 1; j > move->destination_col; j--){
-            if (board[move->previous_row][j]->type != NOTHING){
-                // if the queen found a piece in the horizontal move to the left (it can be of any color)
-                return false;
-            }
-        }
-        return true;
+    else {
+        return false;
     }
 
-    // Check vertical moves downward
-    else if (move->previous_row < move->destination_row && move->previous_col == move->destination_col){
-        for (int i = move->previous_row + 1; i < move->destination_row; i++){
-            if (board[i][move->previous_col]->type != NOTHING){
-                // if the queen found a piece in the vertical down move (it can be of any color)
-                return false;
-            }
-        }
-        return true;
-    }
-
-    // Check vertical moves upward
-    else if (move->previous_row > move->destination_row && move->previous_col == move->destination_col){
-        for (int i = move->previous_row - 1; i > move->destination_row; i--){
-            if (board[i][move->previous_col]->type != NOTHING){
-                // if the queen found a piece in the vertical up move (it can be of any color)
-                return false;
-            }
-        }
-        return true;
-    }
-
-    // Check diagonal moves upward and to the right
-    else if (move->previous_row > move->destination_row && move->previous_col < move->destination_col){
-        for (int i = move->previous_row - 1, j = move->previous_col + 1; i > move->destination_row && j < move->destination_col; i--, j++){
-            if (board[i][j]->type != NOTHING){
-                // if the queen found a piece in the diagonal up and right move (it can be of any color)
-                return false;
-            }
-        }
-        return true;
-    }
-
-    // Check diagonal moves upward and to the left
-    else if (move->previous_row > move->destination_row && move->previous_col > move->destination_col){
-        for (int i = move->previous_row - 1, j = move->previous_col - 1; i > move->destination_row && j > move->destination_col; i--, j--){
-            if (board[i][j]->type != NOTHING){
-                // if the queen found a piece in the diagonal up and left move (it can be of any color)
-                return false;
-            }
-        }
-        return true;
-    }
-
-    // Check diagonal moves downward and to the right
-    else if (move->previous_row < move->destination_row && move->previous_col < move->destination_col){
-        for (int i = move->previous_row + 1, j = move->previous_col + 1; i < move->destination_row && j < move->destination_col; i++, j++){
-            if (board[i][j]->type != NOTHING){
-                // if the queen found a piece in the diagonal down and right move (it can be of any color)
-                return false;
-            }
-        }
-        return true;
-    }
-
-    // Check diagonal moves downward and to the left
-    else if (move->previous_row < move->destination_row && move->previous_col > move->destination_col){
-        for (int i = move->previous_row + 1, j = move->previous_col - 1; i < move->destination_row && j > move->destination_col; i++, j--){
-            if (board[i][j]->type != NOTHING){
-                // if the queen found a piece in the diagonal down and left move (it can be of any color)
-                return false;
-            }
-        }
-        return true;
-    }
-
+    // default 
     return false;
 
 }
@@ -608,12 +506,19 @@ bool Is_Move_Valid_King(Move* move, Piece*** board, State_Of_Rock_and_Check* Sta
         return false;
     }
 
-    // Check if the move is horizontal
-    /*
-    need to that 
-    */
+    // the king is a bit of a queen but restricted to one square (both a rock and a bishop restricted to one square)
+    if (abs(move->previous_row - move->destination_row) <= 1 && abs(move->previous_col - move->destination_col) <= 1){
+        if (Is_Move_Valid_Rook(move, board) || Is_Move_Valid_Bishop(move, board)){
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
 
-    // also checking when it can be a rock
+
+    // the case of the rock will be implemented here
+
 
     // if the move is not horizontal, vertical or diagonal
     return false; 

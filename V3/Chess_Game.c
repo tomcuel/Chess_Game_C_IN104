@@ -238,7 +238,7 @@ int main (){
                         // if no piece has been selected
                         // it marked the first piece as selected if it's a piece of the player that is playing (looking at its color), and if it's not a nothing piece, so it's a piece that can be moved
                         // then it's the first coordinate of the move
-                        if (is_clicked_1 ==0 && board[row][col]->type != NOTHING && board[row][col]->color == players->color_player_that_is_playing && board[row][col]->is_alive) {
+                        if (is_clicked_1 ==0 && board[row][col]->type != NOTHING && board[row][col]->color == players->color_player_that_is_playing) {
                             // update the click, of the source piece here
                             is_clicked_1 = 1;
                             // start the move
@@ -252,7 +252,7 @@ int main (){
 
                         // if a piece has been selected, but not its destination yet, we searched for its heading
                         // the destination is the second coordinate of the move, it need not to be one of the player's piece
-                        else if (is_clicked_1 == 1 && is_clicked_2 ==0 && board[row][col]->color != players->color_player_that_is_playing){
+                        else if (is_clicked_1 == 1 && is_clicked_2 ==0){
                             // update the position of the destination with the position of the mouse
                             move->destination_row = row;
                             move->destination_col = col;

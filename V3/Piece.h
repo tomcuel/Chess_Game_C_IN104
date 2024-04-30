@@ -25,8 +25,10 @@
  * Is_Move_Valid - look if the move is valid for a certain piece on the board
  * Is_Move_Valid_Pawn - look if the move is valid for a pawn on the board
  * Get_Pawn_Neighbors - get the neighbors of a pawn (the two squares in the diagonal, going up or down depending on it's color)
- * Is_Move_Valid_Pawn_En_Passant - look if the move is valid for a pawn on the board (en passant)
- * Taken_En_Passant - get the piece that is going to be taken en passant
+ * 
+ * Additional functions related to en passant will be added later.
+ * A structure to track the state of en passant and moves of two squares may be considered.
+ * 
  * Is_Move_Valid_Knight - look if the move is valid for a knight on the board
  * Is_Move_Valid_Bishop - look if the move is valid for a bishop on the board
  * Is_Move_Valid_Rook - look if the move is valid for a rook on the board
@@ -179,26 +181,7 @@ bool Is_Move_Valid(Move* move, Piece*** board, State_Of_Rock_and_Check* State_Of
 bool Is_Move_Valid_Pawn(Move* move, Piece*** board);
 
 
-/////////////////////////////////////////////////////////////////////////////////////
-// Get the neighbors of a pawn (the two squares in the diagonal, going up or down depending on it's color), so it can help us to know if it can capture a piece or not
-/**
- * @param piece - the piece (pawn) that is going to move, (to know its coordinates and its color) useful to know the neighbors
- * @param board - the board where the piece is
- * @return Piece** - an array of the two neighbors of the pawn
-**/
-/////////////////////////////////////////////////////////////////////////////////////
-Piece** Get_Pawn_Neighbors(Piece* piece, Piece*** board);
-
-
-/////////////////////////////////////////////////////////////////////////////////////
-// Look if the move is valid for a pawn on the board (en passant)
-/**
- * @param move - the move to check
- * @param board - the board where the piece is
- * @return bool - true if the move is valid, false otherwise
-**/
-/////////////////////////////////////////////////////////////////////////////////////
-bool Is_Move_Valid_Pawn_En_Passant(Move* move, Piece*** board);
+// function for the enpassant to implement 
 
 
 /////////////////////////////////////////////////////////////////////////////////////
