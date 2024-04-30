@@ -584,22 +584,152 @@ void Destroy_State_Of_Rock_and_Check(State_Of_Rock_and_Check* State_Of_Rock_and_
 
 
 
-bool Is_Rock_Possible(int color /* same as player */, State_Of_Rock_and_Check* State_Of_Rock_and_Check){
+int Is_Rock_Possible(int color /* same as player */, State_Of_Rock_and_Check* State_Of_Rock_and_Check, Piece*** board){
+
+    //if the color is white
+    if (color == WHITE){
+        // the squares between the king and the rook must be empty
+            if (State_Of_Rock_and_Check->white_rock_done == false){
+               return NO_ROCK;
+            }
+        
+        // the king cannot be in chess
+        if (State_Of_Rock_and_Check->is_white_king_checked == true){
+            return NO_ROCK;
+        }
+
+
+        //condition : possiblble
+        // the squares between the rook and the king must be empty
+        //long rock
+        else if (board[7][1]->type != NOTHING || board[7][2]->type != NOTHING || board[7][3]->type != NOTHING){
+            return LONG_ROCK;
+        }
+
+        //short rock
+        else if(board[7][5]->type != NOTHING || board[7][6]->type != NOTHING){
+            return SHORT_ROCK;
+        }
+    }
+
+    //if the color is black
+    else if (color == BLACK){
+        // the squares between the king and the rook must be empty
+            if (State_Of_Rock_and_Check->black_rock_done == false){
+               return NO_ROCK;
+            }
+        
+        // the king cannot be in chess
+        if (State_Of_Rock_and_Check->is_black_king_checked == true){
+            return NO_ROCK;
+        }
+
+        //condition : possiblble
+        // the squares between the rook and the king must be empty
+        //long rock
+        else if (board[0][1]->type != NOTHING || board[0][2]->type != NOTHING || board[0][3]->type != NOTHING){
+            return LONG_ROCK;
+        }
+
+        //short rock
+        else if(board[0][5]->type != NOTHING || board[0][6]->type != NOTHING){
+            return SHORT_ROCK;
+        }
+    
+    return NO_ROCK;
+    }
 
 }
 
 
-int Get_Type_Of_Rock(Move* move, Piece*** board){
+Move* Create_Rook_Move_during_Rock(Move* move, Piece*** board, State_Of_Rock_and_Check* State_Of_Rock_and_Check){
 
-}
+    int color = board[move->previous_row][move->previous_col]->color;
 
+    // check if the rock is possible and get what type of rock it is
+    int type_of_rock = Is_Rock_Possible(color, State_Of_Rock_and_Check, board);
 
-Move* Create_Rook_Move_during_Rock(Move* move, Piece*** board){
+    // if the rock is not possible
+    if (type_of_rock == NO_ROCK){
+        return NULL;
+    }
+
+    // if the rock is possible
+    else {
+        // if it's a white rock
+        if (color == WHITE){
+            // if it's a long rock
+            if (type_of_rock == LONG_ROCK){
+                // the rook is on the 0th row and the 0th column
+                return Create_Move(7, 0, 7, 3);
+            }
+            // if it's a short rock
+            else if (type_of_rock == SHORT_ROCK){
+                // the rook is on the 0th row and the 7th column
+                return Create_Move(7, 7, 7, 5);
+            }
+        }
+
+        // if it's a black rock
+        else if (color == BLACK){
+            // if it's a long rock
+            if (type_of_rock == LONG_ROCK){
+                // the rook is on the 7th row and the 0th column
+                return Create_Move(0, 0, 0, 3);
+            }
+            // if it's a short rock
+            else if (type_of_rock == SHORT_ROCK){
+                // the rook is on the 7th row and the 7th column
+                return Create_Move(0, 7, 0, 5);
+            }
+        }
+    }
 
 }
 
 
 Move* Create_King_Move_during_Rock(Move* move, Piece*** board){
+
+    int color = board[move->previous_row][move->previous_col]->color;
+
+    // check if the rock is possible and get what type of rock it is
+    int type_of_rock = Is_Rock_Possible(color, State_Of_Rock_and_Check, board);
+
+    // if the rock is not possible
+    if (type_of_rock == NO_ROCK){
+        return NULL;
+    }
+
+    // if the rock is possible
+    else {
+        // if it's a white rock
+        if (color == WHITE){
+            // if it's a long rock
+            if (type_of_rock == LONG_ROCK){
+                // the king is on the 7th row and the 4th column
+                return Create_Move(7, 4, 7, 2);
+            }
+            // if it's a short rock
+            else if (type_of_rock == SHORT_ROCK){
+                // the king is on the 7th row and the 4th column
+                return Create_Move(7, 4, 7, 6);
+            }
+        }
+
+        // if it's a black rock
+        else if (color == BLACK){
+            // if it's a long rock
+            if (type_of_rock == LONG_ROCK){
+                // the king is on the 7th row and the 4th column
+                return Create_Move(0, 4, 0, 2);
+            }
+            // if it's a short rock
+            else if (type_of_rock == SHORT_ROCK){
+                // the king is on the 7th row and the 4th column
+                return Create_Move(0, 4, 0, 6);
+            }
+        }
+    }
 
 }
 

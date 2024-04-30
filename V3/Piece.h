@@ -281,25 +281,15 @@ void Destroy_State_Of_Rock_and_Check(State_Of_Rock_and_Check* State_Of_Rock_and_
 
 
 /////////////////////////////////////////////////////////////////////////////////////
-// function to get if the rock is possible or not (if the first line is empty and if the king is not in check) (will be used in Is_Move_Valid_King)
+// function to get if the rock is possible or not (if the first line is empty and if the king is not in check) (will be used in Is_Move_Valid_King) and return what type of rock is possible
 /**
  * @param color - the color of the piece that is going to move
  * @param State_Of_Rock_and_Check - the structure that contains the state of the rock and check state
- * @return bool - true if the rock is possible, false otherwise
+ * @param board - the board where the piece is
+ * @return int - NO_ROCK, SHORT_ROCK, LONG_ROCK
 **/
 /////////////////////////////////////////////////////////////////////////////////////
-bool Is_Rock_Possible(int color /* same as player */, State_Of_Rock_and_Check* State_Of_Rock_and_Check);
-
-
-/////////////////////////////////////////////////////////////////////////////////////
-// Get the type of rock that is going to be made 
-/**
- * @param move - the move that is going to be made (the one from the king)
- * @param board - the board where the move will be made
- * @return int - the type of rock that is going to be made (SHORT_ROCK or LONG_ROCK)
-**/
-/////////////////////////////////////////////////////////////////////////////////////
-int Get_Type_Of_Rock(Move* move, Piece*** board);
+int Is_Rock_Possible(int color /* same as player */, State_Of_Rock_and_Check* State_Of_Rock_and_Check, Piece*** board);
 
 
 /////////////////////////////////////////////////////////////////////////////////////
@@ -307,9 +297,10 @@ int Get_Type_Of_Rock(Move* move, Piece*** board);
 /**
  * @param move - the move that is going to be made (deplacement of the king)
  * @param board - the board where the move will be made
+ * @param State_Of_Rock_and_Check - the structure that contains the state of the rock and check state
 **/
 /////////////////////////////////////////////////////////////////////////////////////
-Move* Create_Rook_Move_during_Rock(Move* move, Piece*** board);
+Move* Create_Rook_Move_during_Rock(Move* move, Piece*** board, State_Of_Rock_and_Check* State_Of_Rock_and_Check);
 
 
 /////////////////////////////////////////////////////////////////////////////////////
