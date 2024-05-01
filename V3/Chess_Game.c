@@ -114,6 +114,20 @@ void clear_graphics(SDL_Window* window, SDL_Renderer* renderer) {
 
 
 ///////////////////////////////////////////////////////////////////////////////
+// Function to know if a point (x,y) is in a rectangle  
+/**
+ * @param x : the x coordinate of the point
+ * @param y : the y coordinate of the point
+ * @param rect : the rectangle to check
+ * @return bool : true if the point is in the rectangle, false otherwise
+**/
+///////////////////////////////////////////////////////////////////////////////
+bool is_point_in_rect(int x, int y, SDL_Rect rect) {
+    return x >= rect.x && x <= rect.x + rect.w && y >= rect.y && y <= rect.y + rect.h;
+}
+
+
+///////////////////////////////////////////////////////////////////////////////
 // Main function of the game
 ///////////////////////////////////////////////////////////////////////////////
 int main (){
@@ -142,32 +156,8 @@ int main (){
     Button** Buttons = Create_Buttons(NUMBER_OF_BUTTONS);
 
 
-    
-
-
-
-
-
-    /*
-    need to make the basics setup of everything that hasnn't been done yet 
-    */
-
-
-    /*
-        doing the game loop
-
-        getting the SDL event 
-
-        make what need to be done on the chess board depending on numerous conditions
-
-
-        count the timer for each player as in double_timer 
-
-
-    */
-
     // making the timer for each player, the time mode will be asked after so this constant here will have no effect later 
-    int timer_game_mode=100;
+    int timer_game_mode=5;
 
     // time remaining for each player
     int seconds_remaining_player_2 = timer_game_mode;
@@ -191,6 +181,10 @@ int main (){
     // SDL_rect to draw the red boundary when we move a piece to know it's the piece that is selected
     SDL_Rect draw_red_boundary_move={0, 0, SQUARE_SIZE, SQUARE_SIZE};
 
+    // the SDL_rect to circle the buttons that is selected in the victory menu
+    // it's size will not be the same, depending on the button selected
+    SDL_Rect draw_red_boundary_button_victory_menu={0, 0, 0, 0};
+
     SDL_Event event;
     // playing the game while we don't quit it :
     while (is_running_game != -1) {
@@ -212,13 +206,14 @@ int main (){
                     case SDLK_RETURN:
                         if (is_running_game != CHESSBOARD_RENDER){
                             is_running_game+=1;
-                            printf("The game is now in the load menu %d\n", is_running_game);
                         }
                         break;
 
                     // for this part, if we're in the game, pressing the x key will make the game go back to the load menu
                     case SDLK_x:
-                        is_running_game=GAMEPLAY_CHOICE;
+                        if (is_running_game == VICTORY_MENU){
+                            is_running_game = GAMEPLAY_CHOICE;
+                        }
                         break;
                 }
             }
@@ -263,7 +258,66 @@ int main (){
                         }
 
                     }
+
+                    // otherwise it can be on some buttons that are on the right side of the window
+
+                    /* to be made */
                 
+                }
+
+
+                // if we're in the menu, we need to check if a button has been clicked
+                else if (is_running_game == GAMEPLAY_CHOICE || is_running_game == DIFFICULTY_CHOICE || is_running_game == TIME_CHOICE){
+                    
+                    /* buttons for the menus to be updated */
+                    /* separate the three menus also because buttons will go on one another */
+
+                }
+
+
+                else if (is_running_game == VICTORY_MENU){
+                    // if we're in the victory menu, we need to check if a button has been clicked to quit the game or to go play again
+
+                    // if we click on the new game button, we go back to the first load menu
+                    if (is_point_in_rect(event.button.x, event.button.y, Buttons[NEW_GAME_BUTTON]->rect)){
+                        is_running_game = GAMEPLAY_CHOICE;
+                    }
+
+                    // if we click on the restart button, we restart the game back to with the same parameters
+                    else if (is_point_in_rect(event.button.x, event.button.y, Buttons[RESTART_BUTTON]->rect)){
+                        is_running_game = CHESSBOARD_RENDER;
+                        // reset the players, the board, the log, the captured pieces, the state of the rock and the check, the timer
+                        
+                        players->is_playing = Player1;
+                        loosing_player = -1;
+                        is_clicked_1 = 0;
+                        is_clicked_2 = 0;
+                        seconds_remaining_player_1 = timer_game_mode;
+                        seconds_remaining_player_2 = timer_game_mode;
+
+                        // reset the board
+                        Reset_Board(board);
+
+                        // reset the log (putting the size to 0 is enough)
+                        Log->actual_size = 0;
+
+                        // reset the captured pieces
+                        Reset_Captured_Piece_and_Score(Captured_Pieces_and_Score);
+
+                        // reset the state of the rock and the check
+                        Reset_State_Of_Rock_and_Check(State_Of_RockandCheck);
+
+                        // reset the players, but since the parameters are the same, we don't need to reset everything from the beginning concerning the player type, the color, the name, etc
+                        players->is_playing = Player1;
+                        players->color_player_that_is_playing = WHITE;
+
+                    }
+
+                    // if we click on the quit button, we quit the game
+                    else if (is_point_in_rect(event.button.x, event.button.y, Buttons[QUIT_BUTTON]->rect)){
+                        is_running_game = -1;
+                    }
+
                 }
 
             }

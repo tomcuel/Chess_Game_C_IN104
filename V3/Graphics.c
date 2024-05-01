@@ -18,9 +18,44 @@ Button** Create_Buttons(int number_of_buttons){
             printf("Error: malloc failed in Create_Buttons\n");
             return NULL;
         }
-        // setting the state to UNACTIVE
+        // setting the state to UNACTIVE for every button
         Buttons[i]->state = UNACTIVE;
     }
+
+
+
+    // buttons for the load menu : game play choice
+
+
+
+    // buttons for the difficulty choice menu
+
+
+
+    // buttons for the time choice menu
+
+
+
+    // buttons for the chessboard
+
+
+
+    // buttons for the victory menu
+    Buttons[NEW_GAME_BUTTON]->rect.x = 50;
+    Buttons[NEW_GAME_BUTTON]->rect.y = 50;
+    Buttons[NEW_GAME_BUTTON]->rect.w = 275;
+    Buttons[NEW_GAME_BUTTON]->rect.h = 175;
+
+    Buttons[RESTART_BUTTON]->rect.x = WINDOW_WIDTH-50-275;
+    Buttons[RESTART_BUTTON]->rect.y = 50;
+    Buttons[RESTART_BUTTON]->rect.w = 275;
+    Buttons[RESTART_BUTTON]->rect.h = 175;
+
+    Buttons[QUIT_BUTTON]->rect.x = WINDOW_WIDTH/2 - 225;
+    Buttons[QUIT_BUTTON]->rect.y = 550;
+    Buttons[QUIT_BUTTON]->rect.w = 450;
+    Buttons[QUIT_BUTTON]->rect.h = 300;
+
 
     // return the array of buttons
     return Buttons;
@@ -50,7 +85,6 @@ void Show_Load_Menu(SDL_Renderer* renderer, int menu_type, Button** Buttons){
     */
 
    
-
     SDL_Rect rect;
     rect.w = SQUARE_SIZE;
     rect.h = SQUARE_SIZE;
@@ -58,8 +92,8 @@ void Show_Load_Menu(SDL_Renderer* renderer, int menu_type, Button** Buttons){
     rect.y = 0;
 
     if (menu_type==GAMEPLAY_CHOICE){
-        // white color rectangle
-        SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+        // brown color rectangle
+        SDL_SetRenderDrawColor(renderer, 139, 69, 19, 255);
         SDL_RenderFillRect(renderer, &rect);
     }
 
@@ -238,5 +272,27 @@ void Show_Victory_Menu(SDL_Renderer* renderer, Button** Buttons, int looser_play
         else{
             add_image_to_render("victory.bmp", renderer, Rect_final_screen);
         }
+    }
+
+    // showing the buttons
+    if (Buttons[QUIT_BUTTON]->state == UNACTIVE){
+        add_image_to_render("quit_button.bmp", renderer, Buttons[QUIT_BUTTON]->rect);
+    }
+    else{
+        add_image_to_render("quit_button_active.bmp", renderer, Buttons[QUIT_BUTTON]->rect);
+    }
+
+    if (Buttons[RESTART_BUTTON]->state == UNACTIVE){
+        add_image_to_render("restart_button.bmp", renderer, Buttons[RESTART_BUTTON]->rect);
+    }
+    else{
+        add_image_to_render("restart_button_active.bmp", renderer, Buttons[RESTART_BUTTON]->rect);
+    }
+
+    if (Buttons[NEW_GAME_BUTTON]->state == UNACTIVE){
+        add_image_to_render("new_game_button.bmp", renderer, Buttons[NEW_GAME_BUTTON]->rect);
+    }
+    else{
+        add_image_to_render("new_game_button_active.bmp", renderer, Buttons[NEW_GAME_BUTTON]->rect);
     }
 }
