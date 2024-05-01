@@ -51,10 +51,10 @@ Button** Create_Buttons(int number_of_buttons){
     Buttons[RESTART_BUTTON]->rect.w = 275;
     Buttons[RESTART_BUTTON]->rect.h = 175;
 
-    Buttons[QUIT_BUTTON]->rect.x = WINDOW_WIDTH/2 - 225;
-    Buttons[QUIT_BUTTON]->rect.y = 550;
-    Buttons[QUIT_BUTTON]->rect.w = 450;
-    Buttons[QUIT_BUTTON]->rect.h = 300;
+    Buttons[QUIT_BUTTON]->rect.x = WINDOW_WIDTH/2 - 150;
+    Buttons[QUIT_BUTTON]->rect.y = 650;
+    Buttons[QUIT_BUTTON]->rect.w = 300;
+    Buttons[QUIT_BUTTON]->rect.h = 200;
 
 
     // return the array of buttons
