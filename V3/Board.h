@@ -68,6 +68,22 @@ void Make_Move(Piece*** board, Move* move, Move_Log_array* log, Captured_Piece_a
 
 
 /////////////////////////////////////////////////////////////////////////////////////
+// Function similar to Make_Move, but it is used to make a move when a rock is done
+// It modifies the board, the log and the captured pieces, and the players structure, to change the player that is playing
+/**
+ * @param board : the board to make the move
+ * @param move : the move to make
+ * @param king_move_during_rock : the move of the king during the rock
+ * @param rook_move_during_rock : the move of the rook during the rock
+ * @param log : the log of the moves
+ * @param captured_piece_and_score : the captured pieces of the players
+ * @param state_of_rock_and_check : the state of the rock and the check
+ * @param players : the players
+**/
+/////////////////////////////////////////////////////////////////////////////////////
+void Make_Rock_Move(Piece*** board, Move* move, Move* king_move_during_rock, Move* rook_move_during_rock, Move_Log_array* log, Captured_Piece_and_Score* captured_piece_and_score, State_Of_Rock_and_Check* state_of_rock_and_check, Players* players);
+
+/////////////////////////////////////////////////////////////////////////////////////
 // There will be the need to undo the move, if is_check after the move and tell to make the move again
 // once we past this stage we can update the states of the board, the log, the captured pieces and the players
 /////////////////////////////////////////////////////////////////////////////////////

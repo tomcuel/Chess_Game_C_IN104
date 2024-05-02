@@ -517,6 +517,151 @@ void Make_Move(Piece*** board, Move* move, Move_Log_array* log, Captured_Piece_a
 }
 
 
+void Make_Rock_Move(Piece*** board, Move* move, Move* king_move_during_rock, Move* rook_move_during_rock, Move_Log_array* log, Captured_Piece_and_Score* captured_piece_and_score, State_Of_Rock_and_Check* state_of_rock_and_check, Players* players){
+    // we suppose that the log is updated before calling this function
+    // we suppose that the move is valid
+    // that the piece that will move will have it's parameters updated 
+    // - for example : if a pawn got out of his start position, we will update the is_on_his_start_position attribute before calling this function
+    // we can move the piece
+
+
+    // updating the rook 
+    // first we update the destination piece with the source piece, before suppressing the source piece on the board by reinitializing it
+    board[rook_move_during_rock->destination_row][rook_move_during_rock->destination_col]->type = board[rook_move_during_rock->previous_row][rook_move_during_rock->previous_col]->type;
+    board[rook_move_during_rock->destination_row][rook_move_during_rock->destination_col]->color = board[rook_move_during_rock->previous_row][rook_move_during_rock->previous_col]->color;
+    board[rook_move_during_rock->destination_row][rook_move_during_rock->destination_col]->value = board[rook_move_during_rock->previous_row][rook_move_during_rock->previous_col]->value;
+    board[rook_move_during_rock->destination_row][rook_move_during_rock->destination_col]->is_alive = board[rook_move_during_rock->previous_row][rook_move_during_rock->previous_col]->is_alive;
+    board[rook_move_during_rock->destination_row][rook_move_during_rock->destination_col]->is_checked = board[rook_move_during_rock->previous_row][rook_move_during_rock->previous_col]->is_checked;
+    board[rook_move_during_rock->destination_row][rook_move_during_rock->destination_col]->is_on_his_start_position = Is_Piece_on_its_start_position(board[rook_move_during_rock->previous_row][rook_move_during_rock->previous_col]); // here we don't have any others choice than to check if the piece is on its start position or not, not with a smart way
+
+    board[rook_move_during_rock->previous_row][rook_move_during_rock->previous_col]->type = NOTHING;
+    board[rook_move_during_rock->previous_row][rook_move_during_rock->previous_col]->color = NO_COLOR;
+    board[rook_move_during_rock->previous_row][rook_move_during_rock->previous_col]->value = 0;
+    board[rook_move_during_rock->previous_row][rook_move_during_rock->previous_col]->is_alive = false;
+    board[rook_move_during_rock->previous_row][rook_move_during_rock->previous_col]->is_checked = false;
+    board[rook_move_during_rock->previous_row][rook_move_during_rock->previous_col]->is_on_his_start_position = false;
+
+    // updating the king
+    // first we update the destination piece with the source piece, before suppressing the source piece on the board by reinitializing it
+    board[king_move_during_rock->destination_row][king_move_during_rock->destination_col]->type = board[king_move_during_rock->previous_row][king_move_during_rock->previous_col]->type;
+    board[king_move_during_rock->destination_row][king_move_during_rock->destination_col]->color = board[king_move_during_rock->previous_row][king_move_during_rock->previous_col]->color;
+    board[king_move_during_rock->destination_row][king_move_during_rock->destination_col]->value = board[king_move_during_rock->previous_row][king_move_during_rock->previous_col]->value;
+    board[king_move_during_rock->destination_row][king_move_during_rock->destination_col]->is_alive = board[king_move_during_rock->previous_row][king_move_during_rock->previous_col]->is_alive;
+    board[king_move_during_rock->destination_row][king_move_during_rock->destination_col]->is_checked = board[king_move_during_rock->previous_row][king_move_during_rock->previous_col]->is_checked;
+    board[king_move_during_rock->destination_row][king_move_during_rock->destination_col]->is_on_his_start_position = Is_Piece_on_its_start_position(board[king_move_during_rock->previous_row][king_move_during_rock->previous_col]); // here we don't have any others choice than to check if the piece is on its start position or not, not with a smart way
+
+    board[king_move_during_rock->previous_row][king_move_during_rock->previous_col]->type = NOTHING;
+    board[king_move_during_rock->previous_row][king_move_during_rock->previous_col]->color = NO_COLOR;
+    board[king_move_during_rock->previous_row][king_move_during_rock->previous_col]->value = 0;
+    board[king_move_during_rock->previous_row][king_move_during_rock->previous_col]->is_alive = false;
+    board[king_move_during_rock->previous_row][king_move_during_rock->previous_col]->is_checked = false;
+    board[king_move_during_rock->previous_row][king_move_during_rock->previous_col]->is_on_his_start_position = false;
+    
+
+    // updating the captured pieces and the score
+
+    // if the piece in the updated log at the last index (for the last move) is not NOTHING, then we have a captured piece
+    if (log->Move_Log[log->actual_size-1]->taken_piece_type != NOTHING){
+        // it then depend on the color of the piece to know which player captured it
+        // if it's white : 
+        if (log->Move_Log[log->actual_size-1]->taken_piece_color == WHITE){
+            // updating the captured piece by its coordinates
+            captured_piece_and_score->white_pieces_captured[captured_piece_and_score->number_of_white_pieces_captured]->col = log->Move_Log[log->actual_size-1]->move->destination_col;
+            captured_piece_and_score->white_pieces_captured[captured_piece_and_score->number_of_white_pieces_captured]->row = log->Move_Log[log->actual_size-1]->move->destination_row;
+            
+            // updating the other attributes of the piece
+            captured_piece_and_score->white_pieces_captured[captured_piece_and_score->number_of_white_pieces_captured]->type = log->Move_Log[log->actual_size-1]->taken_piece_type;
+            captured_piece_and_score->white_pieces_captured[captured_piece_and_score->number_of_white_pieces_captured]->color = log->Move_Log[log->actual_size-1]->taken_piece_color;
+            captured_piece_and_score->white_pieces_captured[captured_piece_and_score->number_of_white_pieces_captured]->value = Get_Value_Of_Piece(log->Move_Log[log->actual_size-1]->taken_piece_type);
+            
+            // in reality, we don't care about it, but we can update it not to let it to false (NULL here)
+            captured_piece_and_score->white_pieces_captured[captured_piece_and_score->number_of_white_pieces_captured]->is_alive = false;
+            captured_piece_and_score->white_pieces_captured[captured_piece_and_score->number_of_white_pieces_captured]->is_checked = false;
+            captured_piece_and_score->white_pieces_captured[captured_piece_and_score->number_of_white_pieces_captured]->is_on_his_start_position = false;
+
+            // incrementing the number of white pieces captured
+            captured_piece_and_score->number_of_white_pieces_captured++;
+            printf("test1\n");
+        }
+    
+
+        // if it's black : 
+        else if (log->Move_Log[log->actual_size-1]->taken_piece_color == BLACK){
+            // updating the captured piece by its coordinates
+            captured_piece_and_score->black_pieces_captured[captured_piece_and_score->number_of_black_pieces_captured]->col = log->Move_Log[log->actual_size-1]->move->destination_col;
+            captured_piece_and_score->black_pieces_captured[captured_piece_and_score->number_of_black_pieces_captured]->row = log->Move_Log[log->actual_size-1]->move->destination_row;
+
+            // updating the other attributes of the piece
+            captured_piece_and_score->black_pieces_captured[captured_piece_and_score->number_of_black_pieces_captured]->type = log->Move_Log[log->actual_size-1]->taken_piece_type;
+            captured_piece_and_score->black_pieces_captured[captured_piece_and_score->number_of_black_pieces_captured]->color = log->Move_Log[log->actual_size-1]->taken_piece_color;
+            captured_piece_and_score->black_pieces_captured[captured_piece_and_score->number_of_black_pieces_captured]->value = Get_Value_Of_Piece(log->Move_Log[log->actual_size-1]->taken_piece_type);
+
+            // in reality, we don't care about it, but we can update it not to let it to false (NULL here)
+            captured_piece_and_score->black_pieces_captured[captured_piece_and_score->number_of_black_pieces_captured]->is_alive = false;
+            captured_piece_and_score->black_pieces_captured[captured_piece_and_score->number_of_black_pieces_captured]->is_checked = false;
+            captured_piece_and_score->black_pieces_captured[captured_piece_and_score->number_of_black_pieces_captured]->is_on_his_start_position = false;
+
+            // incrementing the number of black pieces captured
+            captured_piece_and_score->number_of_black_pieces_captured++;
+        }
+    }
+
+
+    // updating the state of the rock and the check 
+
+    // first we need to udpate the rock state
+    // if it's a rock move, we need to update the state of the rock
+    if (log->Move_Log[log->actual_size-1]->rock_type != NO_ROCK){
+        // if it's a white rock
+        if (log->Move_Log[log->actual_size-1]->taken_piece_color == WHITE){
+            // we need to tell that the white_rock happened
+            state_of_rock_and_check->white_rock_done = true;
+        }
+        // if it's a black rock
+        else if (log->Move_Log[log->actual_size-1]->taken_piece_color == BLACK){
+            // we need to tell that the black_rock happened
+            state_of_rock_and_check->black_rock_done = true;
+        }
+    }
+
+    // then we need to tell if the differents rooks are still on their start position
+
+    // if the top left corner piece is not a black rook that is still on its starting line, then the black left rook moved
+    if (board[0][0]->type != ROOK || board[0][0]->color != BLACK || board[0][0]->is_on_his_start_position == false){
+        state_of_rock_and_check->black_left_rook_moved = true;
+    }
+
+    // if the top right corner piece is not a black rook that is still on its starting line, then the black right rook moved
+    if (board[0][7]->type != ROOK || board[0][7]->color != BLACK || board[0][7]->is_on_his_start_position == false){
+        state_of_rock_and_check->black_right_rook_moved = true;
+    }
+
+    // if the bottom left corner piece is not a white rook that is still on its starting line, then the white left rook moved
+    if (board[7][0]->type != ROOK || board[7][0]->color != WHITE || board[7][0]->is_on_his_start_position == false){
+        state_of_rock_and_check->white_left_rook_moved = true;
+    }
+
+    // if the bottom right corner piece is not a white rook that is still on its starting line, then the white right rook moved
+    if (board[7][7]->type != ROOK || board[7][7]->color != WHITE || board[7][7]->is_on_his_start_position == false){
+        state_of_rock_and_check->white_right_rook_moved = true;
+    }
+
+    // then we need to update the check state (we will deal with checkmate in another function, another part of the program)
+    // we need to check if the move put the other player in check
+    // the log will tell us that 
+    if (log->Move_Log[log->actual_size-1]->check_state == WHITE_CHECK){
+        state_of_rock_and_check->is_white_king_checked = true;
+    }
+    else if (log->Move_Log[log->actual_size-1]->check_state == BLACK_CHECK){
+        state_of_rock_and_check->is_black_king_checked = true;
+    }
+
+    // updating the players that be the next to play
+    Change_Players_that_is_Playing(players);
+
+}
+
+
 
 void Undo_Move(Piece*** board, Move* move, Move_Log_array* log, Captured_Piece_and_Score* captured_piece_and_score, State_Of_Rock_and_Check* state_of_rock_and_check, Players* players){
     // we suppose that the log is updated before calling this function

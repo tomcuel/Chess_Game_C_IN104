@@ -14,7 +14,8 @@
  * 
  * - the game loop should work fine here 
  * - the game isn't finished at this state 
- * - by adding the en passant to the pawn movement possibilities, in this version th goal is to use the buttons on the menu and do the move only if they're valid without considering the special moves and the check 
+ * - by adding the en passant to the pawn movement possibilities, in this version th goal is to use the buttons on the menu and do the move only (not considering en passant, the check things)
+ * - the goal here is that the rock is working fine (without just the check things)
  * - an effort has been made here to use the log, the state of the rock, the captured pieces (we have checked yet if it works correctly, but it should work in theory, so we will test that in the future)
  * - the part (V2) will focus on the implementation of the differents menus during the game
  * - the timer_showing isn't implemented yet, a first step is made to know how it works in the tests_SDL_basics directory, but not being able to download the SDL2_ttf library, we can't show it for now
@@ -157,7 +158,7 @@ int main (){
 
 
     // making the timer for each player, the time mode will be asked after so this constant here will have no effect later 
-    int timer_game_mode=5;
+    int timer_game_mode=100;
 
     // time remaining for each player
     int seconds_remaining_player_2 = timer_game_mode;
@@ -322,26 +323,45 @@ int main (){
 
             }
 
-            if (is_clicked_1 == 1 && is_clicked_2 == 1) {
+            if (is_clicked_1 == 1 && is_clicked_2 == 1 && is_running_game == CHESSBOARD_RENDER) {
                 // reseting the selected piece
                 is_clicked_1 = 0;
                 is_clicked_2 = 0;
 
+                int is_rock_possible_type = Is_Rock_Possible(move, State_Of_RockandCheck, board);
+
                 // making the move log update that is crucial for Make_Move to work since we go searching for an index actual_size-1 and only adding an element to Move_Log will make actual_size-1 positive, not to have a segmentation fault
                 Move_Log_Element* element = Create_Element_Move_Log();
-                Change_Move_Log_Element(element, move->previous_row, move->previous_col, move->destination_row, move->destination_col, NO_CHECK, NOTHING, NO_COLOR, NO_ROCK, NO_EN_PASSANT);
+                Change_Move_Log_Element(element, move->previous_row, move->previous_col, move->destination_row, move->destination_col, NO_CHECK, NOTHING, NO_COLOR, is_rock_possible_type, NO_EN_PASSANT);
                 Move_Log_array_MESSAGE_TYPE message = Add_Element_to_the_end_of_Move_Log_array(Log, element);
+                
                 if (message != LOG_LIST_SUCCESS){
                     printf("Error: the log is full\n");
                     is_running_game = -1;
                 }
+
                 Destroy_Move_Log_Element(element);
 
                 // if you touch the piece once, as in the real game, you're forced to play this piece, there isn't any way to cancel the move
                 // making the move if it's valid, here we don't care about the special moves and what it does to other pieces
                 // we will need to do it in the future, here we also don't care about the check
-                if (Is_Move_Valid(move, board, State_Of_RockandCheck, Log) == true){
-                    Make_Move(board, move, Log, Captured_Pieces_and_Score, State_Of_RockandCheck, players);
+                
+                if (Is_Move_Valid(move, board, State_Of_RockandCheck) == true){
+                    // trying to make the rock effective by getting the real moves linked to the rock that has been made
+                    if (is_rock_possible_type != NO_ROCK){
+                        Move* king_move_during_rock=Create_King_Move_during_Rock(move, board, State_Of_RockandCheck);
+                        Move* rook_move_during_rock=Create_Rook_Move_during_Rock(move, board, State_Of_RockandCheck);
+                        // we need to make the two moves, the king and the rock, and put the places there were to zero 
+                        // but also udpating the parameters others than the log
+                        Make_Rock_Move(board, move, king_move_during_rock, rook_move_during_rock, Log, Captured_Pieces_and_Score, State_Of_RockandCheck, players);
+
+                        // free the memory
+                        Destroy_Move(king_move_during_rock);
+                        Destroy_Move(rook_move_during_rock);
+                    }
+                    else {
+                        Make_Move(board, move, Log, Captured_Pieces_and_Score, State_Of_RockandCheck, players);
+                    }
                 // changing the player that is playing is included in the Make_Move function
                 }
             }

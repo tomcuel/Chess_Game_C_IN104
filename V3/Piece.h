@@ -38,8 +38,7 @@
  * Create_State_Of_Rock_and_Check - function to create a structure of the state of the rock and check state
  * Reset_State_Of_Rock_and_Check - function to reset a structure of the state of the rock and check state
  * Destroy_State_Of_Rock_and_Check - function to destroy a structure of the state of the rock and check state
- * Is_Rock_Possible - function to get if the rock is possible or not (if the first line is empty and if the king is not in check) (will be used in Is_Move_Valid_King)
- * Get_Type_Of_Rock - get the type of rock that is going to be made
+ * Is_Rock_Possible - function to get if the rock is possible or not (if the first line is empty and if the king is not in check) (will be used in Is_Move_Valid_King) and return what type of rock is possible
  * Create_Rook_Move_during_Rock - function that creates during the rock the move of the rook (depending on the type of rock : inside the function by calling Get_Type_Of_Rock)
  * Create_King_Move_during_Rock - function that creates the move of the king during the rock
  * Undo_Rook_during_Rock - function to undo the rook during the rock (will be used in the undo move)(but since the move will be considered for the king, we need to know the type of rock and change again the rook affected by the rock)
@@ -163,11 +162,10 @@ bool Is_Piece_on_its_start_position(Piece* piece);
  * @param move - the move to check
  * @param board - the board where the piece is
  * @param State_Of_Rock_and_Check - the state of the rock and check state to be able to say if can move the king or not
- * @param Move_Log - the log of the moves that have been made
  * @return bool - true if the move is valid, false otherwise
 **/
 /////////////////////////////////////////////////////////////////////////////////////
-bool Is_Move_Valid(Move* move, Piece*** board, State_Of_Rock_and_Check* State_Of_Rock_and_Check, Move_Log_array* Move_Log);
+bool Is_Move_Valid(Move* move, Piece*** board, State_Of_Rock_and_Check* State_Of_Rock_and_Check);
 
 
 /////////////////////////////////////////////////////////////////////////////////////
@@ -245,11 +243,10 @@ bool Is_Move_Valid_Queen(Move* move, Piece*** board);
  * @param move - the move to check
  * @param board - the board where the piece is
  * @param State_Of_Rock_and_Check - the state of the rock and check state to be able to say if can move the king or not
- * @param Move_Log - the log of the moves that have been made
  * @return bool - true if the move is valid, false otherwise
 **/
 /////////////////////////////////////////////////////////////////////////////////////
-bool Is_Move_Valid_King(Move* move, Piece*** board, State_Of_Rock_and_Check* State_Of_Rock_and_Check, Move_Log_array* Move_Log);
+bool Is_Move_Valid_King(Move* move, Piece*** board, State_Of_Rock_and_Check* State_Of_Rock_and_Check);
 
 
 /////////////////////////////////////////////////////////////////////////////////////
@@ -283,13 +280,13 @@ void Destroy_State_Of_Rock_and_Check(State_Of_Rock_and_Check* State_Of_Rock_and_
 /////////////////////////////////////////////////////////////////////////////////////
 // function to get if the rock is possible or not (if the first line is empty and if the king is not in check) (will be used in Is_Move_Valid_King) and return what type of rock is possible
 /**
- * @param color - the color of the piece that is going to move
+ * @param move - the move that is going to be made
  * @param State_Of_Rock_and_Check - the structure that contains the state of the rock and check state
  * @param board - the board where the piece is
  * @return int - NO_ROCK, SHORT_ROCK, LONG_ROCK
 **/
 /////////////////////////////////////////////////////////////////////////////////////
-int Is_Rock_Possible(int color /* same as player */, State_Of_Rock_and_Check* State_Of_Rock_and_Check, Piece*** board);
+int Is_Rock_Possible(Move* move, State_Of_Rock_and_Check* State_Of_Rock_and_Check, Piece*** board);
 
 
 /////////////////////////////////////////////////////////////////////////////////////
@@ -308,9 +305,10 @@ Move* Create_Rook_Move_during_Rock(Move* move, Piece*** board, State_Of_Rock_and
 /**
  * @param move - the move that is going to be made (deplacement of the king)
  * @param board - the board where the move will be made
+ * @param State_Of_Rock_and_Check - the structure that contains the state of the rock and check state
 **/
 /////////////////////////////////////////////////////////////////////////////////////
-Move* Create_King_Move_during_Rock(Move* move, Piece*** board);
+Move* Create_King_Move_during_Rock(Move* move, Piece*** board, State_Of_Rock_and_Check* State_Of_Rock_and_Check);
 
 
 /////////////////////////////////////////////////////////////////////////////////////
