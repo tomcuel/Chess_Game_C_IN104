@@ -257,20 +257,48 @@ void Ask_Name(SDL_Renderer* renderer, Players* players){
 }
 
 
-void Show_Victory_Menu(SDL_Renderer* renderer, Button** Buttons, int looser_player){
-    // considering here that we're player 1, with the white pieces
-
-    // showing the victory.bmp image if we won
-    // showing the defeat.bmp image if we lost
-    // we show it pull screen
+void Show_Victory_Menu(SDL_Renderer* renderer, Button** Buttons, int looser_player, Players* players){
+  
+    // if there is a looser, we show the victory or defeat image
     if (looser_player != -1){
         SDL_Rect Rect_final_screen = {0, 0, WINDOW_WIDTH, WINDOW_HEIGHT};
 
-        if (looser_player == Player1){
+        // when we play against the IA, we can add the images of victory and defeat, otherwise, bewteen two human players, we need to do diffent things
+        if (looser_player == Player1 && players->is_player1_an_IA == HUMAN && players->is_player2_an_IA == AI){
             add_image_to_render("defeat.bmp", renderer, Rect_final_screen);
         }
-        else{
+        if (looser_player == Player2 && players->is_player1_an_IA == HUMAN && players->is_player2_an_IA == AI){
             add_image_to_render("victory.bmp", renderer, Rect_final_screen);
+        }
+
+        // we need to print a message to say which player won when it's between two human players
+
+        // if the player 1 lost
+        if (looser_player == Player1 && players->is_player1_an_IA == HUMAN && players->is_player2_an_IA == HUMAN){
+            add_image_to_render("victory.bmp", renderer, Rect_final_screen);
+
+            SDL_Rect Rect_pos = {WINDOW_WIDTH/2-200, 150, 400,200};
+            // we show that the player 2 (and its corresponding color) won
+            if (players->player2_color == WHITE){
+                add_image_to_render("WHITE_PLAYER.bmp", renderer, Rect_pos);
+            }
+            else if (players->player2_color == BLACK){
+                add_image_to_render("BLACK_PLAYER.bmp", renderer, Rect_pos);
+            }
+        }
+
+        // if the player 2 lost
+        if (looser_player == Player2 && players->is_player1_an_IA == HUMAN && players->is_player2_an_IA == HUMAN){
+            add_image_to_render("victory.bmp", renderer, Rect_final_screen);
+
+            SDL_Rect Rect_pos = {WINDOW_WIDTH/2-200, 150, 400,200};
+            // we show that the player 1 (and its corresponding color) won
+            if (players->player1_color == WHITE){
+                add_image_to_render("WHITE_PLAYER.bmp", renderer, Rect_pos);
+            }
+            else if (players->player1_color == BLACK){
+                add_image_to_render("BLACK_PLAYER.bmp", renderer, Rect_pos);
+            }        
         }
     }
 

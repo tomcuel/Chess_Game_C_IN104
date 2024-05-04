@@ -87,6 +87,13 @@ void Show_Load_Menu(SDL_Renderer* renderer, int menu_type, Button** Buttons);
 void Show_Chess_Board(SDL_Renderer* renderer, Piece*** board, int is_clicked_1, int is_clicked_2, SDL_Rect draw_red_boundary_move);
 
 
+
+
+
+
+
+
+
 /////////////////////////////////////////////////////////////////////////////////////
 // Function to show the captured pieces of the players
 // One for the player 1 and one for the player 2, on the top of the screen for the white captured pieces and on the bottom for the black captured pieces
@@ -140,15 +147,22 @@ void Show_Menu_Button_in_Game(SDL_Renderer* renderer, Button** Buttons);
 void Ask_Name(SDL_Renderer* renderer, Players* players);
 
 
+
+
+
+
+
+
 /////////////////////////////////////////////////////////////////////////////////////
 // Function to show the victory menu
 /**
  * @param renderer : the renderer to show the victory menu
  * @param Buttons : the buttons to show
- * @param looser_player : the player that lost the game
+ * @param looser_player : the looser player
+ * @param players : the players
 **/
 /////////////////////////////////////////////////////////////////////////////////////
-void Show_Victory_Menu(SDL_Renderer* renderer, Button** Buttons, int looser_player);
+void Show_Victory_Menu(SDL_Renderer* renderer, Button** Buttons, int looser_player, Players* players);
 
 
 

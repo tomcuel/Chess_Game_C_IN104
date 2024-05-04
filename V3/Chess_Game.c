@@ -150,12 +150,14 @@ int main (){
     // initialize the structure to have the state of the game concerning rock and check
     State_Of_Rock_and_Check* State_Of_RockandCheck = Create_State_Of_Rock_and_Check();
 
+    // initialize the structure concerning the last play, but only for pawn that moved two squares (for the en passant)
+    Tiles_Pawn* Pawn_Move_State = Create_Tiles_Pawn();
+
     // initialize the players
     Players* players = Create_Players();
     
     // initialize the buttons
     Button** Buttons = Create_Buttons(NUMBER_OF_BUTTONS);
-
 
     // making the timer for each player, the time mode will be asked after so this constant here will have no effect later 
     int timer_game_mode=100;
@@ -209,13 +211,6 @@ int main (){
                             is_running_game+=1;
                         }
                         break;
-
-                    // for this part, if we're in the game, pressing the x key will make the game go back to the load menu
-                    case SDLK_x:
-                        if (is_running_game == VICTORY_MENU){
-                            is_running_game = GAMEPLAY_CHOICE;
-                        }
-                        break;
                 }
             }
 
@@ -234,7 +229,7 @@ int main (){
                         // if no piece has been selected
                         // it marked the first piece as selected if it's a piece of the player that is playing (looking at its color), and if it's not a nothing piece, so it's a piece that can be moved
                         // then it's the first coordinate of the move
-                        if (is_clicked_1 ==0 && board[row][col]->type != NOTHING && board[row][col]->color == players->color_player_that_is_playing) {
+                        if (is_clicked_1==0 && board[row][col]->type != NOTHING && board[row][col]->color == players->color_player_that_is_playing) {
                             // update the click, of the source piece here
                             is_clicked_1 = 1;
                             // start the move
@@ -258,11 +253,90 @@ int main (){
 
                         }
 
+                        if (is_clicked_1 == 1 && is_clicked_2 == 1 && is_running_game == CHESSBOARD_RENDER) {
+                            // reseting the selected piece
+                            is_clicked_1 = 0;
+                            is_clicked_2 = 0;
+
+                            // getting if a rock was done
+                            int is_rock_possible_type = Is_Rock_Possible(move, State_Of_RockandCheck, board);
+                            // getting if an en passant was done
+                            bool is_en_passant_possible = Is_En_Passant_Possible(move, board, Pawn_Move_State);
+
+                            // if a piece is taken, we need to know what type and what color it is, in case we want to undo it later, we can track the piece that has been taken to reinstall it on the board
+                            int piece_taken_type = NOTHING;
+                            int piece_taken_color = NO_COLOR;
+                            // if a move is valid, then we can also ask if a piece is taken, and if it's the case, we can know what type and what color it is
+                            if (Will_Capture(move, board) == true && Is_Move_Valid(move, board, State_Of_RockandCheck, Pawn_Move_State) == true){
+                                piece_taken_type = board[move->destination_row][move->destination_col]->type;
+                                piece_taken_color = board[move->destination_row][move->destination_col]->color;
+                            }
+
+                            // making the move log update that is crucial for Make_Move to work since we go searching for an index actual_size-1 and only adding an element to Move_Log will make actual_size-1 positive, not to have a segmentation fault
+                            Move_Log_Element* element = Create_Element_Move_Log();
+                            Change_Move_Log_Element(element, move->previous_row, move->previous_col, move->destination_row, move->destination_col, NO_CHECK, piece_taken_type, piece_taken_color, is_rock_possible_type, is_en_passant_possible);
+                            Move_Log_array_MESSAGE_TYPE message = Add_Element_to_the_end_of_Move_Log_array(Log, element);
+                            if (message != LOG_LIST_SUCCESS){
+                                printf("Error: the log is full\n");
+                                is_running_game = -1;
+                            }
+
+                            Destroy_Move_Log_Element(element);
+
+                            // if you touch the piece once, as in the real game, you're forced to play this piece, there isn't any way to cancel the move
+                            // making the move if it's valid, here we don't care about the special moves and what it does to other pieces
+                            // we will need to do it in the future, here we also don't care about the check
+                            
+                            if (Is_Move_Valid(move, board, State_Of_RockandCheck, Pawn_Move_State) == true){
+                                
+                                // trying to make the rock effective by getting the real moves linked to the rock that has been made
+                                if (is_rock_possible_type != NO_ROCK){
+                                    Move* king_move_during_rock=Create_King_Move_during_Rock(move, board, State_Of_RockandCheck);
+                                    Move* rook_move_during_rock=Create_Rook_Move_during_Rock(move, board, State_Of_RockandCheck);
+                                    // we need to make the two moves, the king and the rock, and put the places there were to zero 
+                                    // but also udpating the parameters others than the log, to keep track of the state of the game
+                                    Make_Rock_Move(board, move, king_move_during_rock, rook_move_during_rock, players);
+                                    Change_Others_Structures_during_Rock(Log, Captured_Pieces_and_Score, State_Of_RockandCheck, players, board);
+
+                                    // free the memory
+                                    Destroy_Move(king_move_during_rock);
+                                    Destroy_Move(rook_move_during_rock);
+
+                                    // since it's a rock, we can reset the tile pawn structure for the next turn
+                                    Reset_Tiles_Pawn(Pawn_Move_State);
+                                }
+                                // en passant move
+                                else if (is_en_passant_possible == true){
+
+                                    // we need to clear the piece that has been eaten by the en passant on the board, before making the move, because we need the initial position of the pawn to know where to clear the piece
+                                    Clear_En_Passant_Piece(move, board, Pawn_Move_State);
+                                    
+                                    // making the move and updating the parameters others than the log, to keep track of the state of the game
+                                    Make_Move(board, move, players);
+                                    Change_Others_Structures(Log, Captured_Pieces_and_Score, State_Of_RockandCheck, players, board);
+                                    
+                                    // en passant mean that we can reset the tile pawn structure for the next turn
+                                    Reset_Tiles_Pawn(Pawn_Move_State);
+                                }
+                                // classic move
+                                else {
+                                    // we need to file the tile pawn structure for the next turn, before making the move, because we need the initial position of the pawn to know if it can move two squares
+                                    Fill_Tile_Pawn(move, board, Pawn_Move_State);
+
+                                    // making the move and updating the parameters others than the log, to keep track of the state of the game
+                                    Make_Move(board, move, players);
+                                    Change_Others_Structures(Log, Captured_Pieces_and_Score, State_Of_RockandCheck, players, board);
+                                }
+                            // changing the player that is playing is included in the Make_Move function
+                            }
+
+                        }
+
                     }
 
                     // otherwise it can be on some buttons that are on the right side of the window
 
-                    /* to be made */
+                    /* to be made, implemented */
                 
                 }
 
@@ -308,6 +382,9 @@ int main (){
                         // reset the state of the rock and the check
                         Reset_State_Of_Rock_and_Check(State_Of_RockandCheck);
 
+                        // reset the tiles pawn structures
+                        Reset_Tiles_Pawn(Pawn_Move_State);
+
                         // reset the players, but since the parameters are the same, we don't need to reset everything from the beginning concerning the player type, the color, the name, etc
                         players->is_playing = Player1;
                         players->color_player_that_is_playing = WHITE;
@@ -323,48 +400,7 @@ int main (){
 
             }
 
-            if (is_clicked_1 == 1 && is_clicked_2 == 1 && is_running_game == CHESSBOARD_RENDER) {
-                // reseting the selected piece
-                is_clicked_1 = 0;
-                is_clicked_2 = 0;
-
-                int is_rock_possible_type = Is_Rock_Possible(move, State_Of_RockandCheck, board);
-
-                // making the move log update that is crucial for Make_Move to work since we go searching for an index actual_size-1 and only adding an element to Move_Log will make actual_size-1 positive, not to have a segmentation fault
-                Move_Log_Element* element = Create_Element_Move_Log();
-                Change_Move_Log_Element(element, move->previous_row, move->previous_col, move->destination_row, move->destination_col, NO_CHECK, NOTHING, NO_COLOR, is_rock_possible_type, NO_EN_PASSANT);
-                Move_Log_array_MESSAGE_TYPE message = Add_Element_to_the_end_of_Move_Log_array(Log, element);
-                
-                if (message != LOG_LIST_SUCCESS){
-                    printf("Error: the log is full\n");
-                    is_running_game = -1;
-                }
-
-                Destroy_Move_Log_Element(element);
-
-                // if you touch the piece once, as in the real game, you're forced to play this piece, there isn't any way to cancel the move
-                // making the move if it's valid, here we don't care about the special moves and what it does to other pieces
-                // we will need to do it in the future, here we also don't care about the check
-                
-                if (Is_Move_Valid(move, board, State_Of_RockandCheck) == true){
-                    // trying to make the rock effective by getting the real moves linked to the rock that has been made
-                    if (is_rock_possible_type != NO_ROCK){
-                        Move* king_move_during_rock=Create_King_Move_during_Rock(move, board, State_Of_RockandCheck);
-                        Move* rook_move_during_rock=Create_Rook_Move_during_Rock(move, board, State_Of_RockandCheck);
-                        // we need to make the two moves, the king and the rock, and put the places there were to zero 
-                        // but also udpating the parameters others than the log
-                        Make_Rock_Move(board, move, king_move_during_rock, rook_move_during_rock, Log, Captured_Pieces_and_Score, State_Of_RockandCheck, players);
-
-                        // free the memory
-                        Destroy_Move(king_move_during_rock);
-                        Destroy_Move(rook_move_during_rock);
-                    }
-                    else {
-                        Make_Move(board, move, Log, Captured_Pieces_and_Score, State_Of_RockandCheck, players);
-                    }
-                // changing the player that is playing is included in the Make_Move function
-                }
-            }
+            
         
         }
 
@@ -473,7 +509,7 @@ int main (){
             SDL_RenderClear(renderer);
 
             // show the victory menu
-            Show_Victory_Menu(renderer, Buttons, loosing_player);
+            Show_Victory_Menu(renderer, Buttons, loosing_player, players);
 
             // update the renderer by presenting the new screen
             SDL_RenderPresent(renderer);
@@ -488,7 +524,6 @@ int main (){
     // free the move
     Destroy_Move(move);
 
-
     // clear the buttons
     Destroy_Buttons(NUMBER_OF_BUTTONS, Buttons);
 
@@ -500,6 +535,9 @@ int main (){
 
     // clear the log
     Destroy_Move_Log_array(Log);
+
+    // clear the tiles pawn structures
+    Destroy_Tiles_Pawn(Pawn_Move_State);
 
     // clear the captured pieces
     Destroy_Captured_Piece_and_Score(Captured_Pieces_and_Score, max_size_captured_pieces_array);

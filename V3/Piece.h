@@ -14,8 +14,14 @@
  * Piece - structure that define what a piece is
  * Captured_Piece_and_Score - structure that the array of the captured pieces, depending on the color
  * State_Of_Rock_and_Check - structure that get the state of the rock and check state (if it has already been done or not) (if it's still possible or not)
+ * Tiles_Pawn - structure that tell what on move on a pawn made (which type of move, if it has moved 2 squares or not)
  * 
  * A summary of the supported functions is given below:
+ * 
+ * Create_Tiles_Pawn - create a structure of the tiles of the pawn
+ * Reset_Tiles_Pawn - reset a structure of the tiles of the pawn
+ * Fill_Tile_Pawn - fill a structure of the tiles of the pawn
+ * Destroy_Tiles_Pawn - destroy a structure of the tiles of the pawn
  * 
  * Create_Piece - create a piece
  * Destroy_Piece - destroy a piece
@@ -24,11 +30,7 @@
  * 
  * Is_Move_Valid - look if the move is valid for a certain piece on the board
  * Is_Move_Valid_Pawn - look if the move is valid for a pawn on the board
- * Get_Pawn_Neighbors - get the neighbors of a pawn (the two squares in the diagonal, going up or down depending on it's color)
- * 
- * Additional functions related to en passant will be added later.
- * A structure to track the state of en passant and moves of two squares may be considered.
- * 
+ * Is_En_Passant_Possible - tell if the en passant move is done and possible here
  * Is_Move_Valid_Knight - look if the move is valid for a knight on the board
  * Is_Move_Valid_Bishop - look if the move is valid for a bishop on the board
  * Is_Move_Valid_Rook - look if the move is valid for a rook on the board
@@ -111,6 +113,56 @@ typedef struct{
 
 
 /////////////////////////////////////////////////////////////////////////////////////
+// Structure tell what on move on a pawn made (which type of move, if it has moved 2 squares or not)
+/////////////////////////////////////////////////////////////////////////////////////
+typedef struct Tiles_Pawn {
+    int color; // will be useful
+    Move* move_made; // the move that has been made
+    bool has_moved_2_squares; // true if the pawn has moved 2 squares, false otherwise
+} Tiles_Pawn;
+
+
+/////////////////////////////////////////////////////////////////////////////////////
+// Function to create a structure of the tiles of the pawn
+/**
+ * @return Tiles_Pawn* - a pointer to the created structure.
+ * NULL, if an allocation error occurred.
+**/
+/////////////////////////////////////////////////////////////////////////////////////
+Tiles_Pawn* Create_Tiles_Pawn();
+
+
+/////////////////////////////////////////////////////////////////////////////////////
+// Function to reset a structure of the tiles of the pawn
+/**
+ * @param tiles_pawn - the structure to reset
+**/
+/////////////////////////////////////////////////////////////////////////////////////
+void Reset_Tiles_Pawn(Tiles_Pawn* tiles_pawn);
+
+
+/////////////////////////////////////////////////////////////////////////////////////
+// Function to fill a structure of the tiles of the pawn
+// the move is supposed to be valid, so we don't need to check if the move is valid
+/**
+ * @param move - the move that is going to be made
+ * @param board - the board where the piece is
+ * @param tiles_pawn - the structure to reset
+**/
+/////////////////////////////////////////////////////////////////////////////////////
+void Fill_Tile_Pawn(Move* move, Piece*** board, Tiles_Pawn* tiles_pawn);
+
+
+/////////////////////////////////////////////////////////////////////////////////////
+// Function to destroy a structure of the tiles of the pawn
+/**
+ * @param tiles_pawn - the structure to destroy
+**/
+/////////////////////////////////////////////////////////////////////////////////////
+void Destroy_Tiles_Pawn(Tiles_Pawn* tiles_pawn);
+    
+
+/////////////////////////////////////////////////////////////////////////////////////
 // Create a piece
 /**
  * @return Piece* - a pointer to the created piece.
@@ -162,10 +214,11 @@ bool Is_Piece_on_its_start_position(Piece* piece);
  * @param move - the move to check
  * @param board - the board where the piece is
  * @param State_Of_Rock_and_Check - the state of the rock and check state to be able to say if can move the king or not
+ * @param Pawn_Move_State - the state of the pawn to know if it has moved 2 squares or not
  * @return bool - true if the move is valid, false otherwise
 **/
 /////////////////////////////////////////////////////////////////////////////////////
-bool Is_Move_Valid(Move* move, Piece*** board, State_Of_Rock_and_Check* State_Of_Rock_and_Check);
+bool Is_Move_Valid(Move* move, Piece*** board, State_Of_Rock_and_Check* State_Of_Rock_and_Check, Tiles_Pawn* Pawn_Move_State);
 
 
 /////////////////////////////////////////////////////////////////////////////////////
@@ -173,24 +226,22 @@ bool Is_Move_Valid(Move* move, Piece*** board, State_Of_Rock_and_Check* State_Of
 /**
  * @param move - the move to check
  * @param board - the board where the piece is
+ * @param Pawn_Move_State - the state of the pawn to know if it has moved 2 squares or not
  * @return bool - true if the move is valid, false otherwise
 **/
 /////////////////////////////////////////////////////////////////////////////////////
-bool Is_Move_Valid_Pawn(Move* move, Piece*** board);
-
-
-// function for the enpassant to implement 
+bool Is_Move_Valid_Pawn(Move* move, Piece*** board, Tiles_Pawn* Pawn_Move_State);
 
 
 /////////////////////////////////////////////////////////////////////////////////////
-// Get the piece that is going to be taken en passant
+// Function that tell if the en passant move is done and possible here 
 /**
- * @param move - the move to check
+ * @param move - the move that is going to be made
  * @param board - the board where the piece is
- * @return Piece* - the piece that is going to be taken en passant
+ * @param Pawn_Move_State - the state of the pawn to know if it has moved 2 squares or not
 **/
 /////////////////////////////////////////////////////////////////////////////////////
-Piece* Taken_En_Passant(Move* move, Piece*** board);
+bool Is_En_Passant_Possible(Move* move, Piece*** board, Tiles_Pawn* Pawn_Move_State);
 
 
 /////////////////////////////////////////////////////////////////////////////////////

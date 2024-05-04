@@ -1,6 +1,80 @@
 #include "Piece.h"
 
 
+Tiles_Pawn* Create_Tiles_Pawn(){
+    Tiles_Pawn* tiles_pawn = (Tiles_Pawn*)malloc(sizeof(Tiles_Pawn));
+    // looking for a malloc error
+    if (tiles_pawn == NULL){
+        printf("Error: malloc failed in Create_Tiles_Pawn\n");
+        return NULL;
+    }
+
+    tiles_pawn->color = NO_COLOR;
+    tiles_pawn->move_made = Create_Move(0, 0, 0, 0);
+    tiles_pawn->has_moved_2_squares = false;
+
+    // return the tiles of the pawn
+    return tiles_pawn;
+}
+
+
+void Reset_Tiles_Pawn(Tiles_Pawn* tiles_pawn){
+    // if the tiles of the pawn is not NULL, we can reset it
+    if (tiles_pawn != NULL){
+        tiles_pawn->color = NO_COLOR;
+        tiles_pawn->move_made->previous_row = 0;
+        tiles_pawn->move_made->previous_col = 0;
+        tiles_pawn->move_made->destination_row = 0;
+        tiles_pawn->move_made->destination_col = 0;
+        tiles_pawn->has_moved_2_squares = false;
+    }
+}
+
+
+void Fill_Tile_Pawn(Move* move, Piece*** board, Tiles_Pawn* tiles_pawn){
+   
+    // copy the move made by the pawn
+    tiles_pawn->move_made->previous_row = move->previous_row;
+    tiles_pawn->move_made->previous_col = move->previous_col;
+    tiles_pawn->move_made->destination_row = move->destination_row;
+    tiles_pawn->move_made->destination_col = move->destination_col;
+   
+    // if the move is a pawn move
+    if (board[move->previous_row][move->previous_col]->type == PAWN){
+        
+        // if the pawn is white
+        if (board[move->previous_row][move->previous_col]->color == WHITE){
+            
+            tiles_pawn->color = WHITE;
+            
+            // if the pawn is moving up two squares
+            if (move->previous_row - move->destination_row == 2){
+                tiles_pawn->has_moved_2_squares = true;
+            }
+        }
+
+        // if the pawn is black
+        else if (board[move->previous_row][move->previous_col]->color == BLACK){
+            tiles_pawn->color = BLACK;
+            // if the pawn is moving down two squares
+            if (move->destination_row - move->previous_row == 2){
+                tiles_pawn->has_moved_2_squares = true;
+            }
+        }
+
+    }
+
+}
+
+
+void Destroy_Tiles_Pawn(Tiles_Pawn* tiles_pawn){
+    // if the tiles of the pawn is not NULL, we can free it
+    if (tiles_pawn != NULL){
+        free(tiles_pawn);
+    }
+}
+
+
 Piece* Create_Piece(){
     Piece* piece = (Piece*)malloc(sizeof(Piece));
     // looking for a malloc error
@@ -168,7 +242,7 @@ bool Is_Piece_on_its_start_position(Piece* piece){
 }
 
 
-bool Is_Move_Valid(Move* move, Piece*** board, State_Of_Rock_and_Check* State_Of_Rock_and_Check){
+bool Is_Move_Valid(Move* move, Piece*** board, State_Of_Rock_and_Check* State_Of_Rock_and_Check, Tiles_Pawn* Pawn_Move_State){
 
     // if the move is making no move, since it's an empty position at the beggining
     if (move->previous_row == move->destination_row && move->previous_col == move->destination_col){
@@ -186,7 +260,7 @@ bool Is_Move_Valid(Move* move, Piece*** board, State_Of_Rock_and_Check* State_Of
     }
 
     else if (board[move->previous_row][move->previous_col]->type == PAWN){
-        return Is_Move_Valid_Pawn(move, board);
+        return Is_Move_Valid_Pawn(move, board, Pawn_Move_State);
     }
 
     else if (board[move->previous_row][move->previous_col]->type == KNIGHT){
@@ -214,7 +288,7 @@ bool Is_Move_Valid(Move* move, Piece*** board, State_Of_Rock_and_Check* State_Of
 }
 
 
-bool Is_Move_Valid_Pawn(Move* move, Piece*** board){
+bool Is_Move_Valid_Pawn(Move* move, Piece*** board, Tiles_Pawn* Pawn_Move_State){
 
     // if the destination is a piece of the same color
     if (board[move->destination_row][move->destination_col]->color == board[move->previous_row][move->previous_col]->color){
@@ -291,31 +365,100 @@ bool Is_Move_Valid_Pawn(Move* move, Piece*** board){
         }
     }
 
-    // en passant remain to be implemented here
+    // en passant
+    // if the pawn is white
+    if (board[move->previous_row][move->previous_col]->color == WHITE && move->previous_row == 3){
+        
+        // if the pawn is moving to the right (up and right)
+        if (move->destination_row == move->previous_row-1 && move->destination_col == move->previous_col+1){
+            // if the destination is empty and the piece on the right of the previous position is a black pawn that just moved two cases
+            if (board[move->destination_row][move->destination_col]->type == NOTHING && board[move->previous_row][move->previous_col+1]->type == PAWN && board[move->previous_row][move->previous_col+1]->color == BLACK && Pawn_Move_State->has_moved_2_squares == true){
+                return true;
+            }
+        }
+
+        // if the pawn is moving to the left (up and left)
+        if (move->destination_row == move->previous_row-1 && move->destination_col == move->previous_col-1){
+            // if the destination is empty and the piece on the left of the previous position is a black pawn that just moved two cases
+            if (board[move->destination_row][move->destination_col]->type == NOTHING && board[move->previous_row][move->previous_col-1]->type == PAWN && board[move->previous_row][move->previous_col-1]->color == BLACK && Pawn_Move_State->has_moved_2_squares == true){
+                return true;
+            }
+        }
+
+    }
+
+    // if the pawn is black
+    if (board[move->previous_row][move->previous_col]->color == BLACK && move->previous_row == 4){
+        
+        // if the pawn is moving to the right (down and right)
+        if (move->destination_row == move->previous_row+1 && move->destination_col == move->previous_col+1){
+            // if the destination is empty and the piece on the right of the previous position is a white pawn that just moved two cases
+            if (board[move->destination_row][move->destination_col]->type == NOTHING && board[move->previous_row][move->previous_col+1]->type == PAWN && board[move->previous_row][move->previous_col+1]->color == WHITE && Pawn_Move_State->has_moved_2_squares == true){
+                return true;
+            }
+        }
+
+        // if the pawn is moving to the left (down and left)
+        if (move->destination_row == move->previous_row+1 && move->destination_col == move->previous_col-1){
+            // if the destination is empty and the piece on the left of the previous position is a white pawn that just moved two cases
+            if (board[move->destination_row][move->destination_col]->type == NOTHING && board[move->previous_row][move->previous_col-1]->type == PAWN && board[move->previous_row][move->previous_col-1]->color == WHITE && Pawn_Move_State->has_moved_2_squares == true){
+                return true;
+            }
+        }
+
+    }
+
 
     // return false by default
     return false;
 }
 
 
-// function needs to be implemented for the enpassant 
+bool Is_En_Passant_Possible(Move* move, Piece*** board, Tiles_Pawn* Pawn_Move_State){
 
+    // if the pawn is white, it also need to be before the move is made on the 4th row
+    if (board[move->previous_row][move->previous_col]->color == WHITE && move->previous_row == 3){
+        
+        // if the pawn is moving to the right (up and right)
+        if (move->destination_row == move->previous_row-1 && move->destination_col == move->previous_col+1){
+            // if the destination is empty and the piece on the right of the previous position is a black pawn that just moved two cases
+            if (board[move->destination_row][move->destination_col]->type == NOTHING && board[move->previous_row][move->previous_col+1]->type == PAWN && board[move->previous_row][move->previous_col+1]->color == BLACK && Pawn_Move_State->has_moved_2_squares == true){
+                return true;
+            }
+        }
 
+        // if the pawn is moving to the left (up and left)
+        if (move->destination_row == move->previous_row-1 && move->destination_col == move->previous_col-1){
+            // if the destination is empty and the piece on the left of the previous position is a black pawn that just moved two cases
+            if (board[move->destination_row][move->destination_col]->type == NOTHING && board[move->previous_row][move->previous_col-1]->type == PAWN && board[move->previous_row][move->previous_col-1]->color == BLACK && Pawn_Move_State->has_moved_2_squares == true){
+                return true;
+            }
+        }
 
-Piece* Taken_En_Passant(Move* move, Piece*** board){
-    // this function supposes that the moves is valid and will take a pawn en passant
-
-    // if the pawn is white
-    if (board[move->previous_row][move->previous_col]->color == WHITE){
-        // the pawn to take is the one that is on the same row before its moving and on the column of the destination
-        return board[move->previous_row][move->destination_col];
     }
 
-    // if the pawn is black
-    else if (board[move->previous_row][move->previous_col]->color == BLACK){
-        // the pawn to take is the one that is on the same row before its moving and on the column of the destination
-        return board[move->previous_row][move->destination_col];
+    // if the pawn is black, it also need to be before the move is made on the 5th row
+    if (board[move->previous_row][move->previous_col]->color == BLACK && move->previous_row == 4){
+        
+        // if the pawn is moving to the right (down and right)
+        if (move->destination_row == move->previous_row+1 && move->destination_col == move->previous_col+1){
+            // if the destination is empty and the piece on the right of the previous position is a white pawn that just moved two cases
+            if (board[move->destination_row][move->destination_col]->type == NOTHING && board[move->previous_row][move->previous_col+1]->type == PAWN && board[move->previous_row][move->previous_col+1]->color == WHITE && Pawn_Move_State->has_moved_2_squares == true){
+                return true;
+            }
+        }
+    
+        // if the pawn is moving to the left (down and left)
+        if (move->destination_row == move->previous_row+1 && move->destination_col == move->previous_col-1){
+            // if the destination is empty and the piece on the left of the previous position is a white pawn that just moved two cases
+            if (board[move->destination_row][move->destination_col]->type == NOTHING && board[move->previous_row][move->previous_col-1]->type == PAWN && board[move->previous_row][move->previous_col-1]->color == WHITE && Pawn_Move_State->has_moved_2_squares == true){
+                return true;
+            }
+        }
+    
     }
+
+    return false;
 }
 
 
@@ -513,8 +656,8 @@ bool Is_Move_Valid_King(Move* move, Piece*** board, State_Of_Rock_and_Check* Sta
 
     // the rock move of the king : 
     if (Is_Rock_Possible(move, State_Of_Rock_and_Check, board) != NO_ROCK){
-        // if the king is white and on its start position and is not checked
-        if (board[move->previous_row][move->previous_col]->color == WHITE && board[move->previous_row][move->previous_col]->is_on_his_start_position == true && State_Of_Rock_and_Check->is_white_king_checked == false){
+        // if the king is white and on its start position and is not checked, the rock need not to have been done already
+        if (board[move->previous_row][move->previous_col]->color == WHITE && board[move->previous_row][move->previous_col]->is_on_his_start_position == true && State_Of_Rock_and_Check->is_white_king_checked == false && State_Of_Rock_and_Check->white_rock_done == false){
             // if the king is moving to the left
             if (move->previous_col - move->destination_col == 4 && move->previous_row == move->destination_row && board[move->previous_row][move->previous_col]->is_on_his_start_position == true){
                 return true;
@@ -526,8 +669,8 @@ bool Is_Move_Valid_King(Move* move, Piece*** board, State_Of_Rock_and_Check* Sta
             }
         }
 
-        // if the king is black and on its start position and is not checked
-        else if (board[move->previous_row][move->previous_col]->color == BLACK && board[move->previous_row][move->previous_col]->is_on_his_start_position == true && State_Of_Rock_and_Check->is_black_king_checked == false){
+        // if the king is black and on its start position and is not checked, the rock need not to have been done already
+        else if (board[move->previous_row][move->previous_col]->color == BLACK && board[move->previous_row][move->previous_col]->is_on_his_start_position == true && State_Of_Rock_and_Check->is_black_king_checked == false && State_Of_Rock_and_Check->black_rock_done == false){
             // if the king is moving to the left
             if (move->previous_col - move->destination_col == 4 && move->previous_row == move->destination_row && board[move->previous_row][move->previous_col]->is_on_his_start_position == true){
                 return true;
@@ -610,6 +753,14 @@ int Is_Rock_Possible(Move* move, State_Of_Rock_and_Check* State_Of_Rock_and_Chec
 
     // if the move is not a king move
     if (board[move->previous_row][move->previous_col]->type != KING){
+        return NO_ROCK;
+    }
+
+    // if the rock has already been done
+    if (board[move->previous_row][move->previous_col]->color == WHITE && State_Of_Rock_and_Check->white_rock_done == true){
+        return NO_ROCK;
+    }
+    else if (board[move->previous_row][move->previous_col]->color == BLACK && State_Of_Rock_and_Check->black_rock_done == true){
         return NO_ROCK;
     }
 
@@ -788,13 +939,19 @@ Move* Create_King_Move_during_Rock(Move* move, Piece*** board, State_Of_Rock_and
 }
 
 
+
+// to be implemented, maybe not on this form later on
 void Undo_Rook_during_Rock(Move* move, Piece*** board, State_Of_Rock_and_Check* State_Of_Rock_and_Check, Move_Log_array* Move_Log){
 
 }
 
 
 bool Will_Capture(Move* move, Piece*** board){
-
+    // if the destination is a piece of the opposite color
+    if (board[move->destination_row][move->destination_col]->color != board[move->previous_row][move->previous_col]->color){
+        return true;
+    }
+    return false;
 }
 
 
@@ -813,6 +970,14 @@ Captured_Piece_and_Score* Create_Captured_Piece_and_Score(int max_number_of_piec
         printf("Error: malloc failed in Create_Captured_Piece_and_Score\n");
         return NULL;
     }
+    for (int i = 0; i < max_number_of_pieces; i++){
+        captured_piece_and_score->white_pieces_captured[i] =  Create_Piece();
+        // looking for a malloc error
+        if (captured_piece_and_score->white_pieces_captured[i] == NULL){
+            printf("Error: malloc failed in Create_Captured_Piece_and_Score\n");
+            return NULL;
+        }
+    }
 
     // allocating the memory for the array of black pieces captured
     captured_piece_and_score->black_pieces_captured = (Piece**)malloc(max_number_of_pieces * sizeof(Piece*));
@@ -820,6 +985,14 @@ Captured_Piece_and_Score* Create_Captured_Piece_and_Score(int max_number_of_piec
     if (captured_piece_and_score->black_pieces_captured == NULL){
         printf("Error: malloc failed in Create_Captured_Piece_and_Score\n");
         return NULL;
+    }
+    for (int i = 0; i < max_number_of_pieces; i++){
+        captured_piece_and_score->black_pieces_captured[i] =  Create_Piece();
+        // looking for a malloc error
+        if (captured_piece_and_score->black_pieces_captured[i] == NULL){
+            printf("Error: malloc failed in Create_Captured_Piece_and_Score\n");
+            return NULL;
+        }
     }
 
     // setting the number of white pieces captured to 0

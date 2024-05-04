@@ -20,7 +20,10 @@
  * Reset_Board - to reset the board to the initial state
  * Clear_Board - to clear the board
  * Make_Move - to make a move on the board and update everything : the board, the state of rock and check, the captured pieces, and the players structure
- * Undo_Move - to undo a move on the board and update everything : the board, the state of rock and check, the captured pieces, and the players structure
+ * Make_Rock_Move - to make a move on the board when a rock is done and update everything : the board, the state of rock and check, the captured pieces, and the players structure
+ * Clear_En_Passant_Piece - to clear the pawn taken by the en passant
+ * 
+ * to be continued...
 **/
 /////////////////////////////////////////////////////////////////////////////////////
 
@@ -58,13 +61,10 @@ void Clear_Board(Piece*** board);
 /**
  * @param board : the board to make the move
  * @param move : the move to make
- * @param log : the log of the moves
- * @param captured_piece_and_score : the captured pieces of the players with the score
- * @param state_of_rock_and_check : the state of the rock and the check
  * @param players : the players
 **/
 /////////////////////////////////////////////////////////////////////////////////////
-void Make_Move(Piece*** board, Move* move, Move_Log_array* log, Captured_Piece_and_Score* captured_piece_and_score, State_Of_Rock_and_Check* state_of_rock_and_check, Players* players);
+void Make_Move(Piece*** board, Move* move, Players* players);
 
 
 /////////////////////////////////////////////////////////////////////////////////////
@@ -75,13 +75,38 @@ void Make_Move(Piece*** board, Move* move, Move_Log_array* log, Captured_Piece_a
  * @param move : the move to make
  * @param king_move_during_rock : the move of the king during the rock
  * @param rook_move_during_rock : the move of the rook during the rock
- * @param log : the log of the moves
- * @param captured_piece_and_score : the captured pieces of the players
- * @param state_of_rock_and_check : the state of the rock and the check
  * @param players : the players
 **/
 /////////////////////////////////////////////////////////////////////////////////////
-void Make_Rock_Move(Piece*** board, Move* move, Move* king_move_during_rock, Move* rook_move_during_rock, Move_Log_array* log, Captured_Piece_and_Score* captured_piece_and_score, State_Of_Rock_and_Check* state_of_rock_and_check, Players* players);
+void Make_Rock_Move(Piece*** board, Move* move, Move* king_move_during_rock, Move* rook_move_during_rock, Players* players);
+
+
+/////////////////////////////////////////////////////////////////////////////////////
+// Function to clear the pawn taken by the en passant
+// suppose that en passant is possible and the move is done
+/**
+ * @param move : the move to make
+ * @param board : the board to make the move
+ * @param Pawn_Move_State : the state of the pawn move
+*/
+void Clear_En_Passant_Piece(Move* move, Piece*** board, Tiles_Pawn* Pawn_Move_State);
+
+
+
+
+
+
+
+
+
+
+
+
+void Change_Others_Structures(Move_Log_array* log, Captured_Piece_and_Score* captured_piece_and_score, State_Of_Rock_and_Check* state_of_rock_and_check, Players* players, Piece*** board);
+
+void Change_Others_Structures_during_Rock(Move_Log_array* log, Captured_Piece_and_Score* captured_piece_and_score, State_Of_Rock_and_Check* state_of_rock_and_check, Players* players, Piece*** board);
+
+
 
 /////////////////////////////////////////////////////////////////////////////////////
 // There will be the need to undo the move, if is_check after the move and tell to make the move again
@@ -89,19 +114,7 @@ void Make_Rock_Move(Piece*** board, Move* move, Move* king_move_during_rock, Mov
 /////////////////////////////////////////////////////////////////////////////////////
 
 
-/////////////////////////////////////////////////////////////////////////////////////
-// Function to undo a move on the board
-// It modifies the board, the log and the captured pieces, and the players structure, to change the player that is playing
-/**
- * @param board : the board to make the move
- * @param move : the move to make
- * @param log : the log of the moves
- * @param captured_piece_and_score : the captured pieces of the players
- * @param state_of_rock_and_check : the state of the rock and the check
- * @param players : the players
-**/
-/////////////////////////////////////////////////////////////////////////////////////
-void Undo_Move(Piece*** board, Move* move, Move_Log_array* log, Captured_Piece_and_Score* captured_piece_and_score, State_Of_Rock_and_Check* state_of_rock_and_check, Players* players);
+
 
 
 #endif /* __BOARD_H__ */
