@@ -562,24 +562,49 @@ void Change_Others_Structures(Move_Log_array* log, Captured_Piece_and_Score* cap
     
     // for the move of the different rooks we look on the board if on the corners, the rooks are still on their start position
     // if not, we update the structure to say that the rock is not possible anymore
-    if (board[0][0]->type != ROOK || board[0][0]->color != BLACK){
+    // black left rook
+    if (board[0][0]->type == ROOK && board[0][0]->color == BLACK){
+        state_of_rock_and_check->black_left_rook_moved = false;
+    }
+    else {
         state_of_rock_and_check->black_left_rook_moved = true;
     }
-    if (board[0][7]->type != ROOK || board[0][7]->color != BLACK){
+    // black right rook
+    if (board[0][7]->type == ROOK && board[0][7]->color == BLACK){
+        state_of_rock_and_check->black_right_rook_moved = false;
+    }
+    else {
         state_of_rock_and_check->black_right_rook_moved = true;
     }
-    if (board[7][0]->type != ROOK || board[7][0]->color != WHITE){
+    // white left rook
+    if (board[7][0]->type == ROOK && board[7][0]->color == WHITE){
+        state_of_rock_and_check->white_left_rook_moved = false;
+    }
+    else {
         state_of_rock_and_check->white_left_rook_moved = true;
     }
-    if (board[7][7]->type != ROOK || board[7][7]->color != WHITE){
+    // white right rook
+    if (board[7][7]->type == ROOK && board[7][7]->color == WHITE){
+        state_of_rock_and_check->white_right_rook_moved = false;
+    }
+    else {
         state_of_rock_and_check->white_right_rook_moved = true;
     }
-    if (board[7][4]->type != KING || board[7][4]->color != WHITE){
+    // white king
+    if (board[7][4]->type == KING && board[7][4]->color == WHITE){
+        state_of_rock_and_check->white_king_moved = false;
+    }
+    else {
         state_of_rock_and_check->white_king_moved = true;
     }
-    if (board[0][4]->type != KING || board[0][4]->color != BLACK){
+    // black king
+    if (board[0][4]->type == KING && board[0][4]->color == BLACK){
+        state_of_rock_and_check->black_king_moved = false;
+    }
+    else {
         state_of_rock_and_check->black_king_moved = true;
     }
+
 
     // for the check, we need to look if the king is checked, if we are here the king of the other color is not checked
     if (log->Move_Log[log->actual_size-1]->check_state == WHITE_CHECK){
@@ -590,7 +615,7 @@ void Change_Others_Structures(Move_Log_array* log, Captured_Piece_and_Score* cap
         state_of_rock_and_check->is_white_king_checked = false;
         state_of_rock_and_check->is_black_king_checked = true;
     }
-    else{
+    else if (log->Move_Log[log->actual_size-1]->check_state == NO_CHECK){
         state_of_rock_and_check->is_white_king_checked = false;
         state_of_rock_and_check->is_black_king_checked = false;
     }
@@ -610,22 +635,46 @@ void Change_Others_Structures_during_Rock(Move_Log_array* log, Captured_Piece_an
     
     // for the move of the different rooks we look on the board if on the corners, the rooks are still on their start position
     // if not, we update the structure to say that the rock is not possible anymore
-    if (board[0][0]->type != ROOK || board[0][0]->color != BLACK){
+     // black left rook
+    if (board[0][0]->type == ROOK && board[0][0]->color == BLACK){
+        state_of_rock_and_check->black_left_rook_moved = false;
+    }
+    else {
         state_of_rock_and_check->black_left_rook_moved = true;
     }
-    if (board[0][7]->type != ROOK || board[0][7]->color != BLACK){
+    // black right rook
+    if (board[0][7]->type == ROOK && board[0][7]->color == BLACK){
+        state_of_rock_and_check->black_right_rook_moved = false;
+    }
+    else {
         state_of_rock_and_check->black_right_rook_moved = true;
     }
-    if (board[7][0]->type != ROOK || board[7][0]->color != WHITE){
+    // white left rook
+    if (board[7][0]->type == ROOK && board[7][0]->color == WHITE){
+        state_of_rock_and_check->white_left_rook_moved = false;
+    }
+    else {
         state_of_rock_and_check->white_left_rook_moved = true;
     }
-    if (board[7][7]->type != ROOK || board[7][7]->color != WHITE){
+    // white right rook
+    if (board[7][7]->type == ROOK && board[7][7]->color == WHITE){
+        state_of_rock_and_check->white_right_rook_moved = false;
+    }
+    else {
         state_of_rock_and_check->white_right_rook_moved = true;
     }
-    if (board[7][4]->type != KING || board[7][4]->color != WHITE){
+    // white king
+    if (board[7][4]->type == KING && board[7][4]->color == WHITE){
+        state_of_rock_and_check->white_king_moved = false;
+    }
+    else {
         state_of_rock_and_check->white_king_moved = true;
     }
-    if (board[0][4]->type != KING || board[0][4]->color != BLACK){
+    // black king
+    if (board[0][4]->type == KING && board[0][4]->color == BLACK){
+        state_of_rock_and_check->black_king_moved = false;
+    }
+    else {
         state_of_rock_and_check->black_king_moved = true;
     }
 
@@ -642,3 +691,5 @@ void Change_Others_Structures_during_Rock(Move_Log_array* log, Captured_Piece_an
         state_of_rock_and_check->white_rock_done = true;
     }
 }
+
+// change cpatured piece during the en passant is needed to be done

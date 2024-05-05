@@ -282,6 +282,17 @@ int main (){
                             }
 
                             Destroy_Move_Log_Element(element);
+                            /*
+                            printf("\nplayer that was playing : %d\n", players->is_playing);
+                            printf("was the rock possible ? %d\n", is_rock_possible_type);
+                            printf("the move that has been made : (%d,%d) --> (%d,%d)\n", move->previous_row, move->previous_col, move->destination_row, move->destination_col);
+                            printf("state of the rock and check :\n");
+                            printf("for the white player :\n");
+                            printf("left_rook_moved : %d, right_rook_moved : %d, king_moved : %d, , king checked %d, rock_done : %d\n", State_Of_RockandCheck->white_left_rook_moved, State_Of_RockandCheck->white_right_rook_moved, State_Of_RockandCheck->white_king_moved, State_Of_RockandCheck->is_white_king_checked, State_Of_RockandCheck->white_rock_done);
+                            printf("for the black player :\n");
+                            printf("left_rook_moved : %d, right_rook_moved : %d, king_moved : %d, , king checked %d, rock_done : %d\n", State_Of_RockandCheck->black_left_rook_moved, State_Of_RockandCheck->black_right_rook_moved, State_Of_RockandCheck->black_king_moved, State_Of_RockandCheck->is_black_king_checked, State_Of_RockandCheck->black_rock_done);
+                            */
+
 
                             // if you touch the piece once, as in the real game, you're forced to play this piece, there isn't any way to cancel the move
                             // making the move if it's valid, here we don't care about the special moves and what it does to other pieces
@@ -330,6 +341,17 @@ int main (){
                             // changing the player that is playing is included in the Make_Move function
                             }
 
+                            /*
+                            printf("\npawn move state :\n");
+                            printf("move of the last pawn (%d,%d) --> (%d,%d)\n", Pawn_Move_State->move_made->previous_row, Pawn_Move_State->move_made->previous_col, Pawn_Move_State->move_made->destination_row, Pawn_Move_State->move_made->destination_col);
+                            if (Pawn_Move_State->has_moved_2_squares == true){
+                                printf("the last pawn has moved two squares\n");
+                            }
+                            else {
+                                printf("the last pawn has not moved two squares\n");
+                            }
+                            */
+                           
                         }
 
                     }
@@ -417,7 +439,7 @@ int main (){
                         seconds_remaining_player_2--;
                         last_frame_time = current_time;
                         if (last_second_player_2 != seconds_remaining_player_2) {
-                            printf("Current time remaining for player 2 : %d seconds\n", seconds_remaining_player_2);
+                            //printf("Current time remaining for player 2 : %d seconds\n", seconds_remaining_player_2);
                             last_second_player_2 = seconds_remaining_player_2;
                         }
                     }
@@ -436,7 +458,7 @@ int main (){
                         seconds_remaining_player_1--;
                         last_frame_time = current_time;
                         if (last_second_player_1 != seconds_remaining_player_1) {
-                            printf("Current time remaining for player 1 : %d seconds\n", seconds_remaining_player_1);
+                            //printf("Current time remaining for player 1 : %d seconds\n", seconds_remaining_player_1);
                             last_second_player_1 = seconds_remaining_player_1;
                         }
                     }
