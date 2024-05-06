@@ -46,22 +46,32 @@ void Fill_Tile_Pawn(Move* move, Piece*** board, Tiles_Pawn* tiles_pawn){
         if (board[move->previous_row][move->previous_col]->color == WHITE){
             
             tiles_pawn->color = WHITE;
-            
             // if the pawn is moving up two squares
             if (move->previous_row - move->destination_row == 2){
                 tiles_pawn->has_moved_2_squares = true;
+            }
+            else {
+                tiles_pawn->has_moved_2_squares = false;
             }
         }
 
         // if the pawn is black
         else if (board[move->previous_row][move->previous_col]->color == BLACK){
+            
             tiles_pawn->color = BLACK;
             // if the pawn is moving down two squares
             if (move->destination_row - move->previous_row == 2){
                 tiles_pawn->has_moved_2_squares = true;
             }
+            else {
+                tiles_pawn->has_moved_2_squares = false;
+            }
         }
 
+    }
+
+    else if (board[move->previous_row][move->previous_col]->type != PAWN){
+        tiles_pawn->has_moved_2_squares = false;
     }
 
 }
@@ -366,46 +376,8 @@ bool Is_Move_Valid_Pawn(Move* move, Piece*** board, Tiles_Pawn* Pawn_Move_State)
     }
 
     // en passant
-    // if the pawn is white
-    if (board[move->previous_row][move->previous_col]->color == WHITE && move->previous_row == 3){
-        
-        // if the pawn is moving to the right (up and right)
-        if (move->destination_row == move->previous_row-1 && move->destination_col == move->previous_col+1){
-            // if the destination is empty and the piece on the right of the previous position is a black pawn that just moved two cases
-            if (board[move->destination_row][move->destination_col]->type == NOTHING && board[move->previous_row][move->previous_col+1]->type == PAWN && board[move->previous_row][move->previous_col+1]->color == BLACK && Pawn_Move_State->has_moved_2_squares == true){
-                return true;
-            }
-        }
-
-        // if the pawn is moving to the left (up and left)
-        if (move->destination_row == move->previous_row-1 && move->destination_col == move->previous_col-1){
-            // if the destination is empty and the piece on the left of the previous position is a black pawn that just moved two cases
-            if (board[move->destination_row][move->destination_col]->type == NOTHING && board[move->previous_row][move->previous_col-1]->type == PAWN && board[move->previous_row][move->previous_col-1]->color == BLACK && Pawn_Move_State->has_moved_2_squares == true){
-                return true;
-            }
-        }
-
-    }
-
-    // if the pawn is black
-    if (board[move->previous_row][move->previous_col]->color == BLACK && move->previous_row == 4){
-        
-        // if the pawn is moving to the right (down and right)
-        if (move->destination_row == move->previous_row+1 && move->destination_col == move->previous_col+1){
-            // if the destination is empty and the piece on the right of the previous position is a white pawn that just moved two cases
-            if (board[move->destination_row][move->destination_col]->type == NOTHING && board[move->previous_row][move->previous_col+1]->type == PAWN && board[move->previous_row][move->previous_col+1]->color == WHITE && Pawn_Move_State->has_moved_2_squares == true){
-                return true;
-            }
-        }
-
-        // if the pawn is moving to the left (down and left)
-        if (move->destination_row == move->previous_row+1 && move->destination_col == move->previous_col-1){
-            // if the destination is empty and the piece on the left of the previous position is a white pawn that just moved two cases
-            if (board[move->destination_row][move->destination_col]->type == NOTHING && board[move->previous_row][move->previous_col-1]->type == PAWN && board[move->previous_row][move->previous_col-1]->color == WHITE && Pawn_Move_State->has_moved_2_squares == true){
-                return true;
-            }
-        }
-
+    if (Is_En_Passant_Possible(move, board, Pawn_Move_State)){
+        return true;
     }
 
 
@@ -422,7 +394,7 @@ bool Is_En_Passant_Possible(Move* move, Piece*** board, Tiles_Pawn* Pawn_Move_St
         // if the pawn is moving to the right (up and right)
         if (move->destination_row == move->previous_row-1 && move->destination_col == move->previous_col+1){
             // if the destination is empty and the piece on the right of the previous position is a black pawn that just moved two cases
-            if (board[move->destination_row][move->destination_col]->type == NOTHING && board[move->previous_row][move->previous_col+1]->type == PAWN && board[move->previous_row][move->previous_col+1]->color == BLACK && Pawn_Move_State->has_moved_2_squares == true){
+            if (board[move->destination_row][move->destination_col]->type == NOTHING && board[move->previous_row][move->previous_col+1]->type == PAWN && board[move->previous_row][move->previous_col+1]->color == BLACK && Pawn_Move_State->has_moved_2_squares == true && Pawn_Move_State->color == BLACK){
                 return true;
             }
         }
@@ -430,7 +402,7 @@ bool Is_En_Passant_Possible(Move* move, Piece*** board, Tiles_Pawn* Pawn_Move_St
         // if the pawn is moving to the left (up and left)
         if (move->destination_row == move->previous_row-1 && move->destination_col == move->previous_col-1){
             // if the destination is empty and the piece on the left of the previous position is a black pawn that just moved two cases
-            if (board[move->destination_row][move->destination_col]->type == NOTHING && board[move->previous_row][move->previous_col-1]->type == PAWN && board[move->previous_row][move->previous_col-1]->color == BLACK && Pawn_Move_State->has_moved_2_squares == true){
+            if (board[move->destination_row][move->destination_col]->type == NOTHING && board[move->previous_row][move->previous_col-1]->type == PAWN && board[move->previous_row][move->previous_col-1]->color == BLACK && Pawn_Move_State->has_moved_2_squares == true && Pawn_Move_State->color == BLACK){
                 return true;
             }
         }
@@ -443,7 +415,7 @@ bool Is_En_Passant_Possible(Move* move, Piece*** board, Tiles_Pawn* Pawn_Move_St
         // if the pawn is moving to the right (down and right)
         if (move->destination_row == move->previous_row+1 && move->destination_col == move->previous_col+1){
             // if the destination is empty and the piece on the right of the previous position is a white pawn that just moved two cases
-            if (board[move->destination_row][move->destination_col]->type == NOTHING && board[move->previous_row][move->previous_col+1]->type == PAWN && board[move->previous_row][move->previous_col+1]->color == WHITE && Pawn_Move_State->has_moved_2_squares == true){
+            if (board[move->destination_row][move->destination_col]->type == NOTHING && board[move->previous_row][move->previous_col+1]->type == PAWN && board[move->previous_row][move->previous_col+1]->color == WHITE && Pawn_Move_State->has_moved_2_squares == true && Pawn_Move_State->color == WHITE){
                 return true;
             }
         }
@@ -451,13 +423,14 @@ bool Is_En_Passant_Possible(Move* move, Piece*** board, Tiles_Pawn* Pawn_Move_St
         // if the pawn is moving to the left (down and left)
         if (move->destination_row == move->previous_row+1 && move->destination_col == move->previous_col-1){
             // if the destination is empty and the piece on the left of the previous position is a white pawn that just moved two cases
-            if (board[move->destination_row][move->destination_col]->type == NOTHING && board[move->previous_row][move->previous_col-1]->type == PAWN && board[move->previous_row][move->previous_col-1]->color == WHITE && Pawn_Move_State->has_moved_2_squares == true){
+            if (board[move->destination_row][move->destination_col]->type == NOTHING && board[move->previous_row][move->previous_col-1]->type == PAWN && board[move->previous_row][move->previous_col-1]->color == WHITE && Pawn_Move_State->has_moved_2_squares == true && Pawn_Move_State->color == WHITE){
                 return true;
             }
         }
     
     }
 
+    // default
     return false;
 }
 
@@ -648,7 +621,7 @@ bool Is_Move_Valid_King(Move* move, Piece*** board, State_Of_Rock_and_Check* Sta
             return false;
         }
         // otherwise it needs to look like a queen move, just here it's restricted to one square (we might have not needed it since we already checked for the distances)
-        else if (Is_Move_Valid_Rook(move, board) || Is_Move_Valid_Bishop(move, board)){
+        if (Is_Move_Valid_Rook(move, board) || Is_Move_Valid_Bishop(move, board)){
             return true;
         }
     }
@@ -656,37 +629,12 @@ bool Is_Move_Valid_King(Move* move, Piece*** board, State_Of_Rock_and_Check* Sta
 
     // the rock move of the king : 
     if (Is_Rock_Possible(move, State_Of_Rock_and_Check, board) != NO_ROCK){
-        // if the king is white and on its start position and is not checked, the rock need not to have been done already
-        if (board[move->previous_row][move->previous_col]->color == WHITE && board[move->previous_row][move->previous_col]->is_on_his_start_position == true && State_Of_Rock_and_Check->is_white_king_checked == false && State_Of_Rock_and_Check->white_rock_done == false){
-            // if the king is moving to the left
-            if (move->previous_col - move->destination_col == 4 && move->previous_row == move->destination_row && board[move->previous_row][move->previous_col]->is_on_his_start_position == true){
-                return true;
-            }
-
-            // if the king is moving to the right
-            else if (move->destination_col - move->previous_col == 3 && move->previous_row == move->destination_row && board[move->previous_row][move->previous_col]->is_on_his_start_position == true){
-                return true;
-            }
-        }
-
-        // if the king is black and on its start position and is not checked, the rock need not to have been done already
-        else if (board[move->previous_row][move->previous_col]->color == BLACK && board[move->previous_row][move->previous_col]->is_on_his_start_position == true && State_Of_Rock_and_Check->is_black_king_checked == false && State_Of_Rock_and_Check->black_rock_done == false){
-            // if the king is moving to the left
-            if (move->previous_col - move->destination_col == 4 && move->previous_row == move->destination_row && board[move->previous_row][move->previous_col]->is_on_his_start_position == true){
-                return true;
-            }
-
-            // if the king is moving to the right
-            else if (move->destination_col - move->previous_col == 3 && move->previous_row == move->destination_row && board[move->previous_row][move->previous_col]->is_on_his_start_position == true){
-                return true;
-            }
-        }
+        return true;
     }
             
     // if the move is not horizontal, vertical or diagonal and not a rock
     return false; 
 }
-
 
 
 State_Of_Rock_and_Check* Create_State_Of_Rock_and_Check(){
@@ -746,114 +694,75 @@ void Destroy_State_Of_Rock_and_Check(State_Of_Rock_and_Check* State_Of_Rock_and_
 }
 
 
-
-// still to implement : the part of the rock that need to determine if the king is checked or not during his move during the rook
 int Is_Rock_Possible(Move* move, State_Of_Rock_and_Check* State_Of_Rock_and_Check, Piece*** board){
-    // the move for a rock is the king going to the rook position 
 
-    // if the move is not a king move
-    if (board[move->previous_row][move->previous_col]->type != KING){
-        return NO_ROCK;
-    }
-
-    // if the rock has already been done
-    if (board[move->previous_row][move->previous_col]->color == WHITE && State_Of_Rock_and_Check->white_rock_done == true){
-        return NO_ROCK;
-    }
-    else if (board[move->previous_row][move->previous_col]->color == BLACK && State_Of_Rock_and_Check->black_rock_done == true){
-        return NO_ROCK;
-    }
-
-    // if the move is a king move
-    else if (board[move->previous_row][move->previous_col]->type == KING){
-        // if the king is white and on its start position and is not checked
-        if (board[move->previous_row][move->previous_col]->color == WHITE && board[move->previous_row][move->previous_col]->is_on_his_start_position == true && State_Of_Rock_and_Check->is_white_king_checked == false){
+    // if the king is white and on its start position and is not checked, and the rock is not done
+    if (board[move->previous_row][move->previous_col]->type == KING && board[move->previous_row][move->previous_col]->color == WHITE 
+    && State_Of_Rock_and_Check->is_white_king_checked == false && State_Of_Rock_and_Check->white_king_moved == false && State_Of_Rock_and_Check->white_rock_done == false){
            
-            // if the king is moving to the left
-            if (move->previous_col - move->destination_col == 4){
-                // if the left rook is on its start position and is not moved
-                if (board[move->previous_row][0]->is_on_his_start_position == true && State_Of_Rock_and_Check->white_left_rook_moved == false){
-                    
-                    // the case bewteen the king and the rook needs to be empty of pieces 
-                    for (int j = 1; j < 4; j++){
-                        if (board[move->previous_row][j]->type != NOTHING){
-                            return NO_ROCK;
-                        }
-                    }
-                    
-                    // the case on xhich the king is travelling needs not to be threaten by an opponent piece
-                    // to be implemented
-                    return LONG_ROCK;
-
+        // if the king is moving to the left, for a possible long rock, the left rook needs to be on its start position and not moved
+        if (move->previous_col == 4 && move->destination_col == 0 && State_Of_Rock_and_Check->white_left_rook_moved == false){
+            // the case bewteen the king and the rook needs to be empty of pieces 
+            for (int j = 1; j < 4; j++){
+                if (board[7][j]->type != NOTHING){
+                    return NO_ROCK;
                 }
             }
-
-            // if the king is moving to the right
-            else if (move->destination_col - move->previous_col == 3){
-                // if the right rook is on its start position and is not moved
-                if (board[move->previous_row][7]->is_on_his_start_position == true && State_Of_Rock_and_Check->white_right_rook_moved == false){
-                    
-                    // the case bewteen the king and the rook needs to be empty of pieces
-                    for (int j = 5; j < 7; j++){
-                        if (board[move->previous_row][j]->type != NOTHING){
-                            return NO_ROCK;
-                        }
-                    }
-
-                    // the case on xhich the king is travelling needs not to be threaten by an opponent piece
-                    // to be implemented
-                    return SHORT_ROCK;
-
-                }
-            }
-
+            // the case on xhich the king is travelling needs not to be threaten by an opponent piece
+            // to be implemented
+            return LONG_ROCK;
         }
 
-        // if the king is black and on its start position and is not checked
-        else if (board[move->previous_row][move->previous_col]->color == BLACK && board[move->previous_row][move->previous_col]->is_on_his_start_position == true && State_Of_Rock_and_Check->is_black_king_checked == false){
-            
-            // if the king is moving to the left
-            if (move->previous_col - move->destination_col == 4){
-                // if the left rook is on its start position and is not moved
-                if (board[move->previous_row][0]->is_on_his_start_position == true && State_Of_Rock_and_Check->black_left_rook_moved == false){
-                    
-                    // the case bewteen the king and the rook needs to be empty of pieces
-                    for (int j = 1; j < 4; j++){
-                        if (board[move->previous_row][j]->type != NOTHING){
-                            return NO_ROCK;
-                        }
-                    }
-
-                    // the case on xhich the king is travelling needs not to be threaten by an opponent piece
-                    // to be implemented
-                    return LONG_ROCK;
-
+        // if the king is moving to the right, the right rook needs to be on its start position and not moved
+        else if (move->destination_col == 7 && move->previous_col ==4 && State_Of_Rock_and_Check->white_right_rook_moved == false){
+                
+            // the case bewteen the king and the rook needs to be empty of pieces
+            for (int j = 5; j < 7; j++){
+                if (board[0][j]->type != NOTHING){
+                    return NO_ROCK;
                 }
             }
-
-            // if the king is moving to the right
-            else if (move->destination_col - move->previous_col == 3){
-                // if the right rook is on its start position and is not moved
-                if (board[move->previous_row][7]->is_on_his_start_position == true && State_Of_Rock_and_Check->black_right_rook_moved == false){
-                    
-                    // the case bewteen the king and the rook needs to be empty of pieces
-                    for (int j = 5; j < 7; j++){
-                        if (board[move->previous_row][j]->type != NOTHING){
-                            return NO_ROCK;
-                        }
-                    }
-
-                    // the case on xhich the king is travelling needs not to be threaten by an opponent piece
-                    // to be implemented
-                    return SHORT_ROCK;
-
-                }
-            }
-
+            // the case on xhich the king is travelling needs not to be threaten by an opponent piece
+            // to be implemented
+            return SHORT_ROCK;
         }
 
     }
 
+    // if the king is black and on its start position and is not checked, and the rock is not done
+    if (board[move->previous_row][move->previous_col]->type == KING && board[move->previous_row][move->previous_col]->color == BLACK
+    && State_Of_Rock_and_Check->is_black_king_checked == false && State_Of_Rock_and_Check->black_king_moved == false && State_Of_Rock_and_Check->black_rock_done == false){
+        
+        // if the king is moving to the left, the left rook needs to be on its start position and not moved
+        if (move->previous_col == 4 && move->destination_col == 0 && State_Of_Rock_and_Check->black_left_rook_moved == false){
+            // the case bewteen the king and the rook needs to be empty of pieces
+            for (int j = 1; j < 4; j++){
+                if (board[0][j]->type != NOTHING){
+                    return NO_ROCK;
+                }
+            }
+            // the case on xhich the king is travelling needs not to be threaten by an opponent piece
+            // to be implemented
+            return LONG_ROCK;
+        }
+
+        // if the king is moving to the right, the right rook needs to be on its start position and not moved
+        else if (move->destination_col == 7 && move->previous_col == 4 && State_Of_Rock_and_Check->black_right_rook_moved == false){
+            // the case bewteen the king and the rook needs to be empty of pieces
+            for (int j = 5; j < 7; j++){
+                if (board[0][j]->type != NOTHING){
+                    return NO_ROCK;
+                }
+            }
+            // the case on xhich the king is travelling needs not to be threaten by an opponent piece
+            // to be implemented
+            return SHORT_ROCK;
+        }
+
+    }
+    
+    // default case for every other caseq
+    return NO_ROCK;
 }
 
 
@@ -1004,7 +913,7 @@ Captured_Piece_and_Score* Create_Captured_Piece_and_Score(int max_number_of_piec
     // setting the score to 0
     captured_piece_and_score->score = 0;
     // setting the player that is winning to Player1
-    captured_piece_and_score->player_that_is_winning = NO_COLOR;
+    captured_piece_and_score->player_that_is_winning = WHITE;
 
     // return the captured piece and score
     return captured_piece_and_score;

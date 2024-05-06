@@ -497,13 +497,6 @@ void Clear_En_Passant_Piece(Move* move, Piece*** board, Tiles_Pawn* Pawn_Move_St
 }
 
 
-
-
-
-// still to be done and verified
-
-
-
 void Change_Others_Structures(Move_Log_array* log, Captured_Piece_and_Score* captured_piece_and_score, State_Of_Rock_and_Check* state_of_rock_and_check, Players* players, Piece*** board){
     
     // updating the captured pieces and the score
@@ -536,13 +529,11 @@ void Change_Others_Structures(Move_Log_array* log, Captured_Piece_and_Score* cap
             // updating the captured piece by its coordinates
             captured_piece_and_score->black_pieces_captured[captured_piece_and_score->number_of_black_pieces_captured]->col = log->Move_Log[log->actual_size-1]->move->destination_col;
             captured_piece_and_score->black_pieces_captured[captured_piece_and_score->number_of_black_pieces_captured]->row = log->Move_Log[log->actual_size-1]->move->destination_row;
-            printf("tes2\n");
 
             // updating the other attributes of the piece
             captured_piece_and_score->black_pieces_captured[captured_piece_and_score->number_of_black_pieces_captured]->type = log->Move_Log[log->actual_size-1]->taken_piece_type;
             captured_piece_and_score->black_pieces_captured[captured_piece_and_score->number_of_black_pieces_captured]->color = log->Move_Log[log->actual_size-1]->taken_piece_color;
             captured_piece_and_score->black_pieces_captured[captured_piece_and_score->number_of_black_pieces_captured]->value = Get_Value_Of_Piece(log->Move_Log[log->actual_size-1]->taken_piece_type);
-            printf("test3\n");
 
             // in reality, we don't care about it, but we can update it not to let it to false (NULL here)
             captured_piece_and_score->black_pieces_captured[captured_piece_and_score->number_of_black_pieces_captured]->is_alive = false;
@@ -550,11 +541,37 @@ void Change_Others_Structures(Move_Log_array* log, Captured_Piece_and_Score* cap
             captured_piece_and_score->black_pieces_captured[captured_piece_and_score->number_of_black_pieces_captured]->is_on_his_start_position = false;
 
             // incrementing the number of black pieces captured
-            printf("test4\n");
             captured_piece_and_score->number_of_black_pieces_captured++;
         }
     }
 
+    // updating the score
+    // getting the total score of the white captured pieces
+    int score_white_captured = 0;
+    for (int i = 0; i < captured_piece_and_score->number_of_white_pieces_captured; i++){
+        score_white_captured += captured_piece_and_score->white_pieces_captured[i]->value;
+    }
+
+    // getting the total score of the black captured pieces
+    int score_black_captured = 0;
+    for (int i = 0; i < captured_piece_and_score->number_of_black_pieces_captured; i++){
+        score_black_captured += captured_piece_and_score->black_pieces_captured[i]->value;
+    }
+
+    // updating the score of the players and the player that is winning depending on the score
+    if (score_white_captured > score_black_captured){
+        captured_piece_and_score->score = score_white_captured - score_black_captured;
+        captured_piece_and_score->player_that_is_winning = BLACK;
+    }
+    else if (score_white_captured < score_black_captured){
+        captured_piece_and_score->score = score_black_captured - score_white_captured;
+        captured_piece_and_score->player_that_is_winning = WHITE;
+    }
+    else {
+        captured_piece_and_score->score = 0;
+        captured_piece_and_score->player_that_is_winning = WHITE;
+    }
+   
 
     // updating the state of the rock and the check 
     // we go through this function if no rock is done 
@@ -562,24 +579,49 @@ void Change_Others_Structures(Move_Log_array* log, Captured_Piece_and_Score* cap
     
     // for the move of the different rooks we look on the board if on the corners, the rooks are still on their start position
     // if not, we update the structure to say that the rock is not possible anymore
-    if (board[0][0]->type != ROOK || board[0][0]->color != BLACK){
+    // black left rook
+    if (board[0][0]->type == ROOK && board[0][0]->color == BLACK){
+        state_of_rock_and_check->black_left_rook_moved = false;
+    }
+    else {
         state_of_rock_and_check->black_left_rook_moved = true;
     }
-    if (board[0][7]->type != ROOK || board[0][7]->color != BLACK){
+    // black right rook
+    if (board[0][7]->type == ROOK && board[0][7]->color == BLACK){
+        state_of_rock_and_check->black_right_rook_moved = false;
+    }
+    else {
         state_of_rock_and_check->black_right_rook_moved = true;
     }
-    if (board[7][0]->type != ROOK || board[7][0]->color != WHITE){
+    // white left rook
+    if (board[7][0]->type == ROOK && board[7][0]->color == WHITE){
+        state_of_rock_and_check->white_left_rook_moved = false;
+    }
+    else {
         state_of_rock_and_check->white_left_rook_moved = true;
     }
-    if (board[7][7]->type != ROOK || board[7][7]->color != WHITE){
+    // white right rook
+    if (board[7][7]->type == ROOK && board[7][7]->color == WHITE){
+        state_of_rock_and_check->white_right_rook_moved = false;
+    }
+    else {
         state_of_rock_and_check->white_right_rook_moved = true;
     }
-    if (board[7][4]->type != KING || board[7][4]->color != WHITE){
+    // white king
+    if (board[7][4]->type == KING && board[7][4]->color == WHITE){
+        state_of_rock_and_check->white_king_moved = false;
+    }
+    else {
         state_of_rock_and_check->white_king_moved = true;
     }
-    if (board[0][4]->type != KING || board[0][4]->color != BLACK){
+    // black king
+    if (board[0][4]->type == KING && board[0][4]->color == BLACK){
+        state_of_rock_and_check->black_king_moved = false;
+    }
+    else {
         state_of_rock_and_check->black_king_moved = true;
     }
+
 
     // for the check, we need to look if the king is checked, if we are here the king of the other color is not checked
     if (log->Move_Log[log->actual_size-1]->check_state == WHITE_CHECK){
@@ -590,7 +632,7 @@ void Change_Others_Structures(Move_Log_array* log, Captured_Piece_and_Score* cap
         state_of_rock_and_check->is_white_king_checked = false;
         state_of_rock_and_check->is_black_king_checked = true;
     }
-    else{
+    else if (log->Move_Log[log->actual_size-1]->check_state == NO_CHECK){
         state_of_rock_and_check->is_white_king_checked = false;
         state_of_rock_and_check->is_black_king_checked = false;
     }
@@ -610,22 +652,46 @@ void Change_Others_Structures_during_Rock(Move_Log_array* log, Captured_Piece_an
     
     // for the move of the different rooks we look on the board if on the corners, the rooks are still on their start position
     // if not, we update the structure to say that the rock is not possible anymore
-    if (board[0][0]->type != ROOK || board[0][0]->color != BLACK){
+     // black left rook
+    if (board[0][0]->type == ROOK && board[0][0]->color == BLACK){
+        state_of_rock_and_check->black_left_rook_moved = false;
+    }
+    else {
         state_of_rock_and_check->black_left_rook_moved = true;
     }
-    if (board[0][7]->type != ROOK || board[0][7]->color != BLACK){
+    // black right rook
+    if (board[0][7]->type == ROOK && board[0][7]->color == BLACK){
+        state_of_rock_and_check->black_right_rook_moved = false;
+    }
+    else {
         state_of_rock_and_check->black_right_rook_moved = true;
     }
-    if (board[7][0]->type != ROOK || board[7][0]->color != WHITE){
+    // white left rook
+    if (board[7][0]->type == ROOK && board[7][0]->color == WHITE){
+        state_of_rock_and_check->white_left_rook_moved = false;
+    }
+    else {
         state_of_rock_and_check->white_left_rook_moved = true;
     }
-    if (board[7][7]->type != ROOK || board[7][7]->color != WHITE){
+    // white right rook
+    if (board[7][7]->type == ROOK && board[7][7]->color == WHITE){
+        state_of_rock_and_check->white_right_rook_moved = false;
+    }
+    else {
         state_of_rock_and_check->white_right_rook_moved = true;
     }
-    if (board[7][4]->type != KING || board[7][4]->color != WHITE){
+    // white king
+    if (board[7][4]->type == KING && board[7][4]->color == WHITE){
+        state_of_rock_and_check->white_king_moved = false;
+    }
+    else {
         state_of_rock_and_check->white_king_moved = true;
     }
-    if (board[0][4]->type != KING || board[0][4]->color != BLACK){
+    // black king
+    if (board[0][4]->type == KING && board[0][4]->color == BLACK){
+        state_of_rock_and_check->black_king_moved = false;
+    }
+    else {
         state_of_rock_and_check->black_king_moved = true;
     }
 
