@@ -913,7 +913,7 @@ Captured_Piece_and_Score* Create_Captured_Piece_and_Score(int max_number_of_piec
     // setting the score to 0
     captured_piece_and_score->score = 0;
     // setting the player that is winning to Player1
-    captured_piece_and_score->player_that_is_winning = NO_COLOR;
+    captured_piece_and_score->player_that_is_winning = WHITE;
 
     // return the captured piece and score
     return captured_piece_and_score;

@@ -92,20 +92,30 @@ void Make_Rock_Move(Piece*** board, Move* move, Move* king_move_during_rock, Mov
 void Clear_En_Passant_Piece(Move* move, Piece*** board, Tiles_Pawn* Pawn_Move_State);
 
 
-
-
-
-
-
-
-
-
-
-
+/////////////////////////////////////////////////////////////////////////////////////
+// Function to update the others types of structures after the move is made
+/**
+ * @param log : the log of the moves
+ * @param captured_piece_and_score : the captured pieces and the score
+ * @param state_of_rock_and_check : the state of rock and check
+ * @param players : the players
+ * @param board : the board
+**/
+/////////////////////////////////////////////////////////////////////////////////////
 void Change_Others_Structures(Move_Log_array* log, Captured_Piece_and_Score* captured_piece_and_score, State_Of_Rock_and_Check* state_of_rock_and_check, Players* players, Piece*** board);
 
-void Change_Others_Structures_during_Rock(Move_Log_array* log, Captured_Piece_and_Score* captured_piece_and_score, State_Of_Rock_and_Check* state_of_rock_and_check, Players* players, Piece*** board);
 
+/////////////////////////////////////////////////////////////////////////////////////
+// Function to update the others types of structures after the move is made when it is a rock
+/**
+ * @param log : the log of the moves
+ * @param captured_piece_and_score : the captured pieces and the score
+ * @param state_of_rock_and_check : the state of rock and check
+ * @param players : the players
+ * @param board : the board
+**/
+/////////////////////////////////////////////////////////////////////////////////////
+void Change_Others_Structures_during_Rock(Move_Log_array* log, Captured_Piece_and_Score* captured_piece_and_score, State_Of_Rock_and_Check* state_of_rock_and_check, Players* players, Piece*** board);
 
 
 /////////////////////////////////////////////////////////////////////////////////////

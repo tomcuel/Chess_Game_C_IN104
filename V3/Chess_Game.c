@@ -62,6 +62,131 @@ SDL_Renderer* renderer = NULL;
 
 
 ///////////////////////////////////////////////////////////////////////////////
+// function to print the captured pieces and the state of the rock and check
+/**
+ * @param *captured_piece_and_score : the structure that contains the captured pieces and the score
+ * @param *state_of_rock_and_check : the structure that contains the state of the rock and check
+**/
+///////////////////////////////////////////////////////////////////////////////
+void print_rock_state_and_captured_pieces(Captured_Piece_and_Score* captured_piece_and_score, State_Of_Rock_and_Check* state_of_rock_and_check){
+
+    // printing the state of the rock and check
+    // printing if a rock is possible for each player
+    printf("\n     The state of the rock and check currently is : \n");
+    if (state_of_rock_and_check->white_rock_done == false){
+        printf("The white player can still do the rock\n");
+    }
+    else {
+        printf("The white player can't do the rock anymore\n");
+    }
+    if (state_of_rock_and_check->black_rock_done == false){
+        printf("The black player can still do the rock\n");
+    }
+    else {
+        printf("The black player can't do the rock anymore\n");
+    }
+
+    // printing if a piece has moved for each player
+    printf("The pieces that moved from their starting position concerning rock for white players are : ");
+    if (state_of_rock_and_check->white_king_moved == true){
+        printf("The white king moved, ");
+    }
+    if (state_of_rock_and_check->white_left_rook_moved == true){
+        printf("The white left rook moved, ");
+    }
+    if (state_of_rock_and_check->white_right_rook_moved == true){
+        printf("The white right rook moved, ");
+    }
+    printf("\n");
+    printf("The pieces that moved from their starting position concerning rock for black players are : ");
+    if (state_of_rock_and_check->black_king_moved == true){
+        printf("The black king moved, ");
+    }
+    if (state_of_rock_and_check->black_left_rook_moved == true){
+        printf("The black left rook moved, ");
+    }
+    if (state_of_rock_and_check->black_right_rook_moved == true){
+        printf("The black right rook moved,");
+    }
+    printf("\n");
+
+
+    // priting the captured pieces
+    printf("\n     The captured pieces are : \n");
+    printf("There are %d white captured pieces\nhere is the list : ", captured_piece_and_score->number_of_white_pieces_captured);
+    for (int i = 0; i < captured_piece_and_score->number_of_white_pieces_captured; i++){
+        switch (captured_piece_and_score->white_pieces_captured[i]->type){
+            case PAWN:
+                printf("pawn, ");
+                break;
+            case KNIGHT:
+                printf("knight, ");
+                break;
+            case BISHOP:
+                printf("bishop, ");
+                break;
+            case ROOK:
+                printf("rook, ");
+                break;
+            case QUEEN:
+                printf("queen, ");
+                break;
+            case KING:
+                printf("king, ");
+                break;
+            default:
+                printf("nothing, ");
+                break;
+        }
+    }
+    printf("\n");
+
+
+    printf("There are %d black captured pieces\nhere is the list : ", captured_piece_and_score->number_of_black_pieces_captured);
+    for (int i = 0; i < captured_piece_and_score->number_of_black_pieces_captured; i++){
+        switch (captured_piece_and_score->black_pieces_captured[i]->type){
+            case PAWN:
+                printf("pawn, ");
+                break;
+            case KNIGHT:
+                printf("knight, ");
+                break;
+            case BISHOP:
+                printf("bishop, ");
+                break;
+            case ROOK:
+                printf("rook, ");
+                break;
+            case QUEEN:
+                printf("queen, ");
+                break;
+            case KING:
+                printf("king, ");
+                break;
+            default:
+                printf("nothing, ");
+                break;
+        }
+    }
+    printf("\n");
+
+
+    // printing the score 
+    printf("\n     The score is : \n");
+    if (captured_piece_and_score->player_that_is_winning == WHITE){
+        printf("The white player is winning with a score of %d\n", captured_piece_and_score->score);
+    }
+    else if (captured_piece_and_score->player_that_is_winning == BLACK){
+        printf("The black player is winning with a score of %d\n", captured_piece_and_score->score);
+    }
+    else {
+        printf("The two players are equal on score\n");
+    }
+
+}
+
+
+///////////////////////////////////////////////////////////////////////////////
 // Function to initialize our SDL window
 /**
  * @param **window : the window to initialize that is a global variable
@@ -271,6 +396,16 @@ int main (){
                                 piece_taken_type = board[move->destination_row][move->destination_col]->type;
                                 piece_taken_color = board[move->destination_row][move->destination_col]->color;
                             }
+                            if (is_en_passant_possible == true){
+                                if (board[move->previous_row][move->previous_col]->color == WHITE){
+                                    piece_taken_type = PAWN;
+                                    piece_taken_color = BLACK;
+                                }
+                                else if (board[move->previous_row][move->previous_col]->color == BLACK){
+                                    piece_taken_type = PAWN;
+                                    piece_taken_color = WHITE;
+                                }
+                            }
 
                             // making the move log update that is crucial for Make_Move to work since we go searching for an index actual_size-1 and only adding an element to Move_Log will make actual_size-1 positive, not to have a segmentation fault
                             Move_Log_Element* element = Create_Element_Move_Log();
@@ -351,6 +486,7 @@ int main (){
                                 printf("the last pawn has not moved two squares\n");
                             }
                             */
+                            print_rock_state_and_captured_pieces(Captured_Pieces_and_Score, State_Of_RockandCheck);
                            
                         }
 
