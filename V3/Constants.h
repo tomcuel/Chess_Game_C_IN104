@@ -33,6 +33,14 @@
 #define WINDOW_BOARD_SIZE 800 // size of the chessboard in the window
 
 
+// to print numbers
+#define FONT_WIDTH 50
+#define FONT_HEIGHT 50
+
+// to print the ":"
+#define FONT_WIDTH_COLON 5
+#define FONT_HEIGHT_COLON 40
+
 /////////////////////////////////////////////////////////////////////////////////////
 // Defining the constants linked to the size of the board (8x8 for a chess game)
 // and some of its pieces (32 pieces in total, 2 others piece a pion can be promoted to)
@@ -68,13 +76,13 @@ enum {Player1, Player2};
 /////////////////////////////////////////////////////////////////////////////////////
 // Defining if a player is the IA or not
 /////////////////////////////////////////////////////////////////////////////////////
-enum {HUMAN, AI};
+enum {HUMAN, IA};
 
 
 /////////////////////////////////////////////////////////////////////////////////////
 // Enum that represents the type of the menus to start the game (Load_Menu), but also the Chessboard and the victory menu
 /////////////////////////////////////////////////////////////////////////////////////
-enum {GAMEPLAY_CHOICE,DIFFICULTY_CHOICE, TIME_CHOICE, CHESSBOARD_RENDER, VICTORY_MENU}; 
+enum {GAMEPLAY_CHOICE, COLOR_CHOICE, DIFFICULTY_CHOICE, TIME_CHOICE, CHESSBOARD_RENDER, VICTORY_MENU}; 
 
 
 /////////////////////////////////////////////////////////////////////////////////////
@@ -121,30 +129,55 @@ enum {NO_EN_PASSANT,RIGHT_EN_PASSANT, LEFT_EN_PASSANT};
 // Enum that represents the type the name of the different buttons in the menu, next to the chessboard
 // there are 21 buttons in total, there will do an array of buttons to get their state
 /////////////////////////////////////////////////////////////////////////////////////
-#define NUMBER_OF_BUTTONS 21
+#define NUMBER_OF_BUTTONS 34
 
 enum { 
+    // during gameplay choice 
+    PLAYER_VS_PLAYER_BUTTON,
+    PLAYER_VS_AI_BUTTON, 
+    QUIT_BUTTON_GAME_CHOICE,
+    NEXT_BUTTON_GAME_CHOICE,
+
+    // during the choices concerning the color we want to have to play against the IA
     BLACK_COLOR_BUTTON,
     WHITE_COLOR_BUTTON,
+    QUIT_BUTTON_COLOR_CHOICE,
+    MAIN_MENU_BUTTON_COLOR_CHOICE,
+    BACK_BUTTON_COLOR_CHOICE,
+    NEXT_BUTTON_COLOR_CHOICE,
+    
+    // choosing the difficulty of the IA
     EASY_DIFFICULTY_BUTTON,
     MODERATE_DIFFICULTY_BUTTON,
     HARD_DIFFICULTY_BUTTON,
-    LOAD_BUTTON,
-    NEXT_BUTTON,
-    BACK_BUTTON,
-    UNDO_BUTTON,
+    QUIT_BUTTON_IA_CHOICE,
+    MAIN_MENU_BUTTON_IA_CHOICE,
+    BACK_BUTTON_IA_CHOICE,
+    NEXT_BUTTON_IA_CHOICE,
+
+    // choosing the time mode menu
     SHORT_BLITZ_BUTTON,
     LONG_BLITZ_BUTTON,
     SHORT_BUTTON,
     MODERATE_BUTTON,
     LONG_BUTTON,
-    PLAYER_VS_PLAYER_BUTTON,
-    PLAYER_VS_AI_BUTTON, 
-    QUIT_BUTTON, 
-    NEW_GAME_BUTTON,
-    MAIN_MENU_BUTTON,
-    START_BUTTON,
-    RESTART_BUTTON
+
+    QUIT_BUTTON_TIME_CHOICE,
+    MAIN_MENU_BUTTON_TIME_CHOICE,
+    BACK_BUTTON_TIME_CHOICE,
+    LOAD_BUTTON, 
+
+    // in game buttons
+    START_BUTTON, 
+    RESTART_BUTTON_IN_GAME,
+    NEW_GAME_BUTTON_IN_GAME,
+    QUIT_BUTTON_IN_GAME,
+    UNDO_BUTTON,
+
+    // in the victory menu
+    NEW_GAME_BUTTON_VICTORY_MENU,
+    RESTART_BUTTON_VICTORY_MENU,
+    QUIT_BUTTON_VICTORY_MENU
 };
 
 
