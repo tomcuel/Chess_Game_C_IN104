@@ -25,7 +25,6 @@
  * Show_Log - to show the log of the moves
  * Show_Updated_Timer - to show the timer, remaining for each player
  * Show_Menu_Button_in_Game - to show the menu / parameters button during the game
- * Ask_Name - to ask the name of the players (twice for the two players game and once for the one player game)
  * Show_Victory_Menu - to show the victory menu
 **/
 /////////////////////////////////////////////////////////////////////////////////////
@@ -37,7 +36,7 @@
 typedef struct Button{
     SDL_Rect rect; // the rectangle of the button
     int state; // the state of the button : UNACTIVE or ACTIVE
-    // the type will be given by the position in the array 
+    // the type will be given by the position in the enum of buttons
     // for example Buttons[5] correspond to the button "LOAD_BUTTON" since in the enum LOAD_BUTTON=5
 } Button;
 
@@ -50,6 +49,15 @@ typedef struct Button{
 **/
 /////////////////////////////////////////////////////////////////////////////////////
 Button** Create_Buttons(int number_of_buttons);
+
+
+/////////////////////////////////////////////////////////////////////////////////////
+// Function to reset the buttons state to UNACTIVE
+/**
+ * @param Buttons - the array of Buttons
+**/
+/////////////////////////////////////////////////////////////////////////////////////
+void Reset_Buttons_State(Button** Buttons);
 
 
 /////////////////////////////////////////////////////////////////////////////////////
@@ -69,9 +77,13 @@ void Destroy_Buttons(int number_of_buttons, Button** Buttons);
 /**
  * @param renderer : the renderer to show the menu
  * @param menu_type : the menu_type to show : GAMEMPLAY_CHOICE, DIFFICULTY_CHOICE, TIME_CHOICE
+ * @param Buttons : the buttons to show
+ * @param is_clicked_1 : if the first button is clicked
+ * @param is_clicked_2 : if the second button is clicked
+ * @param draw_red_boundary_move : the red boundary to draw around a piece when it's selected to make a move
 **/
 /////////////////////////////////////////////////////////////////////////////////////
-void Show_Load_Menu(SDL_Renderer* renderer, int menu_type, Button** Buttons);
+void Show_Load_Menu(SDL_Renderer* renderer, int menu_type, Button** Buttons, int is_clicked_1, int is_clicked_2, SDL_Rect draw_red_boundary_move);
 
 
 /////////////////////////////////////////////////////////////////////////////////////
@@ -121,10 +133,12 @@ void Show_Log(SDL_Renderer* renderer, Move_Log_array* log);
 // Since we don't have ttf, it might need time to do it (either by showing it pixel by pixel or by using the terminal)
 /**
  * @param renderer : the renderer to show the timer
- * @param timer : the timer to show (struct with the remaining time for each player)
+ * @param time_player_white : the time remaining for the player white
+ * @param time_player_black : the time remaining for the player black
+ * @param player_playing : the player playing (player 1 or player 2) (for white and black player respectively)
 **/
 /////////////////////////////////////////////////////////////////////////////////////
-void Show_Updated_Timer(SDL_Renderer* renderer, Uint32* time);
+void Show_Updated_Timer(SDL_Renderer* renderer, int time_player_white, int time_player_black, int player_playing);
 
 
 /////////////////////////////////////////////////////////////////////////////////////
@@ -135,22 +149,6 @@ void Show_Updated_Timer(SDL_Renderer* renderer, Uint32* time);
 **/
 /////////////////////////////////////////////////////////////////////////////////////
 void Show_Menu_Button_in_Game(SDL_Renderer* renderer, Button** Buttons);
-
-
-/////////////////////////////////////////////////////////////////////////////////////
-// Function to ask the name of the players (twice for the two players game and once for the one player game)
-/**
- * @param renderer : the renderer to show the name of the players, ask it for the players to tip it on screen
- * @param players : players array we need to complete with the names of the players
-**/
-/////////////////////////////////////////////////////////////////////////////////////
-void Ask_Name(SDL_Renderer* renderer, Players* players);
-
-
-
-
-
-
 
 
 /////////////////////////////////////////////////////////////////////////////////////
