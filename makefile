@@ -6,6 +6,7 @@ all:
 	make -C V1 
 	make -C V2 
 	make -C V3 
+	make -C V4
 
 realclean:
 	make -C tests_SDL_basics clean
@@ -15,5 +16,6 @@ realclean:
 	make -C V1 realclean
 	make -C V2 realclean
 	make -C V3 realclean
+	make -C V4 realclean
 
 .PHONY:realclean

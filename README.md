@@ -14,11 +14,24 @@ We will have various tasks to complete as part of this project:
 - create a graphical interface that is fun to play on (with some tests to try, know how to use it)
 - code an AI to play against, with different levels 
 
+
+Concerning the tests : 
+- tests of the structure will be done separetely in specific folders, but things such as checking if a piece can move will done in the different versions of the game 
+
+
 To run this project : 
 - do the command "make" to create all the .o and .x file to run them 
 - do the command "make realclean" to clean all the .x and .o file everywhere in the project
-- you can go to the directory you want and do the command "make" to create the .o and the .x file, to run your code, and using the cleaning command if you just want this part of the code
+- go to the directory you want and do the command "make" to create the .o and the .x file, to run your code
 - because most of the directories will just be there for testing, to make it more practical to get used to the differents parts of the code
+
+
+To play the game : 
+- click on buttons, depeding on the button you will need to do it twice to make sure that it was really what was attended
+- some parameters to choose how to play the game will be chosen through differents menus
+- to start the timer in the game, you will need to press only once the button start
+- then you can play the game, but also quitting it or doing a lot of different things
+- a victory menu suggests you some ways you would like to continue the game into 
 
 
 Structure of the code : 
