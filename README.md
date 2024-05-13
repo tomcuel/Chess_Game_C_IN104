@@ -33,6 +33,13 @@ To play the game :
 - then you can play the game, but also quitting it or doing a lot of different things
 - a victory menu suggests you some ways you would like to continue the game into 
 
+Concerning what has been done :
+- in the test folders, you fill find all the tests we've made, the name give you the idea of what has been done in those folders
+- V1 was a first implementation of the render and the move we could do without any rules 
+- V2 was the adding of the different menu and how we could pass from one to another, a timer was created in the terminal (moves are still illegal)
+- V3 added a lot of features : the showing of the timer and the captured piece, move that were legal (without the check), including special moves (rock, en passant), udpate on the differents structures after the move, implementation of the buttons in the menus, the basic IA (!!! make the code crash here if level 2 selected, and it doesn't work as expected, will be fixed in V4)
+- V4 fixes the problems of the IA and add the intermediate level, it also add the pawn promotion, the undo button, and also all that is related to the check (still to be done here)
+- V5 (adding littles features) and VF (parsing correctly the code) are still to be done 
 
 Structure of the code : 
 
