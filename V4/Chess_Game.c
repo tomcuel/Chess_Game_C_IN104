@@ -207,7 +207,7 @@ int main (){
 
     // parameters to know if a pawn promotion is happening, and to make the promotion has desired by the player
     bool is_pawn_promotion_happening = false;
-    int color_promoted_paxwn = NO_COLOR;
+    int color_promoted_pawn = NO_COLOR;
     int type_promoted_pawn = NOTHING; // always to nothing, but we will change it directly in the log without modfiying it here
 
     // preparing a move implementation
@@ -1064,7 +1064,12 @@ int main (){
                             // getting if a rock was done
                             int is_rock_possible_type = Is_Rock_Possible(move, State_Of_RockandCheck, board);
                             // getting if an en passant was done
-                            bool is_en_passant_possible = Is_En_Passant_Possible(move, board, Pawn_Move_State);
+                            bool is_en_passant_done = Is_En_Passant_Possible(move, board, Pawn_Move_State);
+                            int en_passant_type = NO_EN_PASSANT;
+                            // if we have an en passant, we need to get the corresponding int
+                            if (is_en_passant_done == true){
+                                en_passant_type = EN_PASSANT;
+                            }
 
                             // if a piece is taken, we need to know what type and what color it is, in case we want to undo it later, we can track the piece that has been taken to reinstall it on the board
                             int piece_taken_type = NOTHING;
@@ -1075,7 +1080,7 @@ int main (){
                                 piece_taken_color = board[move->destination_row][move->destination_col]->color;
                             }
                             // udpating the datas concerning the en passant move, so the log can be able to undo it, because techincally, the piece is not taken, it's just removed from the board
-                            if (is_en_passant_possible == true){
+                            if (is_en_passant_done == true){
                                 if (board[move->previous_row][move->previous_col]->color == WHITE){
                                     piece_taken_type = PAWN;
                                     piece_taken_color = BLACK;
@@ -1088,10 +1093,10 @@ int main (){
 
                             // concerning the pawn promotion
                             is_pawn_promotion_happening = Is_Pawn_Promotion_Possible(move, board);
-                            color_promoted_paxwn = NO_COLOR;
+                            color_promoted_pawn = NO_COLOR;
                             type_promoted_pawn = NOTHING;
                             if (is_pawn_promotion_happening == true){
-                                color_promoted_paxwn = board[move->previous_row][move->previous_col]->color;
+                                color_promoted_pawn = board[move->previous_row][move->previous_col]->color;
                             }
 
                             // if you touch the piece once, as in the real game, you're forced to play this piece, there isn't any way to cancel the move
@@ -1102,7 +1107,7 @@ int main (){
                                 // making the move log update that is crucial for Make_Move to work since we go searching for an index actual_size-1 and only adding an element to Move_Log will make actual_size-1 positive, not to have a segmentation fault
                                 // but only a valid move will be added to the log
                                 Move_Log_Element* element = Create_Element_Move_Log();
-                                Change_Move_Log_Element(element, move->previous_row, move->previous_col, move->destination_row, move->destination_col, NO_CHECK, piece_taken_type, piece_taken_color, is_rock_possible_type, is_en_passant_possible, color_promoted_paxwn, type_promoted_pawn);
+                                Change_Move_Log_Element(element, move->previous_row, move->previous_col, move->destination_row, move->destination_col, NO_CHECK, piece_taken_type, piece_taken_color, is_rock_possible_type, en_passant_type, color_promoted_pawn, type_promoted_pawn);
                                 Move_Log_array_MESSAGE_TYPE message = Add_Element_to_the_end_of_Move_Log_array(Log, element);
                                 if (message != LOG_LIST_SUCCESS){
                                     printf("Error: the log is full\n");
@@ -1136,7 +1141,7 @@ int main (){
                                     Reset_Tiles_Pawn(Pawn_Move_State);
                                 }
                                 // en passant move
-                                else if (is_en_passant_possible == true){
+                                else if (is_en_passant_done == true){
 
                                     // we need to clear the piece that has been eaten by the en passant on the board, before making the move, because we need the initial position of the pawn to know where to clear the piece
                                     Clear_En_Passant_Piece(move, board, Pawn_Move_State);
@@ -1168,6 +1173,8 @@ int main (){
                         
                         // if we cliked on the queen button, then we need to udpate the type of the pawn that has been promoted in the log and on the board
                         // we also need to tell that the pawn promotion is not happening anymore
+                        
+                        // if we select the queen button
                         if (is_point_in_rect(event.button.x, event.button.y, Buttons[QUEEN_BUTTON]->rect)){
                             
                             // the first click is making the button be circle by a red rectangle to make the user know it has been selected
@@ -1194,7 +1201,90 @@ int main (){
                                 is_pawn_promotion_happening = false;
                             }
                         }
-                        
+
+                        // if we select the rook button 
+                        else if (is_point_in_rect(event.button.x, event.button.y, Buttons[ROOK_BUTTON]->rect)){
+                            
+                            // the first click is making the button be circle by a red rectangle to make the user know it has been selected
+                            if (is_clicked_1 == 0){
+                                is_clicked_1 = 1;
+                                is_clicked_2 = 0;
+                                draw_red_boundary_move.x = Buttons[ROOK_BUTTON]->rect.x;
+                                draw_red_boundary_move.y = Buttons[ROOK_BUTTON]->rect.y;
+                                draw_red_boundary_move.w = Buttons[ROOK_BUTTON]->rect.w;
+                                draw_red_boundary_move.h = Buttons[ROOK_BUTTON]->rect.h;
+                            }
+
+                            // if another click is done, we cancel the selection
+                            else if (is_clicked_1 ==1 && is_clicked_2 == 0){
+                                is_clicked_2 = 1;
+                            }
+
+                            // if two clicks have been done, we cancel the selection
+                            if (is_clicked_1 == 1 && is_clicked_2 == 1){
+                                is_clicked_1 = 0;
+                                is_clicked_2 = 0;
+                                Log->Move_Log[Log->actual_size-1]->type_of_pawn_promoted = ROOK;
+                                board[Log->Move_Log[Log->actual_size-1]->move->destination_row][Log->Move_Log[Log->actual_size-1]->move->destination_col]->type = ROOK;
+                                is_pawn_promotion_happening = false;
+                            }
+                        }
+
+                        // if we select the bishop button
+                        else if (is_point_in_rect(event.button.x, event.button.y, Buttons[BISHOP_BUTTON]->rect)){
+                            
+                            // the first click is making the button be circle by a red rectangle to make the user know it has been selected
+                            if (is_clicked_1 == 0){
+                                is_clicked_1 = 1;
+                                is_clicked_2 = 0;
+                                draw_red_boundary_move.x = Buttons[BISHOP_BUTTON]->rect.x;
+                                draw_red_boundary_move.y = Buttons[BISHOP_BUTTON]->rect.y;
+                                draw_red_boundary_move.w = Buttons[BISHOP_BUTTON]->rect.w;
+                                draw_red_boundary_move.h = Buttons[BISHOP_BUTTON]->rect.h;
+                            }
+
+                            // if another click is done, we cancel the selection
+                            else if (is_clicked_1 ==1 && is_clicked_2 == 0){
+                                is_clicked_2 = 1;
+                            }
+
+                            // if two clicks have been done, we cancel the selection
+                            if (is_clicked_1 == 1 && is_clicked_2 == 1){
+                                is_clicked_1 = 0;
+                                is_clicked_2 = 0;
+                                Log->Move_Log[Log->actual_size-1]->type_of_pawn_promoted = BISHOP;
+                                board[Log->Move_Log[Log->actual_size-1]->move->destination_row][Log->Move_Log[Log->actual_size-1]->move->destination_col]->type = BISHOP;
+                                is_pawn_promotion_happening = false;
+                            }
+                        }
+
+                        // if we select the knight button
+                        else if (is_point_in_rect(event.button.x, event.button.y, Buttons[KNIGHT_BUTTON]->rect)){
+                            
+                            // the first click is making the button be circle by a red rectangle to make the user know it has been selected
+                            if (is_clicked_1 == 0){
+                                is_clicked_1 = 1;
+                                is_clicked_2 = 0;
+                                draw_red_boundary_move.x = Buttons[KNIGHT_BUTTON]->rect.x;
+                                draw_red_boundary_move.y = Buttons[KNIGHT_BUTTON]->rect.y;
+                                draw_red_boundary_move.w = Buttons[KNIGHT_BUTTON]->rect.w;
+                                draw_red_boundary_move.h = Buttons[KNIGHT_BUTTON]->rect.h;
+                            }
+
+                            // if another click is done, we cancel the selection
+                            else if (is_clicked_1 ==1 && is_clicked_2 == 0){
+                                is_clicked_2 = 1;
+                            }
+
+                            // if two clicks have been done, we cancel the selection
+                            if (is_clicked_1 == 1 && is_clicked_2 == 1){
+                                is_clicked_1 = 0;
+                                is_clicked_2 = 0;
+                                Log->Move_Log[Log->actual_size-1]->type_of_pawn_promoted = KNIGHT;
+                                board[Log->Move_Log[Log->actual_size-1]->move->destination_row][Log->Move_Log[Log->actual_size-1]->move->destination_col]->type = KNIGHT;
+                                is_pawn_promotion_happening = false;
+                            }
+                        }
 
                         // we still need to be able to quit the game, but no others things on the differents buttons can be done
                         else if (is_point_in_rect(event.button.x, event.button.y, Buttons[QUIT_BUTTON_IN_GAME]->rect) && Buttons[RESTART_BUTTON_IN_GAME]->state == UNACTIVE && Buttons[NEW_GAME_BUTTON_IN_GAME]->state == UNACTIVE && Buttons[UNDO_BUTTON]->state == UNACTIVE){
@@ -1408,9 +1498,9 @@ int main (){
                             is_clicked_2 = 0;
                             Reset_Buttons_State(Buttons);
                             
-                            /*
-                            there is a lot to do here to undo the last move and reinstate every parameters as they were before the move
-                            */
+                            // Undo the last move
+                            Undo_Last_Move(board, Log, Captured_Pieces_and_Score, State_Of_RockandCheck, players, Pawn_Move_State);
+                            // printf("is(%d,%d) on its starting position : %d\n", Log->Move_Log[Log->actual_size-1]->move->previous_row, Log->Move_Log[Log->actual_size-1]->move->previous_col, board[Log->Move_Log[Log->actual_size-1]->move->previous_row][Log->Move_Log[Log->actual_size-1]->move->previous_col]->is_on_his_start_position);
 
                         }
                     }
@@ -1498,7 +1588,12 @@ int main (){
             // getting if a rock was done
             int is_rock_possible_type_IA = Is_Rock_Possible(move, State_Of_RockandCheck, board);
             // getting if an en passant was done
-            bool is_en_passant_possible_IA = Is_En_Passant_Possible(move, board, Pawn_Move_State);
+            bool is_en_passant_done_IA = Is_En_Passant_Possible(move, board, Pawn_Move_State);
+            int en_passant_type_IA = NO_EN_PASSANT;
+            // if we have an en passant, we need to get the corresponding int
+            if (is_en_passant_done_IA == true){
+                en_passant_type_IA = EN_PASSANT;
+            }
 
             // if a piece is taken, we need to know what type and what color it is, in case we want to undo it later, we can track the piece that has been taken to reinstall it on the board
             int piece_taken_type_IA = NOTHING;
@@ -1508,7 +1603,7 @@ int main (){
                 piece_taken_type_IA = board[move->destination_row][move->destination_col]->type;
                 piece_taken_color_IA = board[move->destination_row][move->destination_col]->color;
             }
-            if (is_en_passant_possible_IA == true){
+            if (is_en_passant_done_IA == true){
                 if (board[move->previous_row][move->previous_col]->color == WHITE){
                     piece_taken_type_IA = PAWN;
                     piece_taken_color_IA = BLACK;
@@ -1535,7 +1630,7 @@ int main (){
                 // making the move log update that is crucial for Make_Move to work since we go searching for an index actual_size-1 and only adding an element to Move_Log will make actual_size-1 positive, not to have a segmentation fault
                 // but only a valid move will be added to the log
                 Move_Log_Element* element = Create_Element_Move_Log();
-                Change_Move_Log_Element(element, move->previous_row, move->previous_col, move->destination_row, move->destination_col, NO_CHECK, piece_taken_type_IA, piece_taken_color_IA, is_rock_possible_type_IA, is_en_passant_possible_IA, color_IA_promoted_paxwn, type_IA_promoted_pawn);
+                Change_Move_Log_Element(element, move->previous_row, move->previous_col, move->destination_row, move->destination_col, NO_CHECK, piece_taken_type_IA, piece_taken_color_IA, is_rock_possible_type_IA, en_passant_type_IA, color_IA_promoted_paxwn, type_IA_promoted_pawn);
                 Move_Log_array_MESSAGE_TYPE message = Add_Element_to_the_end_of_Move_Log_array(Log, element);
                 if (message != LOG_LIST_SUCCESS){
                     printf("Error: the log is full\n");
@@ -1569,7 +1664,7 @@ int main (){
                     Reset_Tiles_Pawn(Pawn_Move_State);
                 }
                 // en passant move
-                else if (is_en_passant_possible_IA == true){
+                else if (is_en_passant_done_IA == true){
 
                     // we need to clear the piece that has been eaten by the en passant on the board, before making the move, because we need the initial position of the pawn to know where to clear the piece
                     Clear_En_Passant_Piece(move, board, Pawn_Move_State);
@@ -1684,7 +1779,7 @@ int main (){
             SDL_RenderClear(renderer);
 
             // show the buttons in the game
-            Show_Menu_Button_in_Game(renderer, Buttons, is_pawn_promotion_happening, color_promoted_paxwn);
+            Show_Menu_Button_in_Game(renderer, Buttons, is_pawn_promotion_happening, color_promoted_pawn);
 
             // show the captured pieces
             Show_Captured_Pieces(renderer, Captured_Pieces_and_Score);

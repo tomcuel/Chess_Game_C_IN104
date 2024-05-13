@@ -44,7 +44,6 @@
  * Is_Rock_Possible - function to get if the rock is possible or not (if the first line is empty and if the king is not in check) (will be used in Is_Move_Valid_King) and return what type of rock is possible
  * Create_Rook_Move_during_Rock - function that creates during the rock the move of the rook (depending on the type of rock : inside the function by calling Get_Type_Of_Rock)
  * Create_King_Move_during_Rock - function that creates the move of the king during the rock
- * Undo_Rook_during_Rock - function to undo the rook during the rock (will be used in the undo move)(but since the move will be considered for the king, we need to know the type of rock and change again the rook affected by the rock)
  * 
  * Will_Capture - tell wether a move (that will be made, so we suppose it's valid, it will only be used in those cases) will capture a piece or not
  * Create_Captured_Piece_and_Score - create a structure of captured pieces
@@ -372,19 +371,6 @@ Move* Create_Rook_Move_during_Rock(Move* move, Piece*** board, State_Of_Rock_and
 **/
 /////////////////////////////////////////////////////////////////////////////////////
 Move* Create_King_Move_during_Rock(Move* move, Piece*** board, State_Of_Rock_and_Check* State_Of_Rock_and_Check);
-
-
-/////////////////////////////////////////////////////////////////////////////////////
-// function to undo the rook during the rock (will be used in the undo move)(but since the move will be considered for the king, we need to know the type of rock and change again the rook affected by the rock)
-// it used the parameter move to know the type of rock that has been made, and to creat the piece that was originally on the position of the rook, then it put it where it was before
-/**
- * @param move - the move that is going to be undone
- * @param board - the board where the move will be undone
- * @param State_Of_Rock_and_Check - the structure that contains the state of the rock and check state
- * @param Move_Log - the log of the moves that have been made
-**/
-/////////////////////////////////////////////////////////////////////////////////////
-void Undo_Rook_during_Rock(Move* move, Piece*** board, State_Of_Rock_and_Check* State_Of_Rock_and_Check, Move_Log_array* Move_Log);
 
 
 /////////////////////////////////////////////////////////////////////////////////////

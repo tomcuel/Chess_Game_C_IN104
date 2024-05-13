@@ -318,7 +318,7 @@ bool Is_Move_Valid_Pawn(Move* move, Piece*** board, Tiles_Pawn* Pawn_Move_State)
             }
         }
         // if it want to go up two cases (It need to be one its starting line) and the destination need to be empty, as well as the cases bewteen the pawn and the destination
-        else if (move->previous_col == move->destination_col && move->previous_row-2 == move->destination_row && board[move->previous_row][move->previous_col]->is_on_his_start_position == true){
+        else if (move->previous_col == move->destination_col && move->previous_row-2 == move->destination_row && move->previous_row == 6){
             if (board[move->destination_row][move->destination_col]->type == NOTHING && board[move->previous_row-1][move->previous_col]->type == NOTHING){
                 return true;
             }
@@ -352,7 +352,7 @@ bool Is_Move_Valid_Pawn(Move* move, Piece*** board, Tiles_Pawn* Pawn_Move_State)
             }
         }
         // if it want to go down two cases (It need to be one its starting line) and the destination need to be empty, as well as the cases bewteen the pawn and the destination
-        else if (move->previous_col == move->destination_col && move->previous_row+2 == move->destination_row && board[move->previous_row][move->previous_col]->is_on_his_start_position == true){
+        else if (move->previous_col == move->destination_col && move->previous_row+2 == move->destination_row && move->previous_row == 1){
             if (board[move->destination_row][move->destination_col]->type == NOTHING && board[move->previous_row+1][move->previous_col]->type == NOTHING){
                 return true;
             }
@@ -537,6 +537,8 @@ bool Is_Move_Valid_Bishop(Move* move, Piece*** board){
         return true;
     }
 
+    // default 
+    return false;
     
 }
 
@@ -821,6 +823,8 @@ Move* Create_Rook_Move_during_Rock(Move* move, Piece*** board, State_Of_Rock_and
         }
     }
 
+    // default
+    return NULL;
 }
 
 
@@ -862,12 +866,8 @@ Move* Create_King_Move_during_Rock(Move* move, Piece*** board, State_Of_Rock_and
         }
     }
 
-}
-
-
-
-// to be implemented, maybe not on this form later on
-void Undo_Rook_during_Rock(Move* move, Piece*** board, State_Of_Rock_and_Check* State_Of_Rock_and_Check, Move_Log_array* Move_Log){
+    // default
+    return NULL;
 
 }
 
