@@ -969,7 +969,12 @@ int main (){
 
                         // if the two clicks have be done, we go back to the IA_type choice
                         if (is_clicked_1 == 1 && is_clicked_2 == 1){
-                            is_running_game = DIFFICULTY_CHOICE;
+                            if (players->is_player1_an_IA == IA || players->is_player2_an_IA == IA){
+                                is_running_game = DIFFICULTY_CHOICE;
+                            }
+                            else if (players->is_player1_an_IA == HUMAN && players->is_player2_an_IA == HUMAN){
+                                is_running_game = GAMEPLAY_CHOICE;
+                            }
                             has_match_started = false;
                             is_clicked_1 = 0;
                             is_clicked_2 = 0;
