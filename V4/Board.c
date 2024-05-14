@@ -1091,11 +1091,45 @@ void Undo_Last_Move(Piece*** board, Move_Log_array* log, Captured_Piece_and_Scor
     }
 
     // updating the captured piece and score thanks to the log
-    /* 
-    need to change the captured piece and score thanks to the log 
-    --> decreasing the sizes of the array we want depending on the log parameters
-    --> calculating the score again as made in the function that updates the score (Change Structures)
-    */
+    // if a place has been captured before, we decrease the sizes of the array we want depending on the log parameters
+    // and udpate the score 
+    if (log->Move_Log[log->actual_size-1]->taken_piece_type != NOTHING){
+        // if the piece taken is white 
+        if (log->Move_Log[log->actual_size-1]->taken_piece_color == WHITE){
+            captured_piece_and_score->number_of_white_pieces_captured = captured_piece_and_score->number_of_white_pieces_captured - 1;
+        }
+        // if the piece taken is black
+        else if (log->Move_Log[log->actual_size-1]->taken_piece_color == BLACK){
+            captured_piece_and_score->number_of_black_pieces_captured = captured_piece_and_score->number_of_black_pieces_captured - 1;
+        }
+    }   
+
+    // updating the score
+    // getting the total score of the white captured pieces
+    int score_white_captured = 0;
+    for (int i = 0; i < captured_piece_and_score->number_of_white_pieces_captured; i++){
+        score_white_captured += captured_piece_and_score->white_pieces_captured[i]->value;
+    }
+
+    // getting the total score of the black captured pieces
+    int score_black_captured = 0;
+    for (int i = 0; i < captured_piece_and_score->number_of_black_pieces_captured; i++){
+        score_black_captured += captured_piece_and_score->black_pieces_captured[i]->value;
+    }
+
+    // updating the score of the players and the player that is winning depending on the score
+    if (score_white_captured > score_black_captured){
+        captured_piece_and_score->score = score_white_captured - score_black_captured;
+        captured_piece_and_score->player_that_is_winning = BLACK;
+    }
+    else if (score_white_captured < score_black_captured){
+        captured_piece_and_score->score = score_black_captured - score_white_captured;
+        captured_piece_and_score->player_that_is_winning = WHITE;
+    }
+    else {
+        captured_piece_and_score->score = 0;
+        captured_piece_and_score->player_that_is_winning = WHITE;
+    }
     
     // if we supress the last move that was done, we need to change the players that is playing
     Change_Players_that_is_Playing(players);
