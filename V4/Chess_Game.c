@@ -99,8 +99,7 @@ int initialize_SDL() {
         SDL_WINDOWPOS_CENTERED,
         WINDOW_WIDTH,
         WINDOW_HEIGHT,
-        SDL_WINDOW_FULLSCREEN // SDL_WINDOW_FULLSCREEN can be used to make the window fullscreen, if we've the timer on it thanks to tff
-        // otherwise, we will need to print it in the terminal
+        SDL_WINDOW_FULLSCREEN // SDL_WINDOW_FULLSCREEN can be used to make the window fullscreen, 0 to be in the window opened
     );
     if (!window) {
         printf("Window creation failed: %s\n", SDL_GetError());
