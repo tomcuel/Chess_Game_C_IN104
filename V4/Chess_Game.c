@@ -1167,7 +1167,21 @@ int main (){
                                     Make_Move(board, move, players);
                                     Change_Others_Structures(Log, Captured_Pieces_and_Score, State_Of_RockandCheck, players, board);
                                 }
-                            // changing the player that is playing is included in the Make_Move function
+                                // changing the player that is playing is included in the Make_Move function
+
+                                int color_we_are_checking = NO_COLOR;
+                                if (players->color_player_that_is_playing == WHITE){
+                                    color_we_are_checking = BLACK;
+                                }
+                                else if (players->color_player_that_is_playing == BLACK){
+                                    color_we_are_checking = WHITE;
+                                }
+                                // get the check state of the player that was playing the last move
+                                bool check_state = Is_Check(color_we_are_checking, board);
+                                // if the king of the color is in check after making a move, we need to remove the move
+                                if (check_state == true){
+                                    Undo_Last_Move(board, Log, Captured_Pieces_and_Score, State_Of_RockandCheck, players, Pawn_Move_State);
+                                }
                             }
 
                         }
@@ -1434,7 +1448,7 @@ int main (){
                             Reset_Buttons_State(Buttons);
                             is_clicked_1 = 0;
                             is_clicked_2 = 0;
-                             players->is_playing = Player1;
+                            players->is_playing = Player1;
                             players->color_player_that_is_playing = WHITE;
                             loosing_player = -1;
                         }
@@ -1505,6 +1519,10 @@ int main (){
                             
                             // Undo the last move
                             Undo_Last_Move(board, Log, Captured_Pieces_and_Score, State_Of_RockandCheck, players, Pawn_Move_State);
+                            // if we're playing against the IA we need to supress the two last moves
+                            if (players->is_player1_an_IA == IA || players->is_player2_an_IA == IA){
+                                Undo_Last_Move(board, Log, Captured_Pieces_and_Score, State_Of_RockandCheck, players, Pawn_Move_State);
+                            }
                             // printf("is(%d,%d) on its starting position : %d\n", Log->Move_Log[Log->actual_size-1]->move->previous_row, Log->Move_Log[Log->actual_size-1]->move->previous_col, board[Log->Move_Log[Log->actual_size-1]->move->previous_row][Log->Move_Log[Log->actual_size-1]->move->previous_col]->is_on_his_start_position);
 
                         }
@@ -1697,6 +1715,22 @@ int main (){
             if (is_IA_pawn_promotion_happening == true){
                 Make_Pawn_Promotion_for_IA(move, board, Log, level_IA);
             }
+
+            // if after the move made by the IA, it's in check, we need to undo the move and make another one
+            int color_we_are_checking_IA = NO_COLOR;
+            if (players->color_player_that_is_playing == WHITE){
+                color_we_are_checking_IA = BLACK;
+            }
+            else if (players->color_player_that_is_playing == BLACK){
+                color_we_are_checking_IA = WHITE;
+            }
+            // get the check state of the player that was playing the last move
+            bool check_state = Is_Check(color_we_are_checking_IA, board);
+            // if the king of the color is in check after making a move, we need to remove the move, since it cannot be check after playing
+            if (check_state == true){
+                Undo_Last_Move(board, Log, Captured_Pieces_and_Score, State_Of_RockandCheck, players, Pawn_Move_State);
+            }
+
         }
     
 
@@ -1779,8 +1813,8 @@ int main (){
 
         // if we're in the game, we show the chess board
         if (is_running_game == CHESSBOARD_RENDER){
-            // reset the renderer, the screen of the graphic card
-            SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+            // reset the renderer, the screen of the graphic card to a grey color that is no too dark but not too light
+            SDL_SetRenderDrawColor(renderer, 200, 200, 200, 255);
             SDL_RenderClear(renderer);
 
             // show the buttons in the game
@@ -1804,7 +1838,7 @@ int main (){
             
             while (number > 0) {
                 int digit = number % 10;
-                SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255); // Set color to white
+                SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255); // Set color to black
                 for (int i = 0; i < FONT_HEIGHT; i++) {
                     for (int j = 0; j < FONT_WIDTH; j++) {
                         if (font[digit][j] & (1 << (FONT_WIDTH - i - 1))) {
@@ -1828,12 +1862,38 @@ int main (){
             // show the chess board
             Show_Chess_Board(renderer, board, is_clicked_1, is_clicked_2, draw_red_boundary_move);
 
+            // show the trajectory of the piece that is selected
+            // printf("is_clicked_on_board : %d\n", is_clicked_on_board);
+            Show_Trajectory(renderer, board, move, State_Of_RockandCheck, Pawn_Move_State, is_clicked_1, is_clicked_2, is_clicked_on_board);
+
             // update the renderer by presenting the new screen
             SDL_RenderPresent(renderer);
 
-            if (loosing_player != -1){
-                is_running_game = is_running_game+1;
+            /*
+            // we now need to look at the check state of the game
+            int check_mate_state = Is_Check_Mate(players->color_player_that_is_playing, board, State_Of_RockandCheck, Log);
+
+            // the check mate function doesn't return the good values yet for the check mate state
+            
+            // if a draw is happening the player that is playing now loose, so the opposite of the player we're checking
+            if (check_mate_state == DRAW){
+                if (players->color_player_that_is_playing == WHITE){
+                    loosing_player = Player2;
+                }
+                else if (players->color_player_that_is_playing == BLACK){
+                    loosing_player = Player1;
+                }
             }
+            else if (check_mate_state == WHITE_CHECKMATE || check_mate_state == BLACK_CHECKMATE){
+                loosing_player = players->is_playing;
+            }
+            */
+
+            // if a player has lost, we need to stop the game and go to the end of the game
+            if (loosing_player != -1){
+                is_running_game = is_running_game + 1;
+            }
+
         }
 
         // if we're in the win menu screen 
