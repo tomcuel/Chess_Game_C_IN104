@@ -99,13 +99,6 @@ void Show_Load_Menu(SDL_Renderer* renderer, int menu_type, Button** Buttons, int
 void Show_Chess_Board(SDL_Renderer* renderer, Piece*** board, int is_clicked_1, int is_clicked_2, SDL_Rect draw_red_boundary_move);
 
 
-
-
-
-
-
-
-
 /////////////////////////////////////////////////////////////////////////////////////
 // Function to show the captured pieces of the players
 // One for the player 1 and one for the player 2, on the top of the screen for the white captured pieces and on the bottom for the black captured pieces
@@ -151,6 +144,34 @@ void Show_Updated_Timer(SDL_Renderer* renderer, int time_player_white, int time_
 **/
 /////////////////////////////////////////////////////////////////////////////////////
 void Show_Menu_Button_in_Game(SDL_Renderer* renderer, Button** Buttons, bool is_pawn_promotion_happening, int color_promoted_pawn);
+
+
+/////////////////////////////////////////////////////////////////////////////////////
+// Function to draw a filled red circle on the screen at the specified position and radius
+/**
+ * @param renderer : the renderer to show the circle
+ * @param centerX : the x position of the center of the circle
+ * @param centerY : the y position of the center of the circle
+ * @param radius : the radius of the circle
+**/
+/////////////////////////////////////////////////////////////////////////////////////
+void Draw_Filled_Circle(SDL_Renderer *renderer, int centerX, int centerY, int radius);
+
+
+/////////////////////////////////////////////////////////////////////////////////////
+// Function to draw the possible place where a piece can go to 
+/**
+ * @param renderer : the renderer to show the trajectory
+ * @param board : the board to show
+ * @param move : the move to show
+ * @param State_Of_Rock_and_Check : the state of the rock and check
+ * @param Pawn_Move_State : the state of the pawn move
+ * @param is_clicked_1 : if the first square is clicked
+ * @param is_clicked_2 : if the second square is clicked
+ * @param is_click_board : if the board is clicked
+**/
+/////////////////////////////////////////////////////////////////////////////////////
+void Show_Trajectory(SDL_Renderer* renderer, Piece*** board, Move* move, State_Of_Rock_and_Check* State_Of_Rock_and_Check, Tiles_Pawn* Pawn_Move_State, int is_clicked_1, int is_clicked_2, bool is_click_board);
 
 
 /////////////////////////////////////////////////////////////////////////////////////

@@ -486,11 +486,14 @@ void Show_Chess_Board(SDL_Renderer* renderer, Piece*** board, int is_clicked_1, 
             rect.x = j * SQUARE_SIZE+WINDOW_LEFT_MARGIN;
             rect.y = i * SQUARE_SIZE+WINDOW_TOP_MARGIN;
             if ((i + j) % 2 == 0) {
-                SDL_SetRenderDrawColor(renderer, 222, 184, 135, 255); // beige
+                // case light square
+                SDL_SetRenderDrawColor(renderer, 238, 238, 210, 255); // light square color
             }
             else {
-                SDL_SetRenderDrawColor(renderer, 139, 69, 19, 255); // marron
+                // case dark square
+                SDL_SetRenderDrawColor(renderer, 118, 150, 86, 255); // dark square color
             }
+            SDL_RenderFillRect(renderer, &rect);
             SDL_RenderFillRect(renderer, &rect);
         }
     }
@@ -554,7 +557,7 @@ void Show_Chess_Board(SDL_Renderer* renderer, Piece*** board, int is_clicked_1, 
                 }
 
                 /* Define destination rectangle */
-                SDL_Rect destRect = {board[i][j]->col * SQUARE_SIZE+WINDOW_LEFT_MARGIN+SQUARE_SIZE/8, board[i][j]->row * SQUARE_SIZE+WINDOW_TOP_MARGIN+SQUARE_SIZE/8, SQUARE_SIZE*3/4, SQUARE_SIZE*3/4}; // Adjust the coordinates and size as needed
+                SDL_Rect destRect = {board[i][j]->col * SQUARE_SIZE+WINDOW_LEFT_MARGIN, board[i][j]->row * SQUARE_SIZE+WINDOW_TOP_MARGIN, SQUARE_SIZE, SQUARE_SIZE}; // Adjust the coordinates and size as needed here
 
                 /* Add image to renderer */
                 add_image_to_render(name_piece, renderer, destRect);
@@ -1240,6 +1243,7 @@ void Show_Menu_Button_in_Game(SDL_Renderer* renderer, Button** Buttons, bool is_
 
     // we then print at the place of the log on the render, the differents buttons concerning the pawn promotion
     if (is_pawn_promotion_happening == true){
+
         // if the color of the pawn that is promoted is white
         if (color_promoted_pawn == WHITE){
             add_image_to_render("white_queen.bmp", renderer, Buttons[QUEEN_BUTTON]->rect);
@@ -1255,6 +1259,353 @@ void Show_Menu_Button_in_Game(SDL_Renderer* renderer, Button** Buttons, bool is_
             add_image_to_render("black_knight.bmp", renderer, Buttons[KNIGHT_BUTTON]->rect);
         }
       
+    }
+
+}
+
+
+void Draw_Filled_Circle(SDL_Renderer *renderer, int center_col, int center_row, int radius) {
+    SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255); // Set color to red
+    int x, y, dl;
+    for (y = -radius; y <= radius; y++) {
+        dl = (int)sqrt(radius * radius - y * y);
+        for (x = -dl; x <= dl; x++) {
+            SDL_RenderDrawPoint(renderer, center_col + x, center_row + y);
+        }
+    }
+}
+
+
+void Show_Trajectory(SDL_Renderer* renderer, Piece*** board, Move* move, State_Of_Rock_and_Check* State_Of_Rock_and_Check, Tiles_Pawn* Pawn_Move_State, int is_clicked_1, int is_clicked_2, bool is_click_board){
+
+    // there is something to do only when one clicked is done on a piece
+    if (is_clicked_1 == 1 && is_clicked_2 == 0 && is_click_board == true){
+        // set the color of the renderer to red
+        SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+        // we need to draw the trajectory of the piece that is clicked : it will be a red circle on the center of each case it can go to 
+     
+        // if the piece is a rook (or a queen) 
+        if (board[move->previous_row][move->previous_col]->type == ROOK || board[move->previous_row][move->previous_col]->type == QUEEN){
+            
+            // we need to draw the trajectory of the rook (and the queen, since it's the same as the rook but with the bishop's trajectory too)
+            // we first draw the trajectory of the rook in the direction of the top
+            for (int i = move->previous_row-1; i >= 0; i--){
+                // while we don't have a piece on the way
+                if (board[i][move->previous_col]->type == NOTHING){
+                    Draw_Filled_Circle(renderer, move->previous_col*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, i*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
+                }
+                // if we have a piece of the same color, we stop the trajectory
+                else if (board[i][move->previous_col]->color == board[move->previous_row][move->previous_col]->color){
+                    break;
+                }
+                // if we have a piece of the other color, we stop the trajectory and we draw the circle on the piece
+                else if (board[i][move->previous_col]->color != board[move->previous_row][move->previous_col]->color){
+                    Draw_Filled_Circle(renderer, move->previous_col*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, i*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
+                    break;
+                }
+            }
+            // we then draw the trajectory of the rook in the direction of the bottom
+            for (int i = move->previous_row+1; i < 8; i++){
+                // while we don't have a piece on the way
+                if (board[i][move->previous_col]->type == NOTHING){
+                    Draw_Filled_Circle(renderer, move->previous_col*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, i*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
+                }
+                // if we have a piece of the same color, we stop the trajectory
+                else if (board[i][move->previous_col]->color == board[move->previous_row][move->previous_col]->color){
+                    break;
+                }
+                // if we have a piece of the other color, we stop the trajectory and we draw the circle on the piece
+                else if (board[i][move->previous_col]->color != board[move->previous_row][move->previous_col]->color){
+                    Draw_Filled_Circle(renderer, move->previous_col*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, i*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
+                    break;
+                }
+            }
+            // we then draw the trajectory of the rook in the direction of the left
+            for (int j = move->previous_col-1; j >= 0; j--){
+                // while we don't have a piece on the way
+                if (board[move->previous_row][j]->type == NOTHING){
+                    Draw_Filled_Circle(renderer, j*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, move->previous_row*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
+                }
+                // if we have a piece of the same color, we stop the trajectory
+                else if (board[move->previous_row][j]->color == board[move->previous_row][move->previous_col]->color){
+                    break;
+                }
+                // if we have a piece of the other color, we stop the trajectory and we draw the circle on the piece
+                else if (board[move->previous_row][j]->color != board[move->previous_row][move->previous_col]->color){
+                    Draw_Filled_Circle(renderer, j*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, move->previous_row*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
+                    break;
+                }
+            }
+            // we then draw the trajectory of the rook in the direction of the right
+            for (int j = move->previous_col+1; j < 8; j++){
+                // while we don't have a piece on the way
+                if (board[move->previous_row][j]->type == NOTHING){
+                    Draw_Filled_Circle(renderer, j*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, move->previous_row*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
+                }
+                // if we have a piece of the same color, we stop the trajectory
+                else if (board[move->previous_row][j]->color == board[move->previous_row][move->previous_col]->color){
+                    break;
+                }
+                // if we have a piece of the other color, we stop the trajectory and we draw the circle on the piece
+                else if (board[move->previous_row][j]->color != board[move->previous_row][move->previous_col]->color){
+                    Draw_Filled_Circle(renderer, j*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, move->previous_row*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
+                    break;
+                }
+            }
+
+        }
+
+        // if the piece is a bishop (or a queen)      
+        if (board[move->previous_row][move->previous_col]->type == BISHOP || board[move->previous_row][move->previous_col]->type == QUEEN){
+            
+            // we need to draw the trajectory of the bishop (and the queen, since it's the same as the bishop but with the rook's trajectory too)
+            // we first draw the trajectory of the bishop in the direction of the top left
+            for (int i = move->previous_row-1, j = move->previous_col-1; i >= 0 && j >= 0; i--, j--){
+                // while we don't have a piece on the way
+                if (board[i][j]->type == NOTHING){
+                    Draw_Filled_Circle(renderer, j*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, i*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
+                }
+                // if we have a piece of the same color, we stop the trajectory
+                else if (board[i][j]->color == board[move->previous_row][move->previous_col]->color){
+                    break;
+                }
+                // if we have a piece of the other color, we stop the trajectory and we draw the circle on the piece
+                else if (board[i][j]->color != board[move->previous_row][move->previous_col]->color){
+                    Draw_Filled_Circle(renderer, j*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, i*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
+                    break;
+                }
+            }
+            // we then draw the trajectory of the bishop in the direction of the top right
+            for (int i = move->previous_row-1, j = move->previous_col+1; i >= 0 && j < 8; i--, j++){
+                // while we don't have a piece on the way
+                if (board[i][j]->type == NOTHING){
+                    Draw_Filled_Circle(renderer, j*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, i*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
+                }
+                // if we have a piece of the same color, we stop the trajectory
+                else if (board[i][j]->color == board[move->previous_row][move->previous_col]->color){
+                    break;
+                }
+                // if we have a piece of the other color, we stop the trajectory and we draw the circle
+                else if (board[i][j]->color != board[move->previous_row][move->previous_col]->color){
+                    Draw_Filled_Circle(renderer, j*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, i*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
+                    break;
+                }
+            }
+            // we then draw the trajectory of the bishop in the direction of the bottom left
+            for (int i = move->previous_row+1, j = move->previous_col-1; i < 8 && j >= 0; i++, j--){
+                // while we don't have a piece on the way
+                if (board[i][j]->type == NOTHING){
+                    Draw_Filled_Circle(renderer, j*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, i*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
+                }
+                // if we have a piece of the same color, we stop the trajectory
+                else if (board[i][j]->color == board[move->previous_row][move->previous_col]->color){
+                    break;
+                }
+                // if we have a piece of the other color, we stop the trajectory and we draw the circle
+                else if (board[i][j]->color != board[move->previous_row][move->previous_col]->color){
+                    Draw_Filled_Circle(renderer, j*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, i*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
+                    break;
+                }
+            }
+            // we then draw the trajectory of the bishop in the direction of the bottom right
+            for (int i = move->previous_row+1, j = move->previous_col+1; i < 8 && j < 8; i++, j++){
+                // while we don't have a piece on the way
+                if (board[i][j]->type == NOTHING){
+                    Draw_Filled_Circle(renderer, j*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, i*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
+                }
+                // if we have a piece of the same color, we stop the trajectory
+                else if (board[i][j]->color == board[move->previous_row][move->previous_col]->color){
+                    break;
+                }
+                // if we have a piece of the other color, we stop the trajectory and we draw the circle
+                else if (board[i][j]->color != board[move->previous_row][move->previous_col]->color){
+                    Draw_Filled_Circle(renderer, j*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, i*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
+                    break;
+                }
+            }
+
+        }
+
+        // if the piece is a knight
+        if (board[move->previous_row][move->previous_col]->type == KNIGHT){
+
+            // we need to draw the trajectory of the knight
+            // we first draw the trajectory of the knight in the direction of the top left
+            if (move->previous_row-2 >= 0 && move->previous_col-1 >= 0 && (board[move->previous_row-2][move->previous_col-1]->color != board[move->previous_row][move->previous_col]->color || board[move->previous_row-2][move->previous_col-1]->type == NOTHING)){
+                Draw_Filled_Circle(renderer, (move->previous_col-1)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (move->previous_row-2)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
+            }
+            // we then draw the trajectory of the knight in the direction of the top right
+            if (move->previous_row-2 >= 0 && move->previous_col+1 < 8 && (board[move->previous_row-2][move->previous_col+1]->color != board[move->previous_row][move->previous_col]->color || board[move->previous_row-2][move->previous_col+1]->type == NOTHING)){
+                Draw_Filled_Circle(renderer, (move->previous_col+1)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (move->previous_row-2)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
+            }
+            // we then draw the trajectory of the knight in the direction of the right top
+            if (move->previous_row-1 >= 0 && move->previous_col+2 < 8 && (board[move->previous_row-1][move->previous_col+2]->color != board[move->previous_row][move->previous_col]->color || board[move->previous_row-1][move->previous_col+2]->type == NOTHING)){
+                Draw_Filled_Circle(renderer, (move->previous_col+2)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (move->previous_row-1)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
+            }
+            // we then draw the trajectory of the knight in the direction of the right bottom
+            if (move->previous_row+1 < 8 && move->previous_col+2 < 8 && (board[move->previous_row+1][move->previous_col+2]->color != board[move->previous_row][move->previous_col]->color || board[move->previous_row+1][move->previous_col+2]->type == NOTHING)){
+                Draw_Filled_Circle(renderer, (move->previous_col+2)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (move->previous_row+1)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
+            }
+            // we then draw the trajectory of the knight in the direction of the bottom right
+            if (move->previous_row+2 < 8 && move->previous_col+1 < 8 && (board[move->previous_row+2][move->previous_col+1]->color != board[move->previous_row][move->previous_col]->color || board[move->previous_row+2][move->previous_col+1]->type == NOTHING)){
+                Draw_Filled_Circle(renderer, (move->previous_col+1)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (move->previous_row+2)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
+            }
+            // we then draw the trajectory of the knight in the direction of the bottom left
+            if (move->previous_row+2 < 8 && move->previous_col-1 >= 0 && (board[move->previous_row+2][move->previous_col-1]->color != board[move->previous_row][move->previous_col]->color || board[move->previous_row+2][move->previous_col-1]->type == NOTHING)){
+                Draw_Filled_Circle(renderer, (move->previous_col-1)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (move->previous_row+2)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
+            }
+            // we then draw the trajectory of the knight in the direction of the left bottom
+            if (move->previous_row+1 < 8 && move->previous_col-2 >= 0 && (board[move->previous_row+1][move->previous_col-2]->color != board[move->previous_row][move->previous_col]->color || board[move->previous_row+1][move->previous_col-2]->type == NOTHING)){
+                Draw_Filled_Circle(renderer, (move->previous_col-2)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (move->previous_row+1)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
+            }
+            // we then draw the trajectory of the knight in the direction of the left top
+            if (move->previous_row-1 >= 0 && move->previous_col-2 >= 0 && (board[move->previous_row-1][move->previous_col-2]->color != board[move->previous_row][move->previous_col]->color || board[move->previous_row-1][move->previous_col-2]->type == NOTHING)){
+                Draw_Filled_Circle(renderer, (move->previous_col-2)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (move->previous_row-1)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
+            }
+
+        }
+
+        // if the piece is a king
+        if (board[move->previous_row][move->previous_col]->type == KING){
+
+            // we need to draw the trajectory of the king
+            // we first draw the trajectory of the king in the direction of the top
+            if (move->previous_row-1 >= 0 && (board[move->previous_row-1][move->previous_col]->color != board[move->previous_row][move->previous_col]->color || board[move->previous_row-1][move->previous_col]->type == NOTHING)){
+                Draw_Filled_Circle(renderer, move->previous_col*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (move->previous_row-1)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
+            }
+            // we then draw the trajectory of the king in the direction of the top right
+            if (move->previous_row-1 >= 0 && move->previous_col+1 < 8 && (board[move->previous_row-1][move->previous_col+1]->color != board[move->previous_row][move->previous_col]->color || board[move->previous_row-1][move->previous_col+1]->type == NOTHING)){
+                Draw_Filled_Circle(renderer, (move->previous_col+1)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (move->previous_row-1)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
+            }
+            // we then draw the trajectory of the king in the direction of the right
+            if (move->previous_col+1 < 8 && (board[move->previous_row][move->previous_col+1]->color != board[move->previous_row][move->previous_col]->color || board[move->previous_row][move->previous_col+1]->type == NOTHING)){
+                Draw_Filled_Circle(renderer, (move->previous_col+1)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, move->previous_row*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
+            }
+            // we then draw the trajectory of the king in the direction of the bottom right
+            if (move->previous_row+1 < 8 && move->previous_col+1 < 8 && (board[move->previous_row+1][move->previous_col+1]->color != board[move->previous_row][move->previous_col]->color || board[move->previous_row+1][move->previous_col+1]->type == NOTHING)){
+                Draw_Filled_Circle(renderer, (move->previous_col+1)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (move->previous_row+1)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
+            }
+            // we then draw the trajectory of the king in the direction of the bottom
+            if (move->previous_row+1 < 8 && (board[move->previous_row+1][move->previous_col]->color != board[move->previous_row][move->previous_col]->color || board[move->previous_row+1][move->previous_col]->type == NOTHING)){
+                Draw_Filled_Circle(renderer, move->previous_col*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (move->previous_row+1)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
+            }
+            // we then draw the trajectory of the king in the direction of the bottom left
+            if (move->previous_row+1 < 8 && move->previous_col-1 >= 0 && (board[move->previous_row+1][move->previous_col-1]->color != board[move->previous_row][move->previous_col]->color || board[move->previous_row+1][move->previous_col-1]->type == NOTHING)){
+                Draw_Filled_Circle(renderer, (move->previous_col-1)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (move->previous_row+1)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
+            }
+            // we then draw the trajectory of the king in the direction of the left
+            if (move->previous_col-1 >= 0 && (board[move->previous_row][move->previous_col-1]->color != board[move->previous_row][move->previous_col]->color || board[move->previous_row][move->previous_col-1]->type == NOTHING)){
+                Draw_Filled_Circle(renderer, (move->previous_col-1)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, move->previous_row*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
+            }
+            // we then draw the trajectory of the king in the direction of the top left
+            if (move->previous_row-1 >= 0 && move->previous_col-1 >= 0 && (board[move->previous_row-1][move->previous_col-1]->color != board[move->previous_row][move->previous_col]->color || board[move->previous_row-1][move->previous_col-1]->type == NOTHING)){
+                Draw_Filled_Circle(renderer, (move->previous_col-1)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (move->previous_row-1)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
+            }
+
+            // adding the possibility to do the rock move
+            Move* rock_king_move = Create_Move(0, 0, 0, 0);
+            // long white rock
+            Change_Move(rock_king_move,7,4,7,0);
+            if (board[move->previous_row][move->previous_col]->color == WHITE && Is_Rock_Possible(rock_king_move, State_Of_Rock_and_Check, board) != NO_ROCK){
+                Draw_Filled_Circle(renderer, 0*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, 7*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
+            }
+            // short white rock
+            Change_Move(rock_king_move,7,4,7,7);
+            if (board[move->previous_row][move->previous_col]->color == WHITE && Is_Rock_Possible(rock_king_move, State_Of_Rock_and_Check, board) != NO_ROCK){
+                Draw_Filled_Circle(renderer, 7*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, 7*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
+            }
+            // long black rock
+            Change_Move(rock_king_move,0,4,0,0);
+            if (board[move->previous_row][move->previous_col]->color == BLACK && Is_Rock_Possible(rock_king_move, State_Of_Rock_and_Check, board) != NO_ROCK){
+                Draw_Filled_Circle(renderer, 0*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, 0*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
+            }
+            // short black rock
+            Change_Move(rock_king_move,0,4,0,7);
+            if (board[move->previous_row][move->previous_col]->color == BLACK && Is_Rock_Possible(rock_king_move, State_Of_Rock_and_Check, board) != NO_ROCK){
+                Draw_Filled_Circle(renderer, 7*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, 0*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
+            }
+            Destroy_Move(rock_king_move);
+
+        }
+        
+        // if the piece is a pawn
+        if (board[move->previous_row][move->previous_col]->type == PAWN){
+
+            Move* move_pawn = Create_Move(move->previous_row, move->previous_col, 0,0);
+
+            // if the pawn is white
+            if (board[move->previous_row][move->previous_col]->color == WHITE){
+                // the Is_Move_Valid_Pawn function will be used to know if the move is valid or not (including the en passant move)
+
+                // we change the move of the pawn, going up (row-1)
+                Change_Move(move_pawn, move_pawn->previous_row, move_pawn->previous_col, move_pawn->previous_row-1, move_pawn->previous_col);
+                if (move_pawn->previous_row-1>=0){
+                    if (Is_Move_Valid_Pawn(move_pawn, board, Pawn_Move_State) == true){
+                        Draw_Filled_Circle(renderer, move_pawn->previous_col*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (move_pawn->previous_row-1)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
+                    }
+                }
+                // we change the move of the pawn, going up twice, only if we're at the beggining (row-2)
+                Change_Move(move_pawn, move_pawn->previous_row, move_pawn->previous_col, move_pawn->previous_row-2, move_pawn->previous_col);
+                if (move_pawn->previous_row-2>=0){   
+                    if (Is_Move_Valid_Pawn(move_pawn, board, Pawn_Move_State) == true){
+                        Draw_Filled_Circle(renderer, move_pawn->previous_col*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (move_pawn->previous_row-2)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
+                    }
+                }
+                // we change the move of the pawn, going up and right (row-1, col+1)
+                Change_Move(move_pawn, move_pawn->previous_row, move_pawn->previous_col, move_pawn->previous_row-1, move_pawn->previous_col+1);
+                if (move_pawn->previous_row-1>=0 && move_pawn->previous_col+1<8){
+                    if (Is_Move_Valid_Pawn(move_pawn, board, Pawn_Move_State) == true){
+                        Draw_Filled_Circle(renderer, (move_pawn->previous_col+1)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (move_pawn->previous_row-1)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
+                    }
+                }
+                // we change the move of the pawn, going up and left (row-1, col-1)
+                Change_Move(move_pawn, move_pawn->previous_row, move_pawn->previous_col, move_pawn->previous_row-1, move_pawn->previous_col-1);
+                if (move_pawn->previous_row-1>=0 && move_pawn->previous_col-1>=0){
+                    if (Is_Move_Valid_Pawn(move_pawn, board, Pawn_Move_State) == true){
+                        Draw_Filled_Circle(renderer, (move_pawn->previous_col-1)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (move_pawn->previous_row-1)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
+                    }
+                }
+                
+            }
+
+            // if the pawn is black
+            else if (board[move->previous_row][move->previous_col]->color == BLACK){
+                // the Is_Move_Valid_Pawn function will be used to know if the move is valid or not (including the en passant move)
+
+                // we change the move of the pawn, going down (row+1)
+                Change_Move(move_pawn, move_pawn->previous_row, move_pawn->previous_col, move_pawn->previous_row+1, move_pawn->previous_col);
+                if (move_pawn->previous_row+1<8){
+                    if (Is_Move_Valid_Pawn(move_pawn, board, Pawn_Move_State) == true){
+                        Draw_Filled_Circle(renderer, move_pawn->previous_col*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (move_pawn->previous_row+1)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
+                    }
+                }
+                // we change the move of the pawn, going up twice, only if we're at the beggining (row+2)
+                Change_Move(move_pawn, move_pawn->previous_row, move_pawn->previous_col, move_pawn->previous_row+2, move_pawn->previous_col);
+                if (move_pawn->previous_row+2<8){
+                    if (Is_Move_Valid_Pawn(move_pawn, board, Pawn_Move_State) == true){
+                        Draw_Filled_Circle(renderer, move_pawn->previous_col*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (move_pawn->previous_row+2)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
+                    }
+                }
+                // we change the move of the pawn, going down and right (row+1, col+1)
+                Change_Move(move_pawn, move_pawn->previous_row, move_pawn->previous_col, move_pawn->previous_row+1, move_pawn->previous_col+1);
+                if (move_pawn->previous_row+1<8 && move_pawn->previous_col+1<8){
+                    if (Is_Move_Valid_Pawn(move_pawn, board, Pawn_Move_State) == true){
+                        Draw_Filled_Circle(renderer, (move_pawn->previous_col+1)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (move_pawn->previous_row+1)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
+                    }
+                }
+                // we change the move of the pawn, going down and left (row+1, col-1)
+                Change_Move(move_pawn, move_pawn->previous_row, move_pawn->previous_col, move_pawn->previous_row+1, move_pawn->previous_col-1);
+                if (move_pawn->previous_row+1<8 && move_pawn->previous_col-1>=0){
+                    if (Is_Move_Valid_Pawn(move_pawn, board, Pawn_Move_State) == true){
+                        Draw_Filled_Circle(renderer, (move_pawn->previous_col-1)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (move_pawn->previous_row+1)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
+                    }
+                }
+                
+            }
+
+            Destroy_Move(move_pawn);
+        }
+
     }
 
 }
