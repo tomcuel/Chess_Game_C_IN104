@@ -51,6 +51,7 @@
  * Destroy_Captured_Piece_and_Score - destroy a structure of captured pieces
  * Get_Value_Of_Piece - function to get the value of a piece
  * 
+ * Is_Case_threatened - function to get know if a case is threatened by a piece of the opposite color of the one given in parameter
  * Is_Check - function to get know if the king is in check or not
  * Is_Check_Mate - function to get know if the king is in check mate or not
  * Get_King - function to get the king of a certain color, it will help us to know it's coordinates to create the moves that are checking the king and make the next function
@@ -426,18 +427,28 @@ int Get_Value_Of_Piece(int piece_type);
 
 
 /////////////////////////////////////////////////////////////////////////////////////
+// function to get know if a case is threatened by a piece of the opposite color of the one given in parameter
+/**
+ * @param color - the color of the piece that is going to be threatened
+ * @param row - the row of the case that is going to be threatened
+ * @param col - the column of the case that is going to be threatened
+ * @param board - the board where the piece is
+**/
+/////////////////////////////////////////////////////////////////////////////////////
+bool Is_Case_threatened(int color, int row, int col, Piece*** board);
+
+
+/////////////////////////////////////////////////////////////////////////////////////
 // function to get know if the king is in check or not
 // looking in diagonal (bishop, queen, pawn), in line (rook, queen), and in L (knight) to know if it's treated by a piece
 // need to consider for diagonal and line if a piece is between the king and the piece that is treating it
 /**
  * @param color - the color of the king
  * @param board - the board where the king is
- * @param State_Of_Rock_and_Check - the state of the rock and check state
- * @param Move_Log - the log of the moves that have been made
  * @return bool - true if the king is in check, false otherwise
 **/
 /////////////////////////////////////////////////////////////////////////////////////
-bool Is_Check(int color, Piece*** board, State_Of_Rock_and_Check* State_Of_Rock_and_Check, Move_Log_array* Move_Log);
+bool Is_Check(int color, Piece*** board);
 
 
 /////////////////////////////////////////////////////////////////////////////////////

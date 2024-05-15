@@ -555,7 +555,6 @@ bool Is_Move_Valid_Rook(Move* move, Piece*** board){
         return false;
     }
 
-
     // move to the right horizontally
     if (move->previous_row == move->destination_row && move->previous_col < move->destination_col){
         for (int j = move->previous_col + 1; j < move->destination_col; j++){
@@ -629,9 +628,6 @@ bool Is_Move_Valid_Queen(Move* move, Piece*** board){
 
 
 bool Is_Move_Valid_King(Move* move, Piece*** board, State_Of_Rock_and_Check* State_Of_Rock_and_Check){
-
-    // Check if the destination is occupied by a piece of the same color
-  
 
     // the king is a bit of a queen but restricted to one square (both a rock and a bishop restricted to one square)
     if (abs(move->previous_row - move->destination_row) <= 1 && abs(move->previous_col - move->destination_col) <= 1){
@@ -723,7 +719,7 @@ int Is_Rock_Possible(Move* move, State_Of_Rock_and_Check* State_Of_Rock_and_Chec
         if (move->previous_col == 4 && move->destination_col == 0 && State_Of_Rock_and_Check->white_left_rook_moved == false){
             // the case bewteen the king and the rook needs to be empty of pieces 
             for (int j = 1; j < 4; j++){
-                if (board[7][j]->type != NOTHING){
+                if (board[7][j]->type != NOTHING || Is_Case_threatened(WHITE, 7, j, board) == true){
                     return NO_ROCK;
                 }
             }
@@ -733,11 +729,11 @@ int Is_Rock_Possible(Move* move, State_Of_Rock_and_Check* State_Of_Rock_and_Chec
         }
 
         // if the king is moving to the right, the right rook needs to be on its start position and not moved
-        else if (move->destination_col == 7 && move->previous_col ==4 && State_Of_Rock_and_Check->white_right_rook_moved == false){
+        else if (move->destination_col == 7 && move->previous_col == 4 && State_Of_Rock_and_Check->white_right_rook_moved == false){
                 
             // the case bewteen the king and the rook needs to be empty of pieces
             for (int j = 5; j < 7; j++){
-                if (board[0][j]->type != NOTHING){
+                if (board[0][j]->type != NOTHING || Is_Case_threatened(WHITE, 7, j, board) == true){
                     return NO_ROCK;
                 }
             }
@@ -756,7 +752,7 @@ int Is_Rock_Possible(Move* move, State_Of_Rock_and_Check* State_Of_Rock_and_Chec
         if (move->previous_col == 4 && move->destination_col == 0 && State_Of_Rock_and_Check->black_left_rook_moved == false){
             // the case bewteen the king and the rook needs to be empty of pieces
             for (int j = 1; j < 4; j++){
-                if (board[0][j]->type != NOTHING){
+                if (board[0][j]->type != NOTHING || Is_Case_threatened(BLACK, 0, j, board) == true){
                     return NO_ROCK;
                 }
             }
@@ -769,7 +765,7 @@ int Is_Rock_Possible(Move* move, State_Of_Rock_and_Check* State_Of_Rock_and_Chec
         else if (move->destination_col == 7 && move->previous_col == 4 && State_Of_Rock_and_Check->black_right_rook_moved == false){
             // the case bewteen the king and the rook needs to be empty of pieces
             for (int j = 5; j < 7; j++){
-                if (board[0][j]->type != NOTHING){
+                if (board[0][j]->type != NOTHING || Is_Case_threatened(BLACK, 0, j, board) == true){
                     return NO_ROCK;
                 }
             }
@@ -1017,17 +1013,471 @@ int Get_Value_Of_Piece(int piece_type){
 }
 
 
-bool Is_Check(int color, Piece*** board, State_Of_Rock_and_Check* State_Of_Rock_and_Check, Move_Log_array* Move_Log){
+bool Is_Case_threatened(int color, int row, int col, Piece*** board){
+
+    // looking if a knight if threatening the king
+    // looking for the 8 possible moves of the knight
+    if (row - 2 >= 0 && col - 1 >= 0 && board[row - 2][col - 1]->type == KNIGHT && board[row - 2][col - 1]->color != color){
+        return true;
+    }
+    if (row - 2 >= 0 && col + 1 < 8 && board[row - 2][col + 1]->type == KNIGHT && board[row - 2][col + 1]->color != color){
+        return true;
+    }
+    if (row - 1 >= 0 && col - 2 >= 0 && board[row - 1][col - 2]->type == KNIGHT && board[row - 1][col - 2]->color != color){
+        return true;
+    }
+    if (row - 1 >= 0 && col + 2 < 8 && board[row - 1][col + 2]->type == KNIGHT && board[row - 1][col + 2]->color != color){
+        return true;
+    }
+    if (row + 1 < 8 && col - 2 >= 0 && board[row + 1][col - 2]->type == KNIGHT && board[row + 1][col - 2]->color != color){
+        return true;
+    }
+    if (row + 1 < 8 && col + 2 < 8 && board[row + 1][col + 2]->type == KNIGHT && board[row + 1][col + 2]->color != color){
+        return true;
+    }
+    if (row + 2 < 8 && col - 1 >= 0 && board[row + 2][col - 1]->type == KNIGHT && board[row + 2][col - 1]->color != color){
+        return true;
+    }
+
+    // looking if a pawn if threatening the king
+    // if the king is white
+    if (color == WHITE){
+        // if the king is not on the first row
+        if (row > 0){
+            // if the king is not on the first column
+            if (col > 0){
+                // if there is a black pawn on the left and up
+                if (board[row - 1][col - 1]->type == PAWN && board[row - 1][col - 1]->color == BLACK){
+                    return true;
+                }
+            }
+            // if the king is not on the last column
+            if (col < 7){
+                // if there is a black pawn on the right and up
+                if (board[row - 1][col + 1]->type == PAWN && board[row - 1][col + 1]->color == BLACK){
+                    return true;
+                }
+            }
+        }
+    }
+    // if the king is black
+    if (color == BLACK){
+        // if the king is not on the last row
+        if (row < 7){
+            // if the king is not on the first column
+            if (col > 0){
+                // if there is a white pawn on the left and down
+                if (board[row + 1][col - 1]->type == PAWN && board[row + 1][col - 1]->color == WHITE){
+                    return true;
+                }
+            }
+            // if the king is not on the last column
+            if (col < 7){
+                // if there is a white pawn on the right and down
+                if (board[row + 1][col + 1]->type == PAWN && board[row + 1][col + 1]->color == WHITE){
+                    return true;
+                }
+            }
+        }
+    }
+
+    // the queen will be done with both the rook and the bishop
+
+    // looking if a rook or a queen if threatening the king
+    // looking for the 4 possible directions of the rook and the queen 
+    // looking to the right
+    if (col < 7){
+        for (int j = col + 1; j < 8; j++){
+            // if we found a piece in the line to the right
+            if (board[row][j]->type != NOTHING){
+                // if the piece is a rook or a queen of the opposite color
+                if ((board[row][j]->type == ROOK || board[row][j]->type == QUEEN) && board[row][j]->color != color){
+                    return true;
+                }
+                // if the piece is not a rook or a queen
+                else {
+                    break;
+                }
+            }
+        }
+    }
+    // looking to the left
+    if (col > 0){
+        for (int j = col - 1; j >= 0; j--){
+            // if we found a piece in the line to the left
+            if (board[row][j]->type != NOTHING){
+                // if the piece is a rook or a queen of the opposite color
+                if ((board[row][j]->type == ROOK || board[row][j]->type == QUEEN) && board[row][j]->color != color){
+                    return true;
+                }
+                // if the piece is not a rook or a queen
+                else {
+                    break;
+                }
+            }
+        }
+    }
+    // looking up
+    if (row > 0){
+        for (int i = row - 1; i >= 0; i--){
+            // if we found a piece in the line up
+            if (board[i][col]->type != NOTHING){
+                // if the piece is a rook or a queen of the opposite color
+                if ((board[i][col]->type == ROOK || board[i][col]->type == QUEEN) && board[i][col]->color != color){
+                    return true;
+                }
+                // if the piece is not a rook or a queen
+                else {
+                    break;
+                }
+            }
+        }
+    }
+    // looking down
+    if (row < 7){
+        for (int i = row + 1; i < 8; i++){
+            // if we found a piece in the line down
+            if (board[i][col]->type != NOTHING){
+                // if the piece is a rook or a queen of the opposite color
+                if ((board[i][col]->type == ROOK || board[i][col]->type == QUEEN) && board[i][col]->color != color){
+                    return true;
+                }
+                // if the piece is not a rook or a queen
+                else {
+                    break;
+                }
+            }
+        }
+    }
+
+    // looking if a bishop or a queen if threatening the king
+    // looking for the 4 possible directions of the bishop and the queen
+    // looking to the right and down
+    if (row < 7 && col < 7){
+        for (int i = row + 1, j = col + 1; i < 8 && j < 8; i++, j++){
+            // if we found a piece in the diagonal to the right and down
+            if (board[i][j]->type != NOTHING){
+                // if the piece is a bishop or a queen of the opposite color
+                if ((board[i][j]->type == BISHOP || board[i][j]->type == QUEEN) && board[i][j]->color != color){
+                    return true;
+                }
+                // if the piece is not a bishop or a queen
+                else {
+                    break;
+                }
+            }
+        }
+    }
+    // looking to the left and down
+    if (row < 7 && col > 0){
+        for (int i = row + 1, j = col - 1; i < 8 && j >= 0; i++, j--){
+            // if we found a piece in the diagonal to the left and down
+            if (board[i][j]->type != NOTHING){
+                // if the piece is a bishop or a queen of the opposite color
+                if ((board[i][j]->type == BISHOP || board[i][j]->type == QUEEN) && board[i][j]->color != color){
+                    return true;
+                }
+                // if the piece is not a bishop or a queen
+                else {
+                    break;
+                }
+            }
+        }
+    }
+    // looking to the right and up
+    if (row > 0 && col < 7){
+        for (int i = row - 1, j = col + 1; i >= 0 && j < 8; i--, j++){
+            // if we found a piece in the diagonal to the right and up
+            if (board[i][j]->type != NOTHING){
+                // if the piece is a bishop or a queen of the opposite color
+                if ((board[i][j]->type == BISHOP || board[i][j]->type == QUEEN) && board[i][j]->color != color){
+                    return true;
+                }
+                // if the piece is not a bishop or a queen
+                else {
+                    break;
+                }
+            }
+        }
+    }
+    // looking to the left and up
+    if (row > 0 && col > 0){
+        for (int i = row - 1, j = col - 1; i >= 0 && j >= 0; i--, j--){
+            // if we found a piece in the diagonal to the left and up
+            if (board[i][j]->type != NOTHING){
+                // if the piece is a bishop or a queen of the opposite color
+                if ((board[i][j]->type == BISHOP || board[i][j]->type == QUEEN) && board[i][j]->color != color){
+                    return true;
+                }
+                // if the piece is not a bishop or a queen
+                else {
+                    break;
+                }
+            }
+        }
+    }
+
+    // default
+    return false;
+}
+
+
+bool Is_Check(int color, Piece*** board){
+
+    // Finding the piece corresponding to the king of the given color 
+    Piece* king = Get_King(color, board);
+    
+    // looking if a knight if threatening the king
+    // looking for the 8 possible moves of the knight
+    if (king->row - 2 >= 0 && king->col - 1 >= 0 && board[king->row - 2][king->col - 1]->type == KNIGHT && board[king->row - 2][king->col - 1]->color != color){
+        return true;
+    }
+    if (king->row - 2 >= 0 && king->col + 1 < 8 && board[king->row - 2][king->col + 1]->type == KNIGHT && board[king->row - 2][king->col + 1]->color != color){
+        return true;
+    }
+    if (king->row - 1 >= 0 && king->col - 2 >= 0 && board[king->row - 1][king->col - 2]->type == KNIGHT && board[king->row - 1][king->col - 2]->color != color){
+        return true;
+    }
+    if (king->row - 1 >= 0 && king->col + 2 < 8 && board[king->row - 1][king->col + 2]->type == KNIGHT && board[king->row - 1][king->col + 2]->color != color){
+        return true;
+    }
+    if (king->row + 1 < 8 && king->col - 2 >= 0 && board[king->row + 1][king->col - 2]->type == KNIGHT && board[king->row + 1][king->col - 2]->color != color){
+        return true;
+    }
+    if (king->row + 1 < 8 && king->col + 2 < 8 && board[king->row + 1][king->col + 2]->type == KNIGHT && board[king->row + 1][king->col + 2]->color != color){
+        return true;
+    }
+    if (king->row + 2 < 8 && king->col - 1 >= 0 && board[king->row + 2][king->col - 1]->type == KNIGHT && board[king->row + 2][king->col - 1]->color != color){
+        return true;
+    }
+
+    // looking if a pawn if threatening the king
+    // if the king is white
+    if (color == WHITE){
+        // if the king is not on the first row
+        if (king->row > 0){
+            // if the king is not on the first column
+            if (king->col > 0){
+                // if there is a black pawn on the left and up
+                if (board[king->row - 1][king->col - 1]->type == PAWN && board[king->row - 1][king->col - 1]->color == BLACK){
+                    return true;
+                }
+            }
+            // if the king is not on the last column
+            if (king->col < 7){
+                // if there is a black pawn on the right and up
+                if (board[king->row - 1][king->col + 1]->type == PAWN && board[king->row - 1][king->col + 1]->color == BLACK){
+                    return true;
+                }
+            }
+        }
+    }
+    // if the king is black
+    if (color == BLACK){
+        // if the king is not on the last row
+        if (king->row < 7){
+            // if the king is not on the first column
+            if (king->col > 0){
+                // if there is a white pawn on the left and down
+                if (board[king->row + 1][king->col - 1]->type == PAWN && board[king->row + 1][king->col - 1]->color == WHITE){
+                    return true;
+                }
+            }
+            // if the king is not on the last column
+            if (king->col < 7){
+                // if there is a white pawn on the right and down
+                if (board[king->row + 1][king->col + 1]->type == PAWN && board[king->row + 1][king->col + 1]->color == WHITE){
+                    return true;
+                }
+            }
+        }
+    }
+
+    // the queen will be done with both the rook and the bishop
+
+    // looking if a rook or a queen if threatening the king
+    // looking for the 4 possible directions of the rook and the queen 
+    // looking to the right
+    if (king->col < 7){
+        for (int j = king->col + 1; j < 8; j++){
+            // if we found a piece in the line to the right
+            if (board[king->row][j]->type != NOTHING){
+                // if the piece is a rook or a queen of the opposite color
+                if ((board[king->row][j]->type == ROOK || board[king->row][j]->type == QUEEN) && board[king->row][j]->color != color){
+                    return true;
+                }
+                // if the piece is not a rook or a queen
+                else {
+                    break;
+                }
+            }
+        }
+    }
+    // looking to the left
+    if (king->col > 0){
+        for (int j = king->col - 1; j >= 0; j--){
+            // if we found a piece in the line to the left
+            if (board[king->row][j]->type != NOTHING){
+                // if the piece is a rook or a queen of the opposite color
+                if ((board[king->row][j]->type == ROOK || board[king->row][j]->type == QUEEN) && board[king->row][j]->color != color){
+                    return true;
+                }
+                // if the piece is not a rook or a queen
+                else {
+                    break;
+                }
+            }
+        }
+    }
+    // looking up
+    if (king->row > 0){
+        for (int i = king->row - 1; i >= 0; i--){
+            // if we found a piece in the line up
+            if (board[i][king->col]->type != NOTHING){
+                // if the piece is a rook or a queen of the opposite color
+                if ((board[i][king->col]->type == ROOK || board[i][king->col]->type == QUEEN) && board[i][king->col]->color != color){
+                    return true;
+                }
+                // if the piece is not a rook or a queen
+                else {
+                    break;
+                }
+            }
+        }
+    }
+    // looking down
+    if (king->row < 7){
+        for (int i = king->row + 1; i < 8; i++){
+            // if we found a piece in the line down
+            if (board[i][king->col]->type != NOTHING){
+                // if the piece is a rook or a queen of the opposite color
+                if ((board[i][king->col]->type == ROOK || board[i][king->col]->type == QUEEN) && board[i][king->col]->color != color){
+                    return true;
+                }
+                // if the piece is not a rook or a queen
+                else {
+                    break;
+                }
+            }
+        }
+    }
+
+    // looking if a bishop or a queen if threatening the king
+    // looking for the 4 possible directions of the bishop and the queen
+    // looking to the right and down
+    if (king->row < 7 && king->col < 7){
+        for (int i = king->row + 1, j = king->col + 1; i < 8 && j < 8; i++, j++){
+            // if we found a piece in the diagonal to the right and down
+            if (board[i][j]->type != NOTHING){
+                // if the piece is a bishop or a queen of the opposite color
+                if ((board[i][j]->type == BISHOP || board[i][j]->type == QUEEN) && board[i][j]->color != color){
+                    return true;
+                }
+                // if the piece is not a bishop or a queen
+                else {
+                    break;
+                }
+            }
+        }
+    }
+    // looking to the left and down
+    if (king->row < 7 && king->col > 0){
+        for (int i = king->row + 1, j = king->col - 1; i < 8 && j >= 0; i++, j--){
+            // if we found a piece in the diagonal to the left and down
+            if (board[i][j]->type != NOTHING){
+                // if the piece is a bishop or a queen of the opposite color
+                if ((board[i][j]->type == BISHOP || board[i][j]->type == QUEEN) && board[i][j]->color != color){
+                    return true;
+                }
+                // if the piece is not a bishop or a queen
+                else {
+                    break;
+                }
+            }
+        }
+    }
+    // looking to the right and up
+    if (king->row > 0 && king->col < 7){
+        for (int i = king->row - 1, j = king->col + 1; i >= 0 && j < 8; i--, j++){
+            // if we found a piece in the diagonal to the right and up
+            if (board[i][j]->type != NOTHING){
+                // if the piece is a bishop or a queen of the opposite color
+                if ((board[i][j]->type == BISHOP || board[i][j]->type == QUEEN) && board[i][j]->color != color){
+                    return true;
+                }
+                // if the piece is not a bishop or a queen
+                else {
+                    break;
+                }
+            }
+        }
+    }
+    // looking to the left and up
+    if (king->row > 0 && king->col > 0){
+        for (int i = king->row - 1, j = king->col - 1; i >= 0 && j >= 0; i--, j--){
+            // if we found a piece in the diagonal to the left and up
+            if (board[i][j]->type != NOTHING){
+                // if the piece is a bishop or a queen of the opposite color
+                if ((board[i][j]->type == BISHOP || board[i][j]->type == QUEEN) && board[i][j]->color != color){
+                    return true;
+                }
+                // if the piece is not a bishop or a queen
+                else {
+                    break;
+                }
+            }
+        }
+    }
+
+    // default
+    return false;
 
 }
 
 
 int Is_Check_Mate(int color, Piece*** board, State_Of_Rock_and_Check* State_Of_Rock_and_Check, Move_Log_array* Move_Log){
 
+    // getting the king of the given color
+    Piece* king = Get_King(color, board);
+
+    // if the king is not checked
+    if (Is_Check(color, board) == false){
+        // if no move is possible on the board for the given color, then it's a stalemate (DRAW)
+        int number_of_moves_possible = 0;
+
+        
+        // if no move is possible for the given color, then it's a stalemate (DRAW)
+        if (number_of_moves_possible == 0){
+            return DRAW;
+        }
+        else if (number_of_moves_possible > 0){
+            return NO_CHECK_MATE;
+        }
+    }
+    // if the king is checked, we need to see if it's a check mate 
+    if (Is_Check(color, board) == true){
+
+
+        if (color == WHITE){
+            return WHITE_CHECK;
+        }
+        else if (color == BLACK){
+            return BLACK_CHECK;
+        }
+    }
+
 }
 
 
 Piece* Get_King(int color, Piece*** board){
+
+    for (int i=0; i<8; i++){
+        for (int j=0; j<8; j++){
+            if (board[i][j]->type == KING && board[i][j]->color == color){
+                return board[i][j];
+            }
+        }
+    }
 
 }
 
