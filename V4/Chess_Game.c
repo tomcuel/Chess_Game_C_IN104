@@ -53,6 +53,7 @@
 #include "Piece.h"
 #include "Move.h"
 #include "Graphics.h"
+#include "Audio.h"
 
 
 // initialize the window and the renderer
@@ -1079,7 +1080,8 @@ int main (){
                             int piece_taken_type = NOTHING;
                             int piece_taken_color = NO_COLOR;
                             // if a move is valid, then we can also ask if a piece is taken, and if it's the case, we can know what type and what color it is
-                            if (Will_Capture(move, board) == true && Is_Move_Valid(move, board, State_Of_RockandCheck, Pawn_Move_State) == true){
+                            bool will_capture_a_piece = Will_Capture(move, board);
+                            if (will_capture_a_piece == true && Is_Move_Valid(move, board, State_Of_RockandCheck, Pawn_Move_State) == true){
                                 piece_taken_type = board[move->destination_row][move->destination_col]->type;
                                 piece_taken_color = board[move->destination_row][move->destination_col]->color;
                             }
@@ -1103,6 +1105,10 @@ int main (){
                                 color_promoted_pawn = board[move->previous_row][move->previous_col]->color;
                             }
 
+
+                            // getting the check state
+                            bool is_check_before_move = Is_Check(players->color_player_that_is_playing, board); 
+
                             // if you touch the piece once, as in the real game, you're forced to play this piece, there isn't any way to cancel the move
                             // making the move if it's valid, here we don't care about the special moves and what it does to other pieces
                             // we will need to do it in the future, here we also don't care about the check
@@ -1111,7 +1117,7 @@ int main (){
                                 // making the move log update that is crucial for Make_Move to work since we go searching for an index actual_size-1 and only adding an element to Move_Log will make actual_size-1 positive, not to have a segmentation fault
                                 // but only a valid move will be added to the log
                                 Move_Log_Element* element = Create_Element_Move_Log();
-                                Change_Move_Log_Element(element, move->previous_row, move->previous_col, move->destination_row, move->destination_col, NO_CHECK, piece_taken_type, piece_taken_color, is_rock_possible_type, en_passant_type, color_promoted_pawn, type_promoted_pawn);
+                                Change_Move_Log_Element(element, move->previous_row, move->previous_col, move->destination_row, move->destination_col, is_check_before_move, piece_taken_type, piece_taken_color, is_rock_possible_type, en_passant_type, color_promoted_pawn, type_promoted_pawn);
                                 Move_Log_array_MESSAGE_TYPE message = Add_Element_to_the_end_of_Move_Log_array(Log, element);
                                 if (message != LOG_LIST_SUCCESS){
                                     printf("Error: the log is full\n");
@@ -1143,6 +1149,9 @@ int main (){
 
                                     // since it's a rock, we can reset the tile pawn structure for the next turn
                                     Reset_Tiles_Pawn(Pawn_Move_State);
+
+                                    // play the sound of the rock
+                                    play_sound("rock.wav");
                                 }
                                 // en passant move
                                 else if (is_en_passant_done == true){
@@ -1156,6 +1165,9 @@ int main (){
                                     
                                     // en passant mean that we can reset the tile pawn structure for the next turn
                                     Reset_Tiles_Pawn(Pawn_Move_State);
+
+                                    // play the sound of the en passant (take)
+                                    play_sound("take.wav");
                                 }
                                 // classic move
                                 else {
@@ -1165,7 +1177,16 @@ int main (){
                                     // making the move and updating the parameters others than the log, to keep track of the state of the game
                                     Make_Move(board, move, players);
                                     Change_Others_Structures(Log, Captured_Pieces_and_Score, State_Of_RockandCheck, players, board);
-                                }
+
+                                    if (will_capture_a_piece == false){
+                                        // play the sound of the take
+                                        play_sound("chess.wav");
+                                    }
+                                    else if (will_capture_a_piece == true) {
+                                        // play the sound of the move
+                                        play_sound("take.wav");
+                                    }
+                                }   
                                 // changing the player that is playing is included in the Make_Move function
 
                                 int color_we_are_checking = NO_COLOR;
@@ -1180,6 +1201,8 @@ int main (){
                                 // if the king of the color is in check after making a move, we need to remove the move
                                 if (check_state == true){
                                     Undo_Last_Move(board, Log, Captured_Pieces_and_Score, State_Of_RockandCheck, players, Pawn_Move_State);
+                                    // play the sound of the invalid move link to a check
+                                    play_sound("check.wav");
                                 }
                             }
 
@@ -1350,6 +1373,9 @@ int main (){
                         
                         Buttons[START_BUTTON]->state = ACTIVE;
                         has_match_started = true;
+
+                        // play the sound of the start of the game
+                        play_sound("chessstart.wav");
                     
                     }
 
@@ -1621,7 +1647,8 @@ int main (){
             int piece_taken_type_IA = NOTHING;
             int piece_taken_color_IA = NO_COLOR;
             // if a move is valid, then we can also ask if a piece is taken, and if it's the case, we can know what type and what color it is
-            if (Will_Capture(move, board) == true && Is_Move_Valid(move, board, State_Of_RockandCheck, Pawn_Move_State) == true){
+            bool will_capture_a_piece = Will_Capture(move, board);
+            if (will_capture_a_piece == true && Is_Move_Valid(move, board, State_Of_RockandCheck, Pawn_Move_State) == true){
                 piece_taken_type_IA = board[move->destination_row][move->destination_col]->type;
                 piece_taken_color_IA = board[move->destination_row][move->destination_col]->color;
             }
@@ -1887,6 +1914,7 @@ int main (){
                 loosing_player = players->is_playing;
             }
             */
+           // we also need to play the endgame song when one of the previous options will be true
 
             // if a player has lost, we need to stop the game and go to the end of the game
             if (loosing_player != -1){

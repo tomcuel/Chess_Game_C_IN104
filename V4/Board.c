@@ -1044,6 +1044,7 @@ void Undo_Last_Move(Piece*** board, Move_Log_array* log, Captured_Piece_and_Scor
         if (players->color_player_that_is_playing == WHITE){
             state_of_rock_and_check->black_rock_done = false;
             state_of_rock_and_check->black_king_moved = false;
+            state_of_rock_and_check->is_black_king_checked = false;
             if (log->Move_Log[log->actual_size-1]->rock_type == SHORT_ROCK){
                 state_of_rock_and_check->black_right_rook_moved = false;
             }
@@ -1057,6 +1058,7 @@ void Undo_Last_Move(Piece*** board, Move_Log_array* log, Captured_Piece_and_Scor
         else if (players->color_player_that_is_playing == BLACK){
             state_of_rock_and_check->white_rock_done = false;
             state_of_rock_and_check->white_king_moved = false;
+            state_of_rock_and_check->is_white_king_checked = false;
             if (log->Move_Log[log->actual_size-1]->rock_type == SHORT_ROCK){
                 state_of_rock_and_check->white_right_rook_moved = false;
             }
