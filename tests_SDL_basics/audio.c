@@ -33,7 +33,7 @@ int main(int argc, char* argv[]){
     SDL_PauseAudioDevice(deviceId, 0);
     // keep application running long enough to hear the sound
     
-    SDL_Delay(1000);
+    SDL_Delay(300);
     // clean up
     
     SDL_CloseAudioDevice(deviceId);
