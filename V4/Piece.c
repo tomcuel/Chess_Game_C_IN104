@@ -710,10 +710,10 @@ void Destroy_State_Of_Rock_and_Check(State_Of_Rock_and_Check* State_Of_Rock_and_
 
 
 int Is_Rock_Possible(Move* move, State_Of_Rock_and_Check* State_Of_Rock_and_Check, Piece*** board){
-
+    
     // if the king is white and on its start position and is not checked, and the rock is not done
     if (board[move->previous_row][move->previous_col]->type == KING && board[move->previous_row][move->previous_col]->color == WHITE 
-    && State_Of_Rock_and_Check->is_white_king_checked == false && State_Of_Rock_and_Check->white_king_moved == false && State_Of_Rock_and_Check->white_rock_done == false){
+    && Is_Check(WHITE, board) == false && State_Of_Rock_and_Check->white_king_moved == false && State_Of_Rock_and_Check->white_rock_done == false){
            
         // if the king is moving to the left, for a possible long rock, the left rook needs to be on its start position and not moved
         if (move->previous_col == 4 && move->destination_col == 0 && State_Of_Rock_and_Check->white_left_rook_moved == false){
@@ -729,11 +729,11 @@ int Is_Rock_Possible(Move* move, State_Of_Rock_and_Check* State_Of_Rock_and_Chec
         }
 
         // if the king is moving to the right, the right rook needs to be on its start position and not moved
-        else if (move->destination_col == 7 && move->previous_col == 4 && State_Of_Rock_and_Check->white_right_rook_moved == false){
+        if (move->destination_col == 7 && move->previous_col == 4 && State_Of_Rock_and_Check->white_right_rook_moved == false){
                 
             // the case bewteen the king and the rook needs to be empty of pieces
             for (int j = 5; j < 7; j++){
-                if (board[0][j]->type != NOTHING || Is_Case_threatened(WHITE, 7, j, board) == true){
+                if (board[7][j]->type != NOTHING || Is_Case_threatened(WHITE, 7, j, board) == true){
                     return NO_ROCK;
                 }
             }
@@ -746,7 +746,7 @@ int Is_Rock_Possible(Move* move, State_Of_Rock_and_Check* State_Of_Rock_and_Chec
 
     // if the king is black and on its start position and is not checked, and the rock is not done
     if (board[move->previous_row][move->previous_col]->type == KING && board[move->previous_row][move->previous_col]->color == BLACK
-    && State_Of_Rock_and_Check->is_black_king_checked == false && State_Of_Rock_and_Check->black_king_moved == false && State_Of_Rock_and_Check->black_rock_done == false){
+    && Is_Check(BLACK, board) == false && State_Of_Rock_and_Check->black_king_moved == false && State_Of_Rock_and_Check->black_rock_done == false){
         
         // if the king is moving to the left, the left rook needs to be on its start position and not moved
         if (move->previous_col == 4 && move->destination_col == 0 && State_Of_Rock_and_Check->black_left_rook_moved == false){
@@ -762,7 +762,7 @@ int Is_Rock_Possible(Move* move, State_Of_Rock_and_Check* State_Of_Rock_and_Chec
         }
 
         // if the king is moving to the right, the right rook needs to be on its start position and not moved
-        else if (move->destination_col == 7 && move->previous_col == 4 && State_Of_Rock_and_Check->black_right_rook_moved == false){
+        if (move->destination_col == 7 && move->previous_col == 4 && State_Of_Rock_and_Check->black_right_rook_moved == false){
             // the case bewteen the king and the rook needs to be empty of pieces
             for (int j = 5; j < 7; j++){
                 if (board[0][j]->type != NOTHING || Is_Case_threatened(BLACK, 0, j, board) == true){
@@ -870,9 +870,15 @@ Move* Create_King_Move_during_Rock(Move* move, Piece*** board, State_Of_Rock_and
 
 bool Will_Capture(Move* move, Piece*** board){
     // if the destination is a piece of the opposite color
-    if (board[move->destination_row][move->destination_col]->color != board[move->previous_row][move->previous_col]->color){
+    if (board[move->destination_row][move->destination_col]->color == WHITE && board[move->previous_row][move->previous_col]->color == BLACK){
         return true;
     }
+    // if the destination is a piece of the opposite color
+    else if (board[move->destination_row][move->destination_col]->color == BLACK && board[move->previous_row][move->previous_col]->color == WHITE){
+        return true;
+    }
+
+    // otherwise
     return false;
 }
 
