@@ -1614,7 +1614,11 @@ void Show_Trajectory(SDL_Renderer* renderer, Piece*** board, Move* move, State_O
 void Show_Victory_Menu(SDL_Renderer* renderer, Button** Buttons, int looser_player, Players* players){
   
     // if there is a looser, we show the victory or defeat image
-    if (looser_player != -1){
+    if (looser_player == Draw_Player){
+        SDL_Rect Rect_final_screen_draw = {WINDOW_WIDTH/4, WINDOW_HEIGHT/4, WINDOW_WIDTH/2, WINDOW_HEIGHT/2};
+        add_image_to_render("Draw.bmp", renderer, Rect_final_screen_draw);
+    }
+    else if (looser_player != -1){
         SDL_Rect Rect_final_screen = {0, 0, WINDOW_WIDTH, WINDOW_HEIGHT};
 
         // when we play against the IA, we can add the images of victory and defeat, otherwise, bewteen two human players, we need to do diffent things
@@ -1665,4 +1669,4 @@ void Show_Victory_Menu(SDL_Renderer* renderer, Button** Buttons, int looser_play
     add_image_to_render("Quit_Button.bmp", renderer, Buttons[QUIT_BUTTON_VICTORY_MENU]->rect);
     add_image_to_render("Restart_Button.bmp", renderer, Buttons[RESTART_BUTTON_VICTORY_MENU]->rect);
     add_image_to_render("New_Game_Button.bmp", renderer, Buttons[NEW_GAME_BUTTON_VICTORY_MENU]->rect);
-}
+}                     
