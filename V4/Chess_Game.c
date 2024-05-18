@@ -21,14 +21,11 @@
  * - the IA is working, but for now, it's really a simple one that just makes a random move, we will need to improve it in the future, but the framework is here
  * - The Move_Log is not shown since it's really a difficult thing to do, because it implies to write a lot of letters, It could be possible to do it in the future (with many screen shots of the caracters we want to print and then do a parsing to print them), but it's not the priority for now
  * - we can't ask yet the player names, we will need to do it in the future if possible
+ * - Adding a feature to be able to undo the winning / loosing game move, not for the party to stop if we have a chekcmate or a stalemate, but to be able to go back to the previous move (it wasn't possible to do it in the previous version, but it will be possible in this one)
  * 
  * - What is missing : 
  * - an intelligent AI (the different levels have to be implemented, others than the random)(maybe buttons will be to be updated if we want to have more levels of IA)
- * - the pawn promotion (and its visual to choose things, will not be difficult we think, but it will take time)
- * - he check (we think really difficult) and it's implentation in the code, it relies also on making the undo work, since a move that makes the king chekcs must be deleted and the board reinstated as it was before the move to ensure that no check occurs after the move
- * - otherwise if there is not valid moves, the checkmates might be the answer
- * - For now, everything is set up to make the game work, but it's not finished yet, things have not really been tested before being put here because it's just a draft 
- * - It will not be the case for the next versions, we will need to test everything before putting it in the main file
+ * - a better parsing of the differents functions (to make them more readable, instead of having to close loop each time by hand)
 **/
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -1106,8 +1103,17 @@ int main (){
                             }
 
 
-                            // getting the check state
-                            bool is_check_before_move = Is_Check(players->color_player_that_is_playing, board); 
+                            // getting the check state of the game before the move is made 
+                            bool check_state_before_move_bool = Is_Check(players->color_player_that_is_playing, board);
+                            int check_state_before_move = NO_COLOR;
+                            if (check_state_before_move_bool == true){
+                                if (players->color_player_that_is_playing == WHITE){
+                                    check_state_before_move = WHITE_CHECK;
+                                }
+                                else if (players->color_player_that_is_playing == BLACK){
+                                    check_state_before_move = BLACK_CHECK;
+                                }
+                            }
 
                             // if you touch the piece once, as in the real game, you're forced to play this piece, there isn't any way to cancel the move
                             // making the move if it's valid, here we don't care about the special moves and what it does to other pieces
@@ -1117,7 +1123,7 @@ int main (){
                                 // making the move log update that is crucial for Make_Move to work since we go searching for an index actual_size-1 and only adding an element to Move_Log will make actual_size-1 positive, not to have a segmentation fault
                                 // but only a valid move will be added to the log
                                 Move_Log_Element* element = Create_Element_Move_Log();
-                                Change_Move_Log_Element(element, move->previous_row, move->previous_col, move->destination_row, move->destination_col, is_check_before_move, piece_taken_type, piece_taken_color, is_rock_possible_type, en_passant_type, color_promoted_pawn, type_promoted_pawn);
+                                Change_Move_Log_Element(element, move->previous_row, move->previous_col, move->destination_row, move->destination_col, check_state_before_move, piece_taken_type, piece_taken_color, is_rock_possible_type, en_passant_type, color_promoted_pawn, type_promoted_pawn);
                                 Move_Log_array_MESSAGE_TYPE message = Add_Element_to_the_end_of_Move_Log_array(Log, element);
                                 if (message != LOG_LIST_SUCCESS){
                                     printf("Error: the log is full\n");
@@ -1548,6 +1554,14 @@ int main (){
                             if (players->is_player1_an_IA == IA || players->is_player2_an_IA == IA){
                                 Undo_Last_Move(board, Log, Captured_Pieces_and_Score, State_Of_RockandCheck, players, Pawn_Move_State);
                             }
+                            // if we're in a blitz mode, the time of the player that is playing is increased by the time of the blitz mode after each move he makes
+                            // when we undo the move, the player needs not be gain back those seconds
+                            if (players->is_playing == Player1){
+                                seconds_remaining_player_1 = seconds_remaining_player_1 - time_of_blitz_mode;
+                            }
+                            else if (players->is_playing == Player2){
+                                seconds_remaining_player_2 = seconds_remaining_player_2 - time_of_blitz_mode;
+                           }
                             // printf("is(%d,%d) on its starting position : %d\n", Log->Move_Log[Log->actual_size-1]->move->previous_row, Log->Move_Log[Log->actual_size-1]->move->previous_col, board[Log->Move_Log[Log->actual_size-1]->move->previous_row][Log->Move_Log[Log->actual_size-1]->move->previous_col]->is_on_his_start_position);
 
                         }
@@ -1611,6 +1625,28 @@ int main (){
                     // if we click on the quit button, we quit the game
                     else if (is_point_in_rect(event.button.x, event.button.y, Buttons[QUIT_BUTTON_VICTORY_MENU]->rect)){
                         is_running_game = -1;
+                    }
+
+                    // if we want to undo the last move made to go back to the chessboard 
+                    else if (is_point_in_rect(event.button.x, event.button.y, Buttons[UNDO_ENDING_MOVE_BUTTON]->rect)){
+                        is_running_game = CHESSBOARD_RENDER;
+                        has_match_started = true;
+                        // Undo the last move
+                        Undo_Last_Move(board, Log, Captured_Pieces_and_Score, State_Of_RockandCheck, players, Pawn_Move_State);
+                        // if we're playing against the IA we need to supress the two last moves
+                        if (players->is_player1_an_IA == IA || players->is_player2_an_IA == IA){
+                            Undo_Last_Move(board, Log, Captured_Pieces_and_Score, State_Of_RockandCheck, players, Pawn_Move_State);
+                        }
+                        // reset the loosing player since it's the ending condition of the game
+                        loosing_player = -1;
+                        // if we're in a blitz mode, the time of the player that is playing is increased by the time of the blitz mode after each move he makes
+                        // when we undo the move, the player needs not be gain back those seconds
+                        if (players->is_playing == Player1){
+                            seconds_remaining_player_1 = seconds_remaining_player_1 - time_of_blitz_mode;
+                        }
+                        else if (players->is_playing == Player2){
+                            seconds_remaining_player_2 = seconds_remaining_player_2 - time_of_blitz_mode;
+                        }
                     }
 
                 }
@@ -1895,30 +1931,22 @@ int main (){
             // update the renderer by presenting the new screen
             SDL_RenderPresent(renderer);
 
-            /*
             // we now need to look at the check state of the game
-            int check_mate_state = Is_Check_Mate(players->color_player_that_is_playing, board, State_Of_RockandCheck, Log);
+            int check_mate_state = Is_Check_Mate(players->color_player_that_is_playing, board, State_Of_RockandCheck, Log, Pawn_Move_State, Captured_Pieces_and_Score, players, type_promoted_pawn);
 
-            // the check mate function doesn't return the good values yet for the check mate state
-            
             // if a draw is happening the player that is playing now loose, so the opposite of the player we're checking
             if (check_mate_state == DRAW){
-                if (players->color_player_that_is_playing == WHITE){
-                    loosing_player = Player2;
-                }
-                else if (players->color_player_that_is_playing == BLACK){
-                    loosing_player = Player1;
-                }
+                loosing_player = Draw_Player;
             }
             else if (check_mate_state == WHITE_CHECKMATE || check_mate_state == BLACK_CHECKMATE){
                 loosing_player = players->is_playing;
             }
-            */
-           // we also need to play the endgame song when one of the previous options will be true
-
+            
             // if a player has lost, we need to stop the game and go to the end of the game
             if (loosing_player != -1){
                 is_running_game = is_running_game + 1;
+                // play the end of the game sound 
+                play_sound("endgame.wav");
             }
 
         }

@@ -129,7 +129,7 @@ enum {NO_EN_PASSANT, EN_PASSANT};
 // Enum that represents the type the name of the different buttons in the menu, next to the chessboard
 // there are 21 buttons in total, there will do an array of buttons to get their state
 /////////////////////////////////////////////////////////////////////////////////////
-#define NUMBER_OF_BUTTONS 43
+#define NUMBER_OF_BUTTONS 44
 
 enum { 
     // during gameplay choice 
@@ -186,7 +186,8 @@ enum {
     // in the victory menu
     NEW_GAME_BUTTON_VICTORY_MENU,
     RESTART_BUTTON_VICTORY_MENU,
-    QUIT_BUTTON_VICTORY_MENU
+    QUIT_BUTTON_VICTORY_MENU, 
+    UNDO_ENDING_MOVE_BUTTON
 };
 
 
