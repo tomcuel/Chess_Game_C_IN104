@@ -85,6 +85,28 @@ void Change_Players_that_is_Playing(Players* players){
 }
 
 
+Players* Copy_Players(Players* players){
+    // if the players are not created, we can't copy them
+    if (players == NULL){
+        printf("Error: the players are not created\n");
+        return NULL;
+    }
+
+    // creating a new players structure
+    Players* players_copy = Create_Players();
+    // copying the players caracteristics
+    players_copy->is_player1_an_IA = players->is_player1_an_IA;
+    players_copy->player1_color = players->player1_color;
+    players_copy->is_player2_an_IA = players->is_player2_an_IA;
+    players_copy->player2_color = players->player2_color;
+    players_copy->is_playing = players->is_playing;
+    players_copy->color_player_that_is_playing = players->color_player_that_is_playing;
+
+    // returning the copy of the players
+    return players_copy;
+}
+
+
 void Destroy_Players(Players* players){
     // if the players are not NULL, we can free them
     if (players != NULL){

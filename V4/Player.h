@@ -21,6 +21,7 @@
  * Reset_Players - to reset the two players structure
  * Setup_Players - to change the two players caracteristics
  * Change_Player_that_is_Playing - to change the player that is playing
+ * Copy_Players - to copy the two players
  * Destroy_Players - to destroy the two players
  * IA_Play - to make the IA play (a move will be returned) (will need special implementation in the code to make the move)
  * Make_Pawn_Promotion_for_IA - to make the pawn promotion for the IA (it replace the pawn promoted by the piece chosen by the IA)
@@ -91,6 +92,16 @@ void Setup_Players(Players* players, int player1_color, int player2_color, int i
 **/
 /////////////////////////////////////////////////////////////////////////////////////
 void Change_Players_that_is_Playing(Players* players);
+
+
+/////////////////////////////////////////////////////////////////////////////////////
+// Function to copy the two players
+/**
+ * @param players : the players to copy
+ * @return Players* : the copy of the players
+**/
+/////////////////////////////////////////////////////////////////////////////////////
+Players* Copy_Players(Players* players);
 
 
 /////////////////////////////////////////////////////////////////////////////////////
