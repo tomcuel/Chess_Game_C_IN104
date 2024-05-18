@@ -235,18 +235,23 @@ Button** Create_Buttons(int number_of_buttons){
     // buttons for the victory menu
     Buttons[NEW_GAME_BUTTON_VICTORY_MENU]->rect.x = 50;
     Buttons[NEW_GAME_BUTTON_VICTORY_MENU]->rect.y = 50;
-    Buttons[NEW_GAME_BUTTON_VICTORY_MENU]->rect.w = 275;
-    Buttons[NEW_GAME_BUTTON_VICTORY_MENU]->rect.h = 175;
+    Buttons[NEW_GAME_BUTTON_VICTORY_MENU]->rect.w = 300;
+    Buttons[NEW_GAME_BUTTON_VICTORY_MENU]->rect.h = 200;
 
-    Buttons[RESTART_BUTTON_VICTORY_MENU]->rect.x = WINDOW_WIDTH-50-275;
+    Buttons[RESTART_BUTTON_VICTORY_MENU]->rect.x = WINDOW_WIDTH-50-300;
     Buttons[RESTART_BUTTON_VICTORY_MENU]->rect.y = 50;
-    Buttons[RESTART_BUTTON_VICTORY_MENU]->rect.w = 275;
-    Buttons[RESTART_BUTTON_VICTORY_MENU]->rect.h = 175;
+    Buttons[RESTART_BUTTON_VICTORY_MENU]->rect.w = 300;
+    Buttons[RESTART_BUTTON_VICTORY_MENU]->rect.h = 200;
 
-    Buttons[QUIT_BUTTON_VICTORY_MENU]->rect.x = WINDOW_WIDTH/2 - 150;
+    Buttons[QUIT_BUTTON_VICTORY_MENU]->rect.x = 50;
     Buttons[QUIT_BUTTON_VICTORY_MENU]->rect.y = 650;
     Buttons[QUIT_BUTTON_VICTORY_MENU]->rect.w = 300;
     Buttons[QUIT_BUTTON_VICTORY_MENU]->rect.h = 200;
+
+    Buttons[UNDO_ENDING_MOVE_BUTTON]->rect.x = WINDOW_WIDTH-50-300;
+    Buttons[UNDO_ENDING_MOVE_BUTTON]->rect.y = 650;
+    Buttons[UNDO_ENDING_MOVE_BUTTON]->rect.w = 300;
+    Buttons[UNDO_ENDING_MOVE_BUTTON]->rect.h = 200;
 
 
     // return the array of buttons
@@ -1669,4 +1674,5 @@ void Show_Victory_Menu(SDL_Renderer* renderer, Button** Buttons, int looser_play
     add_image_to_render("Quit_Button.bmp", renderer, Buttons[QUIT_BUTTON_VICTORY_MENU]->rect);
     add_image_to_render("Restart_Button.bmp", renderer, Buttons[RESTART_BUTTON_VICTORY_MENU]->rect);
     add_image_to_render("New_Game_Button.bmp", renderer, Buttons[NEW_GAME_BUTTON_VICTORY_MENU]->rect);
+    add_image_to_render("Unactive_Undo_Button.bmp", renderer, Buttons[UNDO_ENDING_MOVE_BUTTON]->rect);
 }                     
