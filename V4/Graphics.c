@@ -1,5 +1,4 @@
 #include "Graphics.h"
-#include "Image.h"
 
 
 Button** Create_Buttons(int number_of_buttons){
@@ -283,7 +282,14 @@ void Destroy_Buttons(int number_of_buttons, Button** Buttons){
 
 
 void Show_Load_Menu(SDL_Renderer* renderer, int menu_type, Button** Buttons, int is_clicked_1, int is_clicked_2, SDL_Rect draw_red_boundary_move){
-   
+    
+    SDL_Rect rect_full_screen;
+    rect_full_screen.x = 0;
+    rect_full_screen.y = 0;
+    rect_full_screen.w = WINDOW_WIDTH;
+    rect_full_screen.h = WINDOW_HEIGHT;
+    add_image_to_render("wall_paper.bmp", renderer, rect_full_screen);
+
     // if the menu is the gameplay choice menu
     if (menu_type==GAMEPLAY_CHOICE){
         
@@ -609,6 +615,87 @@ void Show_Chess_Board(SDL_Renderer* renderer, Piece*** board, Move_Log_array* Mo
                 add_image_to_render(name_piece, renderer, destRect);
             }      
         }
+    }
+
+
+    // adding the letters on the bottom side of the chessboard to help the player to know where he is
+    for (int i = 0; i < BOARD_SIZE; i++) {
+        char letter = 'A' + i;
+
+        switch (letter){
+            case 'A':
+                SDL_SetRenderDrawColor(renderer, 238, 238, 210, 255);
+                drawLetterA(renderer, WINDOW_LEFT_MARGIN+1*SQUARE_SIZE-5-15, WINDOW_TOP_MARGIN+8*SQUARE_SIZE-5-15, 15, 15);
+                break;
+            case 'B':
+                SDL_SetRenderDrawColor(renderer, 118, 150, 86, 255);
+                drawLetterB(renderer, WINDOW_LEFT_MARGIN+2*SQUARE_SIZE-5-15, WINDOW_TOP_MARGIN+8*SQUARE_SIZE-5-15, 15, 15);
+                break;
+            case 'C':
+                SDL_SetRenderDrawColor(renderer, 238, 238, 210, 255);
+                drawLetterC(renderer, WINDOW_LEFT_MARGIN+3*SQUARE_SIZE-5-15, WINDOW_TOP_MARGIN+8*SQUARE_SIZE-5-15, 15, 15);
+                break;
+            case 'D':
+                SDL_SetRenderDrawColor(renderer, 118, 150, 86, 255);
+                drawLetterD(renderer, WINDOW_LEFT_MARGIN+4*SQUARE_SIZE-5-15, WINDOW_TOP_MARGIN+8*SQUARE_SIZE-5-15, 15, 15);
+                break;
+            case 'E':
+                SDL_SetRenderDrawColor(renderer, 238, 238, 210, 255);
+                drawLetterE(renderer, WINDOW_LEFT_MARGIN+5*SQUARE_SIZE-5-15, WINDOW_TOP_MARGIN+8*SQUARE_SIZE-5-15, 15, 15);
+                break;
+            case 'F':
+                SDL_SetRenderDrawColor(renderer, 118, 150, 86, 255);
+                drawLetterF(renderer, WINDOW_LEFT_MARGIN+6*SQUARE_SIZE-5-15, WINDOW_TOP_MARGIN+8*SQUARE_SIZE-5-15, 15, 15);
+                break;
+            case 'G':
+                SDL_SetRenderDrawColor(renderer, 238, 238, 210, 255);
+                drawLetterG(renderer, WINDOW_LEFT_MARGIN+7*SQUARE_SIZE-5-15, WINDOW_TOP_MARGIN+8*SQUARE_SIZE-5-15, 15, 15);
+                break;
+            case 'H':
+                SDL_SetRenderDrawColor(renderer, 118, 150, 86, 255);
+                drawLetterH(renderer, WINDOW_LEFT_MARGIN+8*SQUARE_SIZE-5-15, WINDOW_TOP_MARGIN+8*SQUARE_SIZE-5-15, 15, 15);
+                break;
+        }
+
+    }
+    // adding the numbers on the left side of the chessboard to help the player to know where he is
+    for (int i = 0; i < BOARD_SIZE; i++) {
+        int number = i+1;
+        switch (number){
+            case 1 : 
+                SDL_SetRenderDrawColor(renderer, 238, 238, 210, 255);
+                drawNumber1(renderer, WINDOW_LEFT_MARGIN+5, WINDOW_TOP_MARGIN+7*SQUARE_SIZE+5, 15, 15);
+                break;
+            case 2 :
+                SDL_SetRenderDrawColor(renderer, 118, 150, 86, 255);
+                drawNumber2(renderer, WINDOW_LEFT_MARGIN+5, WINDOW_TOP_MARGIN+6*SQUARE_SIZE+5, 15, 15);
+                break;
+            case 3 :
+                SDL_SetRenderDrawColor(renderer, 238, 238, 210, 255);
+                drawNumber3(renderer, WINDOW_LEFT_MARGIN+5, WINDOW_TOP_MARGIN+5*SQUARE_SIZE+5, 15, 15);
+                break;
+            case 4 :
+                SDL_SetRenderDrawColor(renderer, 118, 150, 86, 255);
+                drawNumber4(renderer, WINDOW_LEFT_MARGIN+5, WINDOW_TOP_MARGIN+4*SQUARE_SIZE+5, 15, 15);
+                break;
+            case 5 :
+                SDL_SetRenderDrawColor(renderer, 238, 238, 210, 255);
+                drawNumber5(renderer, WINDOW_LEFT_MARGIN+5, WINDOW_TOP_MARGIN+3*SQUARE_SIZE+5, 15, 15);
+                break;
+            case 6 :
+                SDL_SetRenderDrawColor(renderer, 118, 150, 86, 255);
+                drawNumber6(renderer, WINDOW_LEFT_MARGIN+5, WINDOW_TOP_MARGIN+2*SQUARE_SIZE+5, 15, 15);
+                break;
+            case 7 :
+                SDL_SetRenderDrawColor(renderer, 238, 238, 210, 255);
+                drawNumber7(renderer, WINDOW_LEFT_MARGIN+5, WINDOW_TOP_MARGIN+1*SQUARE_SIZE+5, 15, 15);
+                break;
+            case 8 :
+                SDL_SetRenderDrawColor(renderer, 118, 150, 86, 255);
+                drawNumber8(renderer, WINDOW_LEFT_MARGIN+5, WINDOW_TOP_MARGIN+0*SQUARE_SIZE+5, 15, 15);
+                break;
+        }
+
     }
 
     // if a piece is clicked, we draw a red boundary around it

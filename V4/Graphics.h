@@ -8,6 +8,8 @@
 #include "Move_Log.h"
 #include "Player.h"
 #include "Board.h"
+#include "Image.h"
+#include "Conversion.h"
 
 
 /////////////////////////////////////////////////////////////////////////////////////
