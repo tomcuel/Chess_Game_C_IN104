@@ -374,6 +374,52 @@ void Reset_Board(Piece*** board){
 }
 
 
+Piece*** Copy_Board(Piece*** board){
+
+    Piece*** board_copy = (Piece***)malloc(BOARD_SIZE * sizeof(Piece**));
+    for (int i = 0; i < BOARD_SIZE; i++){
+        board_copy[i] = (Piece**)malloc(BOARD_SIZE * sizeof(Piece*));
+        for (int j = 0; j < BOARD_SIZE; j++){
+            board_copy[i][j] = Create_Piece();
+        }
+    }
+
+    // looking for a malloc error 
+    if (board_copy == NULL){
+        printf("Error: malloc failed in Init_Board\n");
+        return NULL;
+        for (int i = 0; i < BOARD_SIZE; i++){
+            if (board_copy[i] == NULL){
+                printf("Error: malloc failed in Init_Board\n");
+                return NULL;
+            }
+            for (int j = 0; j < BOARD_SIZE; j++){
+                if (board_copy[i][j] == NULL){
+                    printf("Error: malloc failed in Init_Board\n");
+                    return NULL;
+                }
+            }
+        }
+    }
+
+    // copying the pieces
+    for (int i = 0; i < BOARD_SIZE; i++){
+        for (int j = 0; j < BOARD_SIZE; j++){
+            board_copy[i][j]->row = board[i][j]->row;
+            board_copy[i][j]->col = board[i][j]->col;
+            board_copy[i][j]->type = board[i][j]->type;
+            board_copy[i][j]->color = board[i][j]->color;
+            board_copy[i][j]->value = board[i][j]->value;
+            board_copy[i][j]->is_alive = board[i][j]->is_alive;
+            board_copy[i][j]->is_checked = board[i][j]->is_checked;
+            board_copy[i][j]->is_on_his_start_position = board[i][j]->is_on_his_start_position;
+        }
+    }
+    
+    return board_copy;
+}
+
+
 void Clear_Board(Piece*** board){
     // if the board is not NULL (malloc error), we can free it
     if (board != NULL){
@@ -1139,4 +1185,220 @@ void Undo_Last_Move(Piece*** board, Move_Log_array* log, Captured_Piece_and_Scor
     // we suppress the last element in the log by decreasing its actual size
     log->actual_size=log->actual_size-1;
     
+}
+
+
+int Is_Check_Mate(int color, Piece*** board_init, State_Of_Rock_and_Check* State_Of_Rock_and_Check_init, Move_Log_array* Move_Log_init, Tiles_Pawn* Pawn_Move_State_init, Captured_Piece_and_Score* Captured_Pieces_and_Score_init, Players* players_init, int type_promoted_pawn){
+
+
+    // getting a number of moves posssible for the given color in the current situation of the game 
+    bool are_they_moves_possible = Are_They_Possibles_Moves(color, board_init, State_Of_Rock_and_Check_init, Move_Log_init, Pawn_Move_State_init, Captured_Pieces_and_Score_init, players_init, type_promoted_pawn);
+
+    // if the king is not checked
+    if (Is_Check(color, board_init) == false){
+        // if no move is possible on the board for the given color, then it's a stalemate (DRAW)
+        if (are_they_moves_possible == false){
+            return DRAW;
+        }
+        else if (are_they_moves_possible == true){
+            return NO_CHECK;
+        }
+    }
+    // if the king is checked, we need to see if it's a check mate 
+    else if (Is_Check(color, board_init) == true){
+        // if no move is possible on the board for the given color, then it's a check mate
+        if (are_they_moves_possible == false){
+            if (color == WHITE){
+                return WHITE_CHECKMATE;
+            }
+            else if (color == BLACK){
+                return BLACK_CHECKMATE;
+            }
+        }
+        // if a move is possible, then it's only a check
+        else if (are_they_moves_possible == true){
+            return NO_CHECK_MATE;
+        }
+    }
+
+    // return a default value
+    return NO_CHECK;
+}
+
+
+bool Are_They_Possibles_Moves(int color, Piece*** board_init, State_Of_Rock_and_Check* State_Of_Rock_and_Check_init, Move_Log_array* Move_Log_init, Tiles_Pawn* Pawn_Move_State_init, Captured_Piece_and_Score* Captured_Pieces_and_Score_init, Players* players_init, int type_promoted_pawn){
+
+    // creating a copy of each structure to be able to modify them without changing the original ones
+    Piece*** board = Copy_Board(board_init);
+    
+    State_Of_Rock_and_Check* State_Of_Rock_and_Check = Copy_State_Of_Rock_and_Check(State_Of_Rock_and_Check_init);
+    
+    Move_Log_array* Move_Log = Copy_Move_Log_array(Move_Log_init);
+    
+    Tiles_Pawn* Pawn_Move_State = Copy_Tiles_Pawn(Pawn_Move_State_init);
+    
+    Captured_Piece_and_Score* Captured_Pieces_and_Score = Copy_Captured_Piece_and_Score(Captured_Pieces_and_Score_init);
+    
+    Players* players = Copy_Players(players_init);
+
+    // Creating a move
+    Move* move_possible = Create_Move(0, 0, 0, 0);
+
+    // going through all the possible moves 
+    for (int i=0; i<BOARD_SIZE; i++){
+        for (int j=0; j<BOARD_SIZE; j++){
+            // if the piece is of the given color
+            if (board[i][j]->color == color){
+                for (int k=0; k<BOARD_SIZE; k++){
+                    for (int l=0; l<BOARD_SIZE; l++){
+                        // the move now is like that
+                        Change_Move(move_possible, i, j, k, l);
+
+                        // getting if a rock was done
+                        int is_rock_possible_type = Is_Rock_Possible(move_possible, State_Of_Rock_and_Check, board);
+                        // getting if an en passant was done
+                        bool is_en_passant_done = Is_En_Passant_Possible(move_possible, board, Pawn_Move_State);
+                        int en_passant_type = NO_EN_PASSANT;
+                        // if we have an en passant, we need to get the corresponding int
+                        if (is_en_passant_done == true){
+                            en_passant_type = EN_PASSANT;
+                        }
+                        
+                        // if a piece is taken, we need to know what type and what color it is, in case we want to undo it later, we can track the piece that has been taken to reinstall it on the board
+                        int piece_taken_type = NOTHING;
+                        int piece_taken_color = NO_COLOR;
+                        // if a move is valid, then we can also ask if a piece is taken, and if it's the case, we can know what type and what color it is
+                        if (Will_Capture(move_possible, board) == true && Is_Move_Valid(move_possible, board, State_Of_Rock_and_Check, Pawn_Move_State) == true){
+                            piece_taken_type = board[move_possible->destination_row][move_possible->destination_col]->type;
+                            piece_taken_color = board[move_possible->destination_row][move_possible->destination_col]->color;
+                        }
+                        // udpating the datas concerning the en passant move, so the log can be able to undo it, because techincally, the piece is not taken, it's just removed from the board
+                        if (is_en_passant_done == true){
+                            if (board[move_possible->previous_row][move_possible->previous_col]->color == WHITE){
+                                piece_taken_type = PAWN;
+                                piece_taken_color = BLACK;
+                            }
+                            else if (board[move_possible->previous_row][move_possible->previous_col]->color == BLACK){
+                                piece_taken_type = PAWN;
+                                piece_taken_color = WHITE;
+                            }
+                        }
+
+                        // concerning the pawn promotion
+                        bool is_pawn_promotion_happening = Is_Pawn_Promotion_Possible(move_possible, board);
+                        int color_promoted_pawn = NO_COLOR;
+                        int type_promoted_pawn_real = NOTHING;
+                        if (is_pawn_promotion_happening == true){
+                            color_promoted_pawn = board[move_possible->previous_row][move_possible->previous_col]->color;
+                            type_promoted_pawn_real = type_promoted_pawn;
+                        }
+
+                        // getting the check state of the game before the move is made 
+                        bool check_state_before_move_bool = Is_Check(players->color_player_that_is_playing, board);
+                        int check_state_before_move = NO_COLOR;
+                        if (check_state_before_move_bool == true){
+                            if (players->color_player_that_is_playing == WHITE){
+                                check_state_before_move = WHITE_CHECK;
+                            }
+                            else if (players->color_player_that_is_playing == BLACK){
+                                check_state_before_move = BLACK_CHECK;
+                            }
+                        }
+
+                        if (Is_Move_Valid(move_possible, board, State_Of_Rock_and_Check, Pawn_Move_State) == true){
+
+                            // making the move log update that is crucial for Make_Move to work since we go searching for an index actual_size-1 and only adding an element to Move_Log will make actual_size-1 positive, not to have a segmentation fault
+                            // but only a valid move will be added to the log
+                            Move_Log_Element* element = Create_Element_Move_Log();
+                            Change_Move_Log_Element(element, move_possible->previous_row, move_possible->previous_col, move_possible->destination_row, move_possible->destination_col, check_state_before_move, piece_taken_type, piece_taken_color, is_rock_possible_type, en_passant_type, color_promoted_pawn, type_promoted_pawn_real);
+                            // printf("en passant done ? : %d\n", element->en_passant_type_done);
+                            // printf("rock type : %d\n",element->rock_type);
+                            Move_Log_array_MESSAGE_TYPE message = Add_Element_to_the_end_of_Move_Log_array(Move_Log, element);
+                            if (message != LOG_LIST_SUCCESS){
+                                printf("Error: the log is full\n");
+                            }
+
+                            Destroy_Move_Log_Element(element);
+
+                            // trying to make the rock effective by getting the real moves linked to the rock that has been made
+                            if (is_rock_possible_type != NO_ROCK){
+                                Move* king_move_during_rock=Create_King_Move_during_Rock(move_possible, board, State_Of_Rock_and_Check);
+                                Move* rook_move_during_rock=Create_Rook_Move_during_Rock(move_possible, board, State_Of_Rock_and_Check);
+                                // we need to make the two moves, the king and the rock, and put the places there were to zero 
+                                // but also udpating the parameters others than the log, to keep track of the state of the game
+                                Make_Rock_Move(board, move_possible, king_move_during_rock, rook_move_during_rock, players);
+                                Change_Others_Structures_during_Rock(Move_Log, Captured_Pieces_and_Score, State_Of_Rock_and_Check, players, board);
+
+                                // free the memory
+                                Destroy_Move(king_move_during_rock);
+                                Destroy_Move(rook_move_during_rock);
+
+                                // since it's a rock, we can reset the tile pawn structure for the next turn
+                                Reset_Tiles_Pawn(Pawn_Move_State);
+
+                            }
+                            // en passant move
+                            else if (is_en_passant_done == true){
+
+                                // we need to clear the piece that has been eaten by the en passant on the board, before making the move, because we need the initial position of the pawn to know where to clear the piece
+                                Clear_En_Passant_Piece(move_possible, board, Pawn_Move_State);
+                                
+                                // making the move and updating the parameters others than the log, to keep track of the state of the game
+                                Make_Move(board, move_possible, players);
+                                Change_Others_Structures(Move_Log, Captured_Pieces_and_Score, State_Of_Rock_and_Check, players, board);
+                                
+                                // en passant mean that we can reset the tile pawn structure for the next turn
+                                Reset_Tiles_Pawn(Pawn_Move_State);
+
+                            }
+                            // classic move
+                            else if (is_rock_possible_type == NO_ROCK && is_en_passant_done == false){
+                                // we need to file the tile pawn structure for the next turn, before making the move, because we need the initial position of the pawn to know if it can move two squares
+                                Fill_Tile_Pawn(move_possible, board, Pawn_Move_State);
+
+                                // making the move and updating the parameters others than the log, to keep track of the state of the game
+                                Make_Move(board, move_possible, players);
+                                Change_Others_Structures(Move_Log, Captured_Pieces_and_Score, State_Of_Rock_and_Check, players, board);
+
+                            }
+                            // changing the player that is playing is included in the Make_Move function
+
+
+                            // get the check state of the game
+                            bool check_state = Is_Check(color, board);
+                            // if the king is not checked, we can make the move
+                            if (check_state == false){
+
+                                // free the memory
+                                Destroy_Move(move_possible);
+                                Clear_Board(board);
+                                Destroy_State_Of_Rock_and_Check(State_Of_Rock_and_Check);
+                                Destroy_Move_Log_array(Move_Log);
+                                Destroy_Tiles_Pawn(Pawn_Move_State);
+                                Destroy_Captured_Piece_and_Score(Captured_Pieces_and_Score, Captured_Pieces_and_Score->max_number_of_pieces);
+                                Destroy_Players(players);
+
+                                return true;
+                            }
+                            // we need to undo the move since it's just a test
+                            Undo_Last_Move(board, Move_Log, Captured_Pieces_and_Score, State_Of_Rock_and_Check, players, Pawn_Move_State);
+
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    // free the memory
+    Destroy_Move(move_possible);
+    Clear_Board(board);
+    Destroy_State_Of_Rock_and_Check(State_Of_Rock_and_Check);
+    Destroy_Move_Log_array(Move_Log);
+    Destroy_Tiles_Pawn(Pawn_Move_State);
+    Destroy_Captured_Piece_and_Score(Captured_Pieces_and_Score, Captured_Pieces_and_Score->max_number_of_pieces);
+    Destroy_Players(players);
+
+    // returning false if no valid move was found
+    return false;
 }
