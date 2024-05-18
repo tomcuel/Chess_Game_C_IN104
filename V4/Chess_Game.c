@@ -1922,7 +1922,7 @@ int main (){
             }
 
             // show the chess board
-            Show_Chess_Board(renderer, board, is_clicked_1, is_clicked_2, draw_red_boundary_move);
+            Show_Chess_Board(renderer, board, Log, is_clicked_1, is_clicked_2, draw_red_boundary_move);
 
             // show the trajectory of the piece that is selected
             // printf("is_clicked_on_board : %d\n", is_clicked_on_board);

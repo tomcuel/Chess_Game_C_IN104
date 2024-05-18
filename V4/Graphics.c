@@ -478,7 +478,7 @@ void Show_Load_Menu(SDL_Renderer* renderer, int menu_type, Button** Buttons, int
 }   
 
 
-void Show_Chess_Board(SDL_Renderer* renderer, Piece*** board, int is_clicked_1, int is_clicked_2, SDL_Rect draw_red_boundary_move){
+void Show_Chess_Board(SDL_Renderer* renderer, Piece*** board, Move_Log_array* Move_Log_Array, int is_clicked_1, int is_clicked_2, SDL_Rect draw_red_boundary_move){
 
 
     SDL_Rect rect;
@@ -501,6 +501,47 @@ void Show_Chess_Board(SDL_Renderer* renderer, Piece*** board, int is_clicked_1, 
             SDL_RenderFillRect(renderer, &rect);
             SDL_RenderFillRect(renderer, &rect);
         }
+    }
+
+    // if a check is happening, we draw a red square on the case where the king is before printing the pieces
+    if (Is_Check(WHITE, board) == true){
+        Piece* white_king = Get_King(WHITE, board);
+        SDL_Rect rect_check;
+        rect_check.x = white_king->col * SQUARE_SIZE + WINDOW_LEFT_MARGIN;
+        rect_check.y = white_king->row * SQUARE_SIZE + WINDOW_TOP_MARGIN;
+        rect_check.w = SQUARE_SIZE;
+        rect_check.h = SQUARE_SIZE;
+        SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255); // red
+        SDL_RenderFillRect(renderer, &rect_check);
+    }
+    if (Is_Check(BLACK, board) == true){
+        Piece* black_king = Get_King(BLACK, board);
+        SDL_Rect rect_check;
+        rect_check.x = black_king->col * SQUARE_SIZE + WINDOW_LEFT_MARGIN;
+        rect_check.y = black_king->row * SQUARE_SIZE + WINDOW_TOP_MARGIN;
+        rect_check.w = SQUARE_SIZE;
+        rect_check.h = SQUARE_SIZE;
+        SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255); // red
+        SDL_RenderFillRect(renderer, &rect_check);
+    }
+
+    // if there was a move before, we can show it by coloring the previous move cases (previous and destination) in a green / yellow color as in chess.com
+    if (Move_Log_Array->actual_size > 0){
+        SDL_Rect rect_previous_move;
+        rect_previous_move.x = Move_Log_Array->Move_Log[Move_Log_Array->actual_size-1]->move->previous_col * SQUARE_SIZE + WINDOW_LEFT_MARGIN;
+        rect_previous_move.y = Move_Log_Array->Move_Log[Move_Log_Array->actual_size-1]->move->previous_row * SQUARE_SIZE + WINDOW_TOP_MARGIN;
+        rect_previous_move.w = SQUARE_SIZE;
+        rect_previous_move.h = SQUARE_SIZE;
+        SDL_SetRenderDrawColor(renderer, 153, 204, 51, 100); 
+        SDL_RenderFillRect(renderer, &rect_previous_move);
+
+        SDL_Rect rect_destination_move;
+        rect_destination_move.x = Move_Log_Array->Move_Log[Move_Log_Array->actual_size-1]->move->destination_col * SQUARE_SIZE + WINDOW_LEFT_MARGIN;
+        rect_destination_move.y = Move_Log_Array->Move_Log[Move_Log_Array->actual_size-1]->move->destination_row * SQUARE_SIZE + WINDOW_TOP_MARGIN;
+        rect_destination_move.w = SQUARE_SIZE;
+        rect_destination_move.h = SQUARE_SIZE;
+        SDL_SetRenderDrawColor(renderer, 153, 204, 51, 100);        
+        SDL_RenderFillRect(renderer, &rect_destination_move);
     }
 
     // making the pieces
