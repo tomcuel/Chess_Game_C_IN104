@@ -20,6 +20,7 @@
  * 
  * Create_Tiles_Pawn - create a structure of the tiles of the pawn
  * Reset_Tiles_Pawn - reset a structure of the tiles of the pawn
+ * Copy_Tiles_Pawn - copy a structure of the tiles of the pawn
  * Fill_Tile_Pawn - fill a structure of the tiles of the pawn
  * Destroy_Tiles_Pawn - destroy a structure of the tiles of the pawn
  * 
@@ -40,6 +41,7 @@
  * 
  * Create_State_Of_Rock_and_Check - function to create a structure of the state of the rock and check state
  * Reset_State_Of_Rock_and_Check - function to reset a structure of the state of the rock and check state
+ * Copy_State_Of_Rock_and_Check - function to copy a structure of the state of the rock and check state
  * Destroy_State_Of_Rock_and_Check - function to destroy a structure of the state of the rock and check state
  * Is_Rock_Possible - function to get if the rock is possible or not (if the first line is empty and if the king is not in check) (will be used in Is_Move_Valid_King) and return what type of rock is possible
  * Create_Rook_Move_during_Rock - function that creates during the rock the move of the rook (depending on the type of rock : inside the function by calling Get_Type_Of_Rock)
@@ -48,14 +50,14 @@
  * Will_Capture - tell wether a move (that will be made, so we suppose it's valid, it will only be used in those cases) will capture a piece or not
  * Create_Captured_Piece_and_Score - create a structure of captured pieces
  * Reset_Captured_Piece_and_Score - function to reset the structure of captured pieces and score
+ * Copy_Captured_Piece_and_Score - function to copy the structure of captured pieces and score
  * Destroy_Captured_Piece_and_Score - destroy a structure of captured pieces
  * Get_Value_Of_Piece - function to get the value of a piece
  * 
  * Is_Case_threatened - function to get know if a case is threatened by a piece of the opposite color of the one given in parameter
  * Is_Check - function to get know if the king is in check or not
- * Is_Check_Mate - function to get know if the king is in check mate or not
+ * Is_Check_Mate - in the board because of the includes
  * Get_King - function to get the king of a certain color, it will help us to know it's coordinates to create the moves that are checking the king and make the next function
- * Get_Pieces_That_Check_King - function to get the array of the pieces that are checking the king
 **/
 /////////////////////////////////////////////////////////////////////////////////////
 
@@ -140,6 +142,17 @@ Tiles_Pawn* Create_Tiles_Pawn();
 **/
 /////////////////////////////////////////////////////////////////////////////////////
 void Reset_Tiles_Pawn(Tiles_Pawn* tiles_pawn);
+
+
+/////////////////////////////////////////////////////////////////////////////////////
+// Function to copy a structure of the tiles of the pawn
+/**
+ * @param tiles_pawn - the structure to copy
+ * @return Tiles_Pawn* - a pointer to the copied structure.
+ * NULL, if an allocation error occurred.
+**/
+/////////////////////////////////////////////////////////////////////////////////////
+Tiles_Pawn* Copy_Tiles_Pawn(Tiles_Pawn* tiles_pawn);
 
 
 /////////////////////////////////////////////////////////////////////////////////////
@@ -332,6 +345,16 @@ void Reset_State_Of_Rock_and_Check(State_Of_Rock_and_Check* State_Of_Rock_and_Ch
 
 
 /////////////////////////////////////////////////////////////////////////////////////
+// function to copy a structure of the state of the rock and check state
+/**
+ * @param state_of_rock_and_check - the structure to copy
+ * @return State_Of_Rock_and_Check* - a pointer to the copied structure.
+ * NULL, if an allocation error occurred.
+**/
+State_Of_Rock_and_Check* Copy_State_Of_Rock_and_Check(State_Of_Rock_and_Check* state_of_rock_and_check);
+
+
+/////////////////////////////////////////////////////////////////////////////////////
 // function to destroy a structure of the state of the rock and check state
 /**
  * @param State_Of_Rock_and_Check - the structure to destroy
@@ -406,6 +429,17 @@ void Reset_Captured_Piece_and_Score(Captured_Piece_and_Score* captured_piece_and
 
 
 /////////////////////////////////////////////////////////////////////////////////////
+// Function to copy the structure of captured pieces and score
+/**
+ * @param captured_piece_and_score - the structure to copy
+ * @return Captured_Piece_and_Score* - a pointer to the copied structure.
+ * NULL, if an allocation error occurred.
+**/
+/////////////////////////////////////////////////////////////////////////////////////
+Captured_Piece_and_Score* Copy_Captured_Piece_and_Score(Captured_Piece_and_Score* captured_piece_and_score);
+
+
+/////////////////////////////////////////////////////////////////////////////////////
 // Destroy a structure of captured pieces
 /**
  * @param captured_piece_and_score - the structure to destroy
@@ -452,24 +486,6 @@ bool Is_Check(int color, Piece*** board);
 
 
 /////////////////////////////////////////////////////////////////////////////////////
-// function to get know if the king is in check mate or not 
-// will use Is_Check and Is_Move_Valid_King in every direction to know if the king can move or not
-// or if it can capture the piece that is putting it in check or not (without being in Check there : some recursive function there with two floors)
-// need to use the function Get_Pieces_That_Check_King to know the pieces that are checking the king
-// or if another piece can capture it
-/**
- * @param color - the color of the king
- * @param board - the board where the king is
- * @param State_Of_Rock_and_Check - the state of the rock and check state
- * @param Move_Log - the log of the moves that have been made
- * @return int - BLACK_CHECKMATE, WHITE_CHECKMATE, DRAW or NO_CHECK, BLACK_CHECK, WHITE_CHECK
- * // it can be use as a shortcut to use the is check function at the start of our loop to make a move and see if it can be done and if the game is ending
-**/
-/////////////////////////////////////////////////////////////////////////////////////
-int Is_Check_Mate(int color, Piece*** board, State_Of_Rock_and_Check* State_Of_Rock_and_Check, Move_Log_array* Move_Log);
-
-
-/////////////////////////////////////////////////////////////////////////////////////
 // function to get the king of a certain color, it will help us to know it's coordinates to create the moves that are checking the king and make the next function
 /**
  * @param color - the color of the king
@@ -477,21 +493,6 @@ int Is_Check_Mate(int color, Piece*** board, State_Of_Rock_and_Check* State_Of_R
 **/
 /////////////////////////////////////////////////////////////////////////////////////
 Piece* Get_King(int color, Piece*** board);
-
-
-/////////////////////////////////////////////////////////////////////////////////////
-// function to get the array of the pieces that are checking the king
-// it uses the function to get us if a move if valid for a piece, and if it is, it adds it to the array
-/**
- * @param color - the color of the king
- * @param board - the board where the king is
- * @param number_of_pieces_that_are_checking_king - pointer on the size of the array that will be udpated in the function (-1 if a problem occured somewhere)
- * @param Move_Log - the log of the moves that have been made
- * @param state_of_rock_and_check - the state of the rock and check state
- * @return Piece** - an array of the pieces that are checking the king
-**/
-/////////////////////////////////////////////////////////////////////////////////////
-Piece** Get_Pieces_That_Check_King(int color, Piece*** board, int* number_of_pieces_that_are_checking_king, Move_Log_array* Move_Log, State_Of_Rock_and_Check* state_of_rock_and_check);
 
 
 #endif /* __PIECE_H__ */

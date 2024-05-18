@@ -31,6 +31,27 @@ void Reset_Tiles_Pawn(Tiles_Pawn* tiles_pawn){
 }
 
 
+Tiles_Pawn* Copy_Tiles_Pawn(Tiles_Pawn* tiles_pawn){
+    Tiles_Pawn* tiles_pawn_copy = Create_Tiles_Pawn();
+    // looking for a malloc error
+    if (tiles_pawn_copy == NULL){
+        printf("Error: malloc failed in Copy_Tiles_Pawn\n");
+        return NULL;
+    }
+
+    // copying the tiles of the pawn
+    tiles_pawn_copy->color = tiles_pawn->color;
+    tiles_pawn_copy->move_made->previous_row = tiles_pawn->move_made->previous_row;
+    tiles_pawn_copy->move_made->previous_col = tiles_pawn->move_made->previous_col;
+    tiles_pawn_copy->move_made->destination_row = tiles_pawn->move_made->destination_row;
+    tiles_pawn_copy->move_made->destination_col = tiles_pawn->move_made->destination_col;
+    tiles_pawn_copy->has_moved_2_squares = tiles_pawn->has_moved_2_squares;
+
+    // return the copy of the tiles of the pawn
+    return tiles_pawn_copy;
+}
+
+
 void Fill_Tile_Pawn(Move* move, Piece*** board, Tiles_Pawn* tiles_pawn){
    
     // copy the move made by the pawn
@@ -701,6 +722,38 @@ void Reset_State_Of_Rock_and_Check(State_Of_Rock_and_Check* State_Of_Rock_and_Ch
 }
 
 
+State_Of_Rock_and_Check* Copy_State_Of_Rock_and_Check(State_Of_Rock_and_Check* state_of_rock_and_check){
+    
+    // if the state of the rock and the check is NULL, we can't copy it
+    if (state_of_rock_and_check == NULL){
+        return NULL;
+    }
+
+    State_Of_Rock_and_Check* new_state_of_rock_and_check = Create_State_Of_Rock_and_Check();
+    // looking for a malloc error
+    if (new_state_of_rock_and_check == NULL){
+        printf("Error: malloc failed in Copy_State_Of_Rock_and_Check\n");
+        return NULL;
+    }
+
+    // setting the new state of the rock and the check to the one given in parameters
+    new_state_of_rock_and_check->white_rock_done = state_of_rock_and_check->white_rock_done;
+    new_state_of_rock_and_check->white_king_moved = state_of_rock_and_check->white_king_moved;
+    new_state_of_rock_and_check->white_left_rook_moved = state_of_rock_and_check->white_left_rook_moved;
+    new_state_of_rock_and_check->white_right_rook_moved = state_of_rock_and_check->white_right_rook_moved;
+    new_state_of_rock_and_check->is_white_king_checked = state_of_rock_and_check->is_white_king_checked;
+
+    new_state_of_rock_and_check->black_rock_done = state_of_rock_and_check->black_rock_done;
+    new_state_of_rock_and_check->black_king_moved = state_of_rock_and_check->black_king_moved;
+    new_state_of_rock_and_check->black_left_rook_moved = state_of_rock_and_check->black_left_rook_moved;
+    new_state_of_rock_and_check->black_right_rook_moved = state_of_rock_and_check->black_right_rook_moved;
+    new_state_of_rock_and_check->is_black_king_checked = state_of_rock_and_check->is_black_king_checked;
+
+    // return the new state of the rock and the check
+    return new_state_of_rock_and_check;
+}
+
+
 void Destroy_State_Of_Rock_and_Check(State_Of_Rock_and_Check* State_Of_Rock_and_Check){
     // if the state of the rock and the check is not NULL, we can free it
     if (State_Of_Rock_and_Check != NULL){
@@ -710,10 +763,10 @@ void Destroy_State_Of_Rock_and_Check(State_Of_Rock_and_Check* State_Of_Rock_and_
 
 
 int Is_Rock_Possible(Move* move, State_Of_Rock_and_Check* State_Of_Rock_and_Check, Piece*** board){
-    
+
     // if the king is white and on its start position and is not checked, and the rock is not done
     if (board[move->previous_row][move->previous_col]->type == KING && board[move->previous_row][move->previous_col]->color == WHITE 
-    && Is_Check(WHITE, board) == false && State_Of_Rock_and_Check->white_king_moved == false && State_Of_Rock_and_Check->white_rock_done == false){
+    && State_Of_Rock_and_Check->is_white_king_checked == false && State_Of_Rock_and_Check->white_king_moved == false && State_Of_Rock_and_Check->white_rock_done == false){
            
         // if the king is moving to the left, for a possible long rock, the left rook needs to be on its start position and not moved
         if (move->previous_col == 4 && move->destination_col == 0 && State_Of_Rock_and_Check->white_left_rook_moved == false){
@@ -729,7 +782,7 @@ int Is_Rock_Possible(Move* move, State_Of_Rock_and_Check* State_Of_Rock_and_Chec
         }
 
         // if the king is moving to the right, the right rook needs to be on its start position and not moved
-        if (move->destination_col == 7 && move->previous_col == 4 && State_Of_Rock_and_Check->white_right_rook_moved == false){
+        else if (move->destination_col == 7 && move->previous_col == 4 && State_Of_Rock_and_Check->white_right_rook_moved == false){
                 
             // the case bewteen the king and the rook needs to be empty of pieces
             for (int j = 5; j < 7; j++){
@@ -746,7 +799,7 @@ int Is_Rock_Possible(Move* move, State_Of_Rock_and_Check* State_Of_Rock_and_Chec
 
     // if the king is black and on its start position and is not checked, and the rock is not done
     if (board[move->previous_row][move->previous_col]->type == KING && board[move->previous_row][move->previous_col]->color == BLACK
-    && Is_Check(BLACK, board) == false && State_Of_Rock_and_Check->black_king_moved == false && State_Of_Rock_and_Check->black_rock_done == false){
+    && State_Of_Rock_and_Check->is_black_king_checked == false && State_Of_Rock_and_Check->black_king_moved == false && State_Of_Rock_and_Check->black_rock_done == false){
         
         // if the king is moving to the left, the left rook needs to be on its start position and not moved
         if (move->previous_col == 4 && move->destination_col == 0 && State_Of_Rock_and_Check->black_left_rook_moved == false){
@@ -762,7 +815,7 @@ int Is_Rock_Possible(Move* move, State_Of_Rock_and_Check* State_Of_Rock_and_Chec
         }
 
         // if the king is moving to the right, the right rook needs to be on its start position and not moved
-        if (move->destination_col == 7 && move->previous_col == 4 && State_Of_Rock_and_Check->black_right_rook_moved == false){
+        else if (move->destination_col == 7 && move->previous_col == 4 && State_Of_Rock_and_Check->black_right_rook_moved == false){
             // the case bewteen the king and the rook needs to be empty of pieces
             for (int j = 5; j < 7; j++){
                 if (board[0][j]->type != NOTHING || Is_Case_threatened(BLACK, 0, j, board) == true){
@@ -952,6 +1005,62 @@ void Reset_Captured_Piece_and_Score(Captured_Piece_and_Score* captured_piece_and
 }
 
 
+Captured_Piece_and_Score* Copy_Captured_Piece_and_Score(Captured_Piece_and_Score* captured_piece_and_score){
+    // if the captured piece and score is not NULL, we can copy it
+    if (captured_piece_and_score != NULL){
+        Captured_Piece_and_Score* captured_piece_and_score_copy = Create_Captured_Piece_and_Score(captured_piece_and_score->max_number_of_pieces);
+        // looking for a malloc error
+        if (captured_piece_and_score_copy == NULL){
+            printf("Error: malloc failed in Copy_Captured_Piece_and_Score\n");
+            return NULL;
+        }
+
+        // copying the number of white pieces captured
+        captured_piece_and_score_copy->number_of_white_pieces_captured = captured_piece_and_score->number_of_white_pieces_captured;
+        // copying the number of black pieces captured
+        captured_piece_and_score_copy->number_of_black_pieces_captured = captured_piece_and_score->number_of_black_pieces_captured;
+        // copying the max number of pieces
+        captured_piece_and_score_copy->max_number_of_pieces = captured_piece_and_score->max_number_of_pieces;
+        // copying the score
+        captured_piece_and_score_copy->score = captured_piece_and_score->score;
+        // copying the player that is winning
+        captured_piece_and_score_copy->player_that_is_winning = captured_piece_and_score->player_that_is_winning;
+
+        // copying the white pieces captured
+        for (int i = 0; i < captured_piece_and_score->max_number_of_pieces; i++){
+            // copying the white piece captured
+            captured_piece_and_score_copy->white_pieces_captured[i]->row = captured_piece_and_score->white_pieces_captured[i]->row;
+            captured_piece_and_score_copy->white_pieces_captured[i]->col = captured_piece_and_score->white_pieces_captured[i]->col;
+            captured_piece_and_score_copy->white_pieces_captured[i]->type = captured_piece_and_score->white_pieces_captured[i]->type;
+            captured_piece_and_score_copy->white_pieces_captured[i]->color = captured_piece_and_score->white_pieces_captured[i]->color;
+            captured_piece_and_score_copy->white_pieces_captured[i]->is_alive = captured_piece_and_score->white_pieces_captured[i]->is_alive;
+            captured_piece_and_score_copy->white_pieces_captured[i]->value = captured_piece_and_score->white_pieces_captured[i]->value;
+            captured_piece_and_score_copy->white_pieces_captured[i]->is_checked = captured_piece_and_score->white_pieces_captured[i]->is_checked;
+            captured_piece_and_score_copy->white_pieces_captured[i]->is_on_his_start_position = captured_piece_and_score->white_pieces_captured[i]->is_on_his_start_position;
+        }
+
+        // copying the black pieces captured
+        for (int i = 0; i < captured_piece_and_score->max_number_of_pieces; i++){
+            // copying the black piece captured
+            captured_piece_and_score_copy->black_pieces_captured[i]->row = captured_piece_and_score->black_pieces_captured[i]->row;
+            captured_piece_and_score_copy->black_pieces_captured[i]->col = captured_piece_and_score->black_pieces_captured[i]->col;
+            captured_piece_and_score_copy->black_pieces_captured[i]->type = captured_piece_and_score->black_pieces_captured[i]->type;
+            captured_piece_and_score_copy->black_pieces_captured[i]->color = captured_piece_and_score->black_pieces_captured[i]->color;
+            captured_piece_and_score_copy->black_pieces_captured[i]->is_alive = captured_piece_and_score->black_pieces_captured[i]->is_alive;
+            captured_piece_and_score_copy->black_pieces_captured[i]->value = captured_piece_and_score->black_pieces_captured[i]->value;
+            captured_piece_and_score_copy->black_pieces_captured[i]->is_checked = captured_piece_and_score->black_pieces_captured[i]->is_checked;
+            captured_piece_and_score_copy->black_pieces_captured[i]->is_on_his_start_position = captured_piece_and_score->black_pieces_captured[i]->is_on_his_start_position;
+        }
+
+        // return the copied captured piece and score
+        return captured_piece_and_score_copy;
+    }
+
+    // default
+    return NULL;
+}
+
+
 void Destroy_Captured_Piece_and_Score(Captured_Piece_and_Score* captured_piece_and_score, int max_number_of_pieces){
     // if the captured piece and score is not NULL, we can free it
     if (captured_piece_and_score != NULL){
@@ -1042,6 +1151,9 @@ bool Is_Case_threatened(int color, int row, int col, Piece*** board){
         return true;
     }
     if (row + 2 < 8 && col - 1 >= 0 && board[row + 2][col - 1]->type == KNIGHT && board[row + 2][col - 1]->color != color){
+        return true;
+    }
+    if (row + 2 < 8 && col + 1 < 8 && board[row + 2][col + 1]->type == KNIGHT && board[row + 2][col + 1]->color != color){
         return true;
     }
 
@@ -1256,6 +1368,9 @@ bool Is_Check(int color, Piece*** board){
     if (king->row + 2 < 8 && king->col - 1 >= 0 && board[king->row + 2][king->col - 1]->type == KNIGHT && board[king->row + 2][king->col - 1]->color != color){
         return true;
     }
+    if (king->row + 2 < 8 && king->col + 1 < 8 && board[king->row + 2][king->col + 1]->type == KNIGHT && board[king->row + 2][king->col + 1]->color != color){
+        return true;
+    }
 
     // looking if a pawn if threatening the king
     // if the king is white
@@ -1441,40 +1556,6 @@ bool Is_Check(int color, Piece*** board){
 }
 
 
-int Is_Check_Mate(int color, Piece*** board, State_Of_Rock_and_Check* State_Of_Rock_and_Check, Move_Log_array* Move_Log){
-
-    // getting the king of the given color
-    Piece* king = Get_King(color, board);
-
-    // if the king is not checked
-    if (Is_Check(color, board) == false){
-        // if no move is possible on the board for the given color, then it's a stalemate (DRAW)
-        int number_of_moves_possible = 0;
-
-        
-        // if no move is possible for the given color, then it's a stalemate (DRAW)
-        if (number_of_moves_possible == 0){
-            return DRAW;
-        }
-        else if (number_of_moves_possible > 0){
-            return NO_CHECK_MATE;
-        }
-    }
-    // if the king is checked, we need to see if it's a check mate 
-    if (Is_Check(color, board) == true){
-
-
-        if (color == WHITE){
-            return WHITE_CHECK;
-        }
-        else if (color == BLACK){
-            return BLACK_CHECK;
-        }
-    }
-
-}
-
-
 Piece* Get_King(int color, Piece*** board){
 
     for (int i=0; i<8; i++){
@@ -1485,9 +1566,6 @@ Piece* Get_King(int color, Piece*** board){
         }
     }
 
-}
-
-
-Piece** Get_Pieces_That_Check_King(int color, Piece*** board, int* number_of_pieces_that_are_checking_king, Move_Log_array* Move_Log, State_Of_Rock_and_Check* state_of_rock_and_check){
-
+    // default
+    return NULL;
 }
