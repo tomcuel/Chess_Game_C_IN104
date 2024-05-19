@@ -5,10 +5,14 @@ all:
 	make -C Tests/Test_Log 
 	make -C Tests/Test_Captured_Pieces
 	make -C Tests/Test_Undo
+	make -C Tests/Test_Check
 	make -C V1 
 	make -C V2 
 	make -C V3
 	make -C V4
+	make -C VF
+	make -C Images
+	make -C Sounds
 
 realclean:
 	make -C tests_SDL_basics realclean
@@ -17,9 +21,13 @@ realclean:
 	make -C Tests/Test_Log realclean
 	make -C Tests/Test_Captured_Pieces realclean
 	make -C Tests/Test_Undo realclean
+	make -C Tests/Test_Check realclean
 	make -C V1 realclean
 	make -C V2 realclean
 	make -C V3 realclean
 	make -C V4 realclean
+	make -C VF realclean
+	make -C Images realclean
+	make -C Sounds realclean
 
 .PHONY:realclean
