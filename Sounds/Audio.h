@@ -3,7 +3,6 @@
 
 
 #include <SDL2/SDL.h>
-#include "Constants.h"
 #include <stdio.h>
 #include <stdlib.h>
 

@@ -12,7 +12,7 @@ void play_sound(const char* filename) {
     // check if the file is loaded
 	if( SDL_LoadWAV(filename, &wav_spec, &wav_buffer, &wav_length) == NULL ){
         printf("Failed to load wav file: %s\n", SDL_GetError());
-	    goto Quit;
+	    SDL_FreeWAV(wav_buffer);
 	}
 	
     // open audio device
@@ -21,16 +21,15 @@ void play_sound(const char* filename) {
     int success = SDL_QueueAudio(deviceId, wav_buffer, wav_length);
     if (success != 0) {
         fprintf(stderr, "Failed to queue audio: %s\n", SDL_GetError());
-        goto Quit;
+        SDL_FreeWAV(wav_buffer);
     }
     SDL_PauseAudioDevice(deviceId, 0);
     // keep application running long enough to hear the sound
     
     // wait for sound to finish
-    SDL_Delay(1000);
+    SDL_Delay(300);
 
     // clean up
     SDL_CloseAudioDevice(deviceId);
-Quit : 
-    SDL_FreeWAV(wav_buffer);
+	SDL_FreeWAV(wav_buffer);
 }
