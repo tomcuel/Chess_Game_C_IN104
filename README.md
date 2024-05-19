@@ -53,7 +53,7 @@ We will have various tasks to complete as part of this project:
 - also adds the pawn promotion, the undo button
 - and all that is related to the check (as well as Checkmate and Stalemate)
 ## VF : 
-- adding littles features linked to drax conditions
+- adding littles features linked to stalemate conditions
 - parsing more into separate functions using references to others folders
 
 # Structure of the code : 
