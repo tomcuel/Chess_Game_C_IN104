@@ -55,6 +55,7 @@ We will have various tasks to complete as part of this project:
 ## VF : 
 - adding littles features linked to stalemate conditions
 - parsing more into separate functions using references to others folders
+- adding an IA using the alpha_beta_pruning algorithm with a very basic heuristic (will need to be upgraded later on)
 
 # Structure of the code : 
 
