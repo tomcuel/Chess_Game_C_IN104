@@ -6,18 +6,54 @@
 #include "Move.h"
 #include "Move_Log.h"
 #include "Piece.h"
+#include "Player.h"
 #include "Constants.h"
 
 
 /////////////////////////////////////////////////////////////////////////////////////
-// Function that returns a random number between two numbers
+// IA summary:
 /**
- * @param min : the minimum number
- * @param max : the maximum number
- * @return int : the random number generated
+ * A summary of the supported functions is given below:
+ * Evaluate_Board : function that evaluates the board score
+ * find_Move_Nega_Max_Alpha_Beta : function that returns the best move for the IA following a Alpha-Beta algorithm (minimax with alpha-beta pruning)
+ * Find_Best_Move : function that finds the best move for the IA (using the Alpha-Beta algorithm)
+ * IA_Play : function that makes the IA play depending on the level
 **/
 /////////////////////////////////////////////////////////////////////////////////////
-int Random_Int(int min, int max);
+
+
+/////////////////////////////////////////////////////////////////////////////////////
+//  function that evaluates the board score
+/**
+ * @param board : the board
+ * @param Checkmate : the checkmate
+ * @return int : the score of the board
+**/
+/////////////////////////////////////////////////////////////////////////////////////
+int Evaluate_Board(Piece*** board, int Checkmate);
+
+
+/////////////////////////////////////////////////////////////////////////////////////
+// Function that returns the best move for the IA following a Alpha-Beta algorithm (minimax with alpha-beta pruning)
+// It's a recursive function that will call itself to find the best move (used in finding the best move for the IA)
+/**
+ * @param move : the move to play
+ * @param Valid_Moves : the valid moves
+ * @param number_of_valid_moves : the number of valid moves
+ * @param board : the board
+ * @param Move_Log : the log of the moves
+ * @param Board_Log : the log of the board
+ * @param state_of_rock_and_check : the state of rock and check
+ * @param Pawn_Move_State : the state of the pawns
+ * @param Captured_Pieces_and_Score : the captured pieces and the score
+ * @param players : the players
+ * @param depth : the depth of the search
+ * @param alpha : the alpha value
+ * @param beta : the beta value
+ * @return int : the score of the best move (modify directly the move parameter)
+**/
+/////////////////////////////////////////////////////////////////////////////////////
+int find_Move_Nega_Max_Alpha_Beta(Move* move, Piece*** board, Move_Log_array* Move_Log, Board_Log_array* Board_Log, State_Of_Rock_and_Check* state_of_rock_and_check, Tiles_Pawn* Pawn_Move_State, Captured_Piece_and_Score* Captured_Pieces_and_Score, Players* players, int depth, int alpha, int beta);
 
 
 /////////////////////////////////////////////////////////////////////////////////////
@@ -27,23 +63,15 @@ int Random_Int(int min, int max);
  * @param board : the board
  * @param level : the level of the IA
  * @param IA_color : the color of the IA
+ * @param Move_Log : the log of the moves
+ * @param Board_Log : the log of the board
  * @param state_of_rock_and_check : the state of rock and check
  * @param Pawn_Move_State : the state of the pawns
+ * @param Captured_Pieces_and_Score : the captured pieces and the score
+ * @param players : the players
 **/
 /////////////////////////////////////////////////////////////////////////////////////
-void IA_Play(Move* move, Piece*** board, int level, int IA_color, State_Of_Rock_and_Check* state_of_rock_and_check, Tiles_Pawn* Pawn_Move_State);
-
-
-/////////////////////////////////////////////////////////////////////////////////////
-// Function to make the pawn promotion for the IA
-/**
- * @param move : the move to play
- * @param board : the board
- * @param Log : the log of the moves
- * @param IA_level : the level of the IA
-**/
-/////////////////////////////////////////////////////////////////////////////////////
-void Make_Pawn_Promotion_for_IA(Move* move, Piece*** board, Move_Log_array* Log, int level_IA);
+void IA_Play(Move* move, Piece*** board, int level, int IA_color, Move_Log_array* Move_Log, Board_Log_array* Board_Log, State_Of_Rock_and_Check* state_of_rock_and_check, Tiles_Pawn* Pawn_Move_State, Captured_Piece_and_Score* Captured_Pieces_and_Score, Players* players);
 
 
 #endif /* __IA_H__ */

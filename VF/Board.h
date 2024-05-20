@@ -22,6 +22,7 @@
  * Copy_Board_Into - to copy the board into another board
  * Clear_Board - to clear the board
  * Init_Board_Log - to init the board log
+ * Create_Copy_Board_Log - to create a copy of the board log
  * Destroy_Board_Log - to destroy the board log
  * Add_Board_at_Last_Index_in_Array - to add a board at the last index in the array
  * 
@@ -30,10 +31,13 @@
  * Clear_En_Passant_Piece - to clear the pawn taken by the en passant
  * Change_Others_Structures - to update the others types of structures after the move is made
  * Change_Others_Structures_during_Rock - to update the others types of structures after the move is made when it is a rock
+ * Make_IA_Global_Move_and_Udpate_structures - to make the IA play depending on the level and update the structures
  * Undo_Last_Move - to undo the last move made and update the board, the log, the captured pieces, the stateofrockandcheck, the players structure, the pawn tracking structure
  * 
  * Is_Check_Mate - to get know if the king is in check mate or not, or if it is in check or in draw
  * Are_They_Possibles_Moves - to get the number of possibles moves for a player at this state of the game
+ * Get_Valid_Moves - to get the valid moves for a player at this state of the game
+ * 
  * Are_Board_Equal - to know if two boards are equal
  * Is_Draw_Forced_By_Log - to know if a draw happened because of the log of the moves (repitition of the same board (same log state) or 50 moves without capture or pawn move)
  * Is_Draw_Forced_By_50_Moves_Rule - to know if a draw happened because of the 50 moves rule
@@ -107,6 +111,16 @@ void Clear_Board(Piece*** board);
 **/
 /////////////////////////////////////////////////////////////////////////////////////
 Board_Log_array* Init_Board_Log(int Max_Size);
+
+
+/////////////////////////////////////////////////////////////////////////////////////
+// Function to create a copy of the board log
+/**
+ * @param board_log_array : the board log to copy
+ * @return Board_Log_array* : the copy of the board log
+**/
+/////////////////////////////////////////////////////////////////////////////////////
+Board_Log_array* Create_Copy_Board_Log(Board_Log_array* board_log_array);
 
 
 /////////////////////////////////////////////////////////////////////////////////////
@@ -193,17 +207,72 @@ void Change_Others_Structures_during_Rock(Move_Log_array* log, Captured_Piece_an
 
 
 /////////////////////////////////////////////////////////////////////////////////////
+// Function to make the IA play depending on the level
+/**
+ * @param move : the move to play
+ * @param board : the board
+ * @param players : the players
+ * @param Log : the log of the moves
+ * @param Log_Board : the log of the board
+ * @param State_Of_RockandCheck : the state of rock and check
+ * @param Pawn_Move_State : the state of the pawn move
+ * @param Captured_Pieces_and_Score : the captured pieces and the score
+ * @param IA_color : the color of the IA
+ * @param level_IA : the level of the IA
+**/
+/////////////////////////////////////////////////////////////////////////////////////
+void Make_IA_Global_Move_and_Udpate_structures(Move* move, Piece*** board, Players* players, Move_Log_array* Log, Board_Log_array* Log_Board, State_Of_Rock_and_Check* State_Of_RockandCheck, Tiles_Pawn* Pawn_Move_State, Captured_Piece_and_Score* Captured_Pieces_and_Score, int IA_color, int level_IA);
+
+
+/////////////////////////////////////////////////////////////////////////////////////
+// Function that returns a random number between two numbers
+/**
+ * @param min : the minimum number
+ * @param max : the maximum number
+ * @return int : the random number generated
+**/
+/////////////////////////////////////////////////////////////////////////////////////
+int Random_Int(int min, int max);
+
+
+/////////////////////////////////////////////////////////////////////////////////////
+// Function to make the pawn promotion for the IA
+/**
+ * @param move : the move to play
+ * @param board : the board
+ * @param Log : the log of the moves
+ * @param IA_level : the level of the IA
+**/
+/////////////////////////////////////////////////////////////////////////////////////
+void Make_Pawn_Promotion_for_IA(Move* move, Piece*** board, Move_Log_array* Log, int level_IA);
+
+
+/////////////////////////////////////////////////////////////////////////////////////
+// Function to make the pawn promotion for the IA (in the level HARD)
+// If a knight can be sure to take a piece after the promotion, the IA will choose to promote the pawn to a knight
+// It need to threaten more than one piece and not to be threatened by any piece itself
+/**
+ * @param board : the board
+ * @param row : the row of the pawn
+ * @param col : the column of the pawn
+**/
+/////////////////////////////////////////////////////////////////////////////////////
+bool Can_Fork_Knight_Promotion(Piece*** board, int row, int col);
+
+
+/////////////////////////////////////////////////////////////////////////////////////
 // Function to undo the last move made and that update the board, the log, the captured pieces, the stateofrockandcheck, the players structure, the pawn tracking structure
 /**
  * @param board : the board
  * @param log : the log of the moves
+ * @param log_board : the log of the board
  * @param captured_piece_and_score : the captured pieces and the score
  * @param state_of_rock_and_check : the state of rock and check
  * @param players : the players
  * @param Pawn_Move_State : the state of the pawn move
 **/
 /////////////////////////////////////////////////////////////////////////////////////
-void Undo_Last_Move(Piece*** board, Move_Log_array* log, Captured_Piece_and_Score* captured_piece_and_score, State_Of_Rock_and_Check* state_of_rock_and_check, Players* players, Tiles_Pawn* Pawn_Move_State);
+void Undo_Last_Move(Piece*** board, Move_Log_array* log, Board_Log_array* log_board, Captured_Piece_and_Score* captured_piece_and_score, State_Of_Rock_and_Check* state_of_rock_and_check, Players* players, Tiles_Pawn* Pawn_Move_State);
 
 
 /////////////////////////////////////////////////////////////////////////////////////
@@ -217,6 +286,7 @@ void Undo_Last_Move(Piece*** board, Move_Log_array* log, Captured_Piece_and_Scor
  * @param board_init - the board where we're currently playing
  * @param State_Of_Rock_and_Check_init - the state of the rock and check state
  * @param Move_Log_init - the log of the moves that have been made
+ * @param Board_Log_init - the log of the board
  * @param Pawn_Move_State_init - the state of the pawn to know if it has moved 2 squares or not
  * @param Captured_Pieces_and_Score_init - the structure that contains the captured pieces and the score
  * @param players_init - the players
@@ -225,7 +295,7 @@ void Undo_Last_Move(Piece*** board, Move_Log_array* log, Captured_Piece_and_Scor
  * // it can be use as a shortcut to use the is check function at the start of our loop to make a move and see if it can be done and if the game is ending
 **/
 /////////////////////////////////////////////////////////////////////////////////////
-int Is_Check_Mate(int color, Piece*** board_init, State_Of_Rock_and_Check* State_Of_Rock_and_Check_init, Move_Log_array* Move_Log_init, Tiles_Pawn* Pawn_Move_State_init, Captured_Piece_and_Score* Captured_Pieces_and_Score_init, Players* players_init, int type_promoted_pawn);
+int Is_Check_Mate(int color, Piece*** board_init, State_Of_Rock_and_Check* State_Of_Rock_and_Check_init, Move_Log_array* Move_Log_init, Board_Log_array* Board_Log_init, Tiles_Pawn* Pawn_Move_State_init, Captured_Piece_and_Score* Captured_Pieces_and_Score_init, Players* players_init, int type_promoted_pawn);
 
 
 /////////////////////////////////////////////////////////////////////////////////////
@@ -236,14 +306,31 @@ int Is_Check_Mate(int color, Piece*** board_init, State_Of_Rock_and_Check* State
  * @param State_Of_Rock_and_Check_init - the state of the rock and check state
  * @param Move_Log_init - the log of the moves that have been made
  * @param Pawn_Move_State_init - the state of the pawn to know if it has moved 2 squares or not
+ * @param Pawn_Move_State_init - the state of the pawn to know if it has moved 2 squares or not
  * @param Captured_Pieces_and_Score_init - the structure that contains the captured pieces and the score
  * @param players_init - the players
  * @param type_promoted_pawn - the type of the piece that the pawn will be promoted to
  * @return bool - true if there is at least one possible move, false otherwise
 **/
 /////////////////////////////////////////////////////////////////////////////////////
-bool Are_They_Possibles_Moves(int color, Piece*** board_init, State_Of_Rock_and_Check* State_Of_Rock_and_Check_init, Move_Log_array* Move_Log_init, Tiles_Pawn* Pawn_Move_State_init, Captured_Piece_and_Score* Captured_Pieces_and_Score_init, Players* players_init, int type_promoted_pawn);
+bool Are_They_Possibles_Moves(int color, Piece*** board_init, State_Of_Rock_and_Check* State_Of_Rock_and_Check_init, Move_Log_array* Move_Log_init, Board_Log_array* Board_Log_init, Tiles_Pawn* Pawn_Move_State_init, Captured_Piece_and_Score* Captured_Pieces_and_Score_init, Players* players_init, int type_promoted_pawn);
 
+
+/////////////////////////////////////////////////////////////////////////////////////
+// Function to get the valid moves for a player at this state of the game
+/**
+ * @param number_of_moves - the number of valid moves
+ * @param color_playing - the color of the player playing
+ * @param board_init - the board where we're currently playing
+ * @param State_Of_Rock_and_Check_init - the state of the rock and check state
+ * @param Move_Log_init - the log of the moves that have been made
+ * @param Board_Log_init - the log of the board
+ * @param Pawn_Move_State_init - the state of the pawn to know if it has moved 2 squares or not
+ * @param Captured_Pieces_and_Score_init - the structure that contains the captured pieces and the score
+ * @param players_init - the players
+ * @return Move** - the valid moves array
+**/
+Move** Get_Valid_Moves(int* number_of_moves, int color_playing, Piece*** board_init, State_Of_Rock_and_Check* State_Of_Rock_and_Check_init, Move_Log_array* Move_Log_init, Board_Log_array* Board_Log_init, Tiles_Pawn* Pawn_Move_State_init, Captured_Piece_and_Score* Captured_Pieces_and_Score_init, Players* players_init);
 
 /////////////////////////////////////////////////////////////////////////////////////
 // Function to know if two boards are equal

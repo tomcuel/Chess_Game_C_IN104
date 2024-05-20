@@ -112,7 +112,7 @@ enum {NOTHING, PAWN, KNIGHT, BISHOP, ROOK, QUEEN, KING};
 #define BISHOP_VALUE 3
 #define ROOK_VALUE 5
 #define QUEEN_VALUE 9
-#define KING_VALUE 1000
+#define KING_VALUE 90
 
 
 /////////////////////////////////////////////////////////////////////////////////////

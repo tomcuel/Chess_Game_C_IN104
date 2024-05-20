@@ -1227,9 +1227,7 @@ int main (){
                                 bool check_state = Is_Check(color_we_are_checking, board);
                                 // if the king of the color is in check after making a move, we need to remove the move
                                 if (check_state == true){
-                                    Undo_Last_Move(board, Log, Captured_Pieces_and_Score, State_Of_RockandCheck, players, Pawn_Move_State);
-                                    // the board is also removed from the board log, ajusting the actual size is enough
-                                    Log_Board->actual_size = Log_Board->actual_size - 1;
+                                    Undo_Last_Move(board, Log, Log_Board, Captured_Pieces_and_Score, State_Of_RockandCheck, players, Pawn_Move_State);
                                     // play the sound of the invalid move link to a check
                                     play_sound("../Sounds/Chess_Game_Sounds/check.wav");
                                 }
@@ -1572,23 +1570,22 @@ int main (){
                             is_clicked_2 = 0;
                             Reset_Buttons_State(Buttons);
                             
-                            // Undo the last move
-                            Undo_Last_Move(board, Log, Captured_Pieces_and_Score, State_Of_RockandCheck, players, Pawn_Move_State);
-                            Log_Board->actual_size = Log_Board->actual_size - 1;
-                            // if we're playing against the IA we need to supress the two last moves
-                            if (players->is_player1_an_IA == IA || players->is_player2_an_IA == IA){
-                                Undo_Last_Move(board, Log, Captured_Pieces_and_Score, State_Of_RockandCheck, players, Pawn_Move_State);
-                                Log_Board->actual_size = Log_Board->actual_size - 1;
+                            if (Log->actual_size > 0){
+                                // Undo the last move
+                                Undo_Last_Move(board, Log, Log_Board, Captured_Pieces_and_Score, State_Of_RockandCheck, players, Pawn_Move_State);
+                                // if we're playing against the IA we need to supress the two last moves, but only the IA move if the log if not big enough
+                                if ((players->is_player1_an_IA == IA && Log->actual_size > 1) || players->is_player2_an_IA == IA){
+                                    Undo_Last_Move(board, Log, Log_Board, Captured_Pieces_and_Score, State_Of_RockandCheck, players, Pawn_Move_State);
+                                }
+                                // if we're in a blitz mode, the time of the player that is playing is increased by the time of the blitz mode after each move he makes
+                                // when we undo the move, the player needs not be gain back those seconds
+                                if (players->is_playing == Player1){
+                                    seconds_remaining_player_1 = seconds_remaining_player_1 - time_of_blitz_mode;
+                                }
+                                else if (players->is_playing == Player2){
+                                    seconds_remaining_player_2 = seconds_remaining_player_2 - time_of_blitz_mode;
+                                }
                             }
-                            // if we're in a blitz mode, the time of the player that is playing is increased by the time of the blitz mode after each move he makes
-                            // when we undo the move, the player needs not be gain back those seconds
-                            if (players->is_playing == Player1){
-                                seconds_remaining_player_1 = seconds_remaining_player_1 - time_of_blitz_mode;
-                            }
-                            else if (players->is_playing == Player2){
-                                seconds_remaining_player_2 = seconds_remaining_player_2 - time_of_blitz_mode;
-                           }
-                            // printf("is(%d,%d) on its starting position : %d\n", Log->Move_Log[Log->actual_size-1]->move->previous_row, Log->Move_Log[Log->actual_size-1]->move->previous_col, board[Log->Move_Log[Log->actual_size-1]->move->previous_row][Log->Move_Log[Log->actual_size-1]->move->previous_col]->is_on_his_start_position);
 
                         }
                     }
@@ -1659,12 +1656,10 @@ int main (){
                         is_running_game = CHESSBOARD_RENDER;
                         has_match_started = true;
                         // Undo the last move
-                        Undo_Last_Move(board, Log, Captured_Pieces_and_Score, State_Of_RockandCheck, players, Pawn_Move_State);
-                        Log_Board->actual_size = Log_Board->actual_size - 1;
+                        Undo_Last_Move(board, Log, Log_Board, Captured_Pieces_and_Score, State_Of_RockandCheck, players, Pawn_Move_State);
                         // if we're playing against the IA we need to supress the two last moves
                         if (players->is_player1_an_IA == IA || players->is_player2_an_IA == IA){
-                            Undo_Last_Move(board, Log, Captured_Pieces_and_Score, State_Of_RockandCheck, players, Pawn_Move_State);
-                            Log_Board->actual_size = Log_Board->actual_size - 1;
+                            Undo_Last_Move(board, Log, Log_Board, Captured_Pieces_and_Score, State_Of_RockandCheck, players, Pawn_Move_State);
                         }
                         // reset the loosing player since it's the ending condition of the game
                         loosing_player = -1;
@@ -1695,143 +1690,12 @@ int main (){
         if (is_player_playing_IA == true && has_match_started == true && is_pawn_promotion_happening == false){
             int IA_color = players->color_player_that_is_playing;
             // the move changed is here supposed to be possible; otherwise the game will stop working
-            IA_Play(move, board, level_IA, IA_color, State_Of_RockandCheck, Pawn_Move_State);
+            IA_Play(move, board, level_IA, IA_color, Log, Log_Board, State_Of_RockandCheck, Pawn_Move_State, Captured_Pieces_and_Score, players);
             // printf("IA_color : %d\n", IA_color);
-
-            // getting if a rock was done
-            int is_rock_possible_type_IA = Is_Rock_Possible(move, State_Of_RockandCheck, board);
-            // getting if an en passant was done
-            bool is_en_passant_done_IA = Is_En_Passant_Possible(move, board, Pawn_Move_State);
-            int en_passant_type_IA = NO_EN_PASSANT;
-            // if we have an en passant, we need to get the corresponding int
-            if (is_en_passant_done_IA == true){
-                en_passant_type_IA = EN_PASSANT;
-            }
-
-            // if a piece is taken, we need to know what type and what color it is, in case we want to undo it later, we can track the piece that has been taken to reinstall it on the board
-            int piece_taken_type_IA = NOTHING;
-            int piece_taken_color_IA = NO_COLOR;
-            // if a move is valid, then we can also ask if a piece is taken, and if it's the case, we can know what type and what color it is
-            bool will_capture_a_piece = Will_Capture(move, board);
-            if (will_capture_a_piece == true && Is_Move_Valid(move, board, State_Of_RockandCheck, Pawn_Move_State) == true){
-                piece_taken_type_IA = board[move->destination_row][move->destination_col]->type;
-                piece_taken_color_IA = board[move->destination_row][move->destination_col]->color;
-            }
-            if (is_en_passant_done_IA == true){
-                if (board[move->previous_row][move->previous_col]->color == WHITE){
-                    piece_taken_type_IA = PAWN;
-                    piece_taken_color_IA = BLACK;
-                }
-                else if (board[move->previous_row][move->previous_col]->color == BLACK){
-                    piece_taken_type_IA = PAWN;
-                    piece_taken_color_IA = WHITE;
-                }
-            }
-
-            // concerning the pawn promotion fro the IA
-            bool is_IA_pawn_promotion_happening = Is_Pawn_Promotion_Possible(move, board);
-            int color_IA_promoted_paxwn = NO_COLOR;
-            int type_IA_promoted_pawn = NOTHING;
-            if (is_pawn_promotion_happening == true){
-                color_IA_promoted_paxwn = board[move->previous_row][move->previous_col]->color;
-            }
-
-            // getting the check state of the game before the move is made 
-            bool check_state_before_move_bool_IA = Is_Check(players->color_player_that_is_playing, board);
-            int check_state_before_move_IA = NO_COLOR;
-            if (check_state_before_move_bool_IA == true){
-                if (players->color_player_that_is_playing == WHITE){
-                    check_state_before_move_IA = WHITE_CHECK;
-                }
-                else if (players->color_player_that_is_playing == BLACK){
-                    check_state_before_move_IA = BLACK_CHECK;
-                }
-            }
-
-            // getting if the move is about a pawn 
-            bool pawn_move_done_IA = false;
-            if (board[move->previous_row][move->previous_col]->type == PAWN){
-                pawn_move_done_IA = true;
-            }
-
-            // if you touch the piece once, as in the real game, you're forced to play this piece, there isn't any way to cancel the move
-            // making the move if it's valid, here we don't care about the special moves and what it does to other pieces
-            // we will need to do it in the future, here we also don't care about the check
-            if (Is_Move_Valid(move, board, State_Of_RockandCheck, Pawn_Move_State) == true && board[move->previous_row][move->previous_col]->color == IA_color){
-
-                // making the move log update that is crucial for Make_Move to work since we go searching for an index actual_size-1 and only adding an element to Move_Log will make actual_size-1 positive, not to have a segmentation fault
-                // but only a valid move will be added to the log
-                Move_Log_Element* element = Create_Element_Move_Log();
-                Change_Move_Log_Element(element, move->previous_row, move->previous_col, move->destination_row, move->destination_col, check_state_before_move_IA, piece_taken_type_IA, piece_taken_color_IA, is_rock_possible_type_IA, en_passant_type_IA, color_IA_promoted_paxwn, type_IA_promoted_pawn, pawn_move_done_IA);
-                Move_Log_array_MESSAGE_TYPE message_IA = Add_Element_to_the_end_of_Move_Log_array(Log, element);
-                if (message_IA != LOG_LIST_SUCCESS){
-                    printf("Error: the log is full\n");
-                    is_running_game = -1;
-                }
-
-                Destroy_Move_Log_Element(element);
-                    
-                // if we're in a blitz mode, the time of the player that is playing is increased by the time of the blitz mode after each move he makes
-                if (players->is_playing == Player1){
-                    seconds_remaining_player_1 = seconds_remaining_player_1 + time_of_blitz_mode;
-                }
-                else if (players->is_playing == Player2){
-                    seconds_remaining_player_2 = seconds_remaining_player_2 + time_of_blitz_mode;
-                }
-
-                // trying to make the rock effective by getting the real moves linked to the rock that has been made
-                if (is_rock_possible_type_IA != NO_ROCK){
-                    Move* king_move_during_rock=Create_King_Move_during_Rock(move, board, State_Of_RockandCheck);
-                    Move* rook_move_during_rock=Create_Rook_Move_during_Rock(move, board, State_Of_RockandCheck);
-                    // we need to make the two moves, the king and the rock, and put the places there were to zero 
-                    // but also udpating the parameters others than the log, to keep track of the state of the game
-                    Make_Rock_Move(board, move, king_move_during_rock, rook_move_during_rock, players);
-                    Change_Others_Structures_during_Rock(Log, Captured_Pieces_and_Score, State_Of_RockandCheck, players, board);
-
-                    // free the memory
-                    Destroy_Move(king_move_during_rock);
-                    Destroy_Move(rook_move_during_rock);
-
-                    // since it's a rock, we can reset the tile pawn structure for the next turn
-                    Reset_Tiles_Pawn(Pawn_Move_State);
-                }
-                // en passant move
-                else if (is_en_passant_done_IA == true){
-
-                    // we need to clear the piece that has been eaten by the en passant on the board, before making the move, because we need the initial position of the pawn to know where to clear the piece
-                    Clear_En_Passant_Piece(move, board, Pawn_Move_State);
-                    
-                    // making the move and updating the parameters others than the log, to keep track of the state of the game
-                    Make_Move(board, move, players);
-                    Change_Others_Structures(Log, Captured_Pieces_and_Score, State_Of_RockandCheck, players, board);
-                    
-                    // en passant mean that we can reset the tile pawn structure for the next turn
-                    Reset_Tiles_Pawn(Pawn_Move_State);
-                }
-                // classic move
-                else {
-                    // we need to file the tile pawn structure for the next turn, before making the move, because we need the initial position of the pawn to know if it can move two squares
-                    Fill_Tile_Pawn(move, board, Pawn_Move_State);
-
-                    // making the move and updating the parameters others than the log, to keep track of the state of the game
-                    Make_Move(board, move, players);
-                    Change_Others_Structures(Log, Captured_Pieces_and_Score, State_Of_RockandCheck, players, board);
-                }
-                // changing the player that is playing is included in the Make_Move function
-            }
-
-            // now we need to do the pawn promotion for the IA
-            if (is_IA_pawn_promotion_happening == true){
-                Make_Pawn_Promotion_for_IA(move, board, Log, level_IA);
-            }
-
-            // adding the board to the board log
-            Move_Log_array_MESSAGE_TYPE adding_board_to_board_log_IA = Add_Board_at_Last_Index_in_Array(Log_Board, board);
-            if (adding_board_to_board_log_IA != LOG_LIST_SUCCESS){
-                printf("Error: the log is full\n");
-                is_running_game = -1;
-            }
-
+            
+            // making the move for the IA (as for the player but there is no sound played, no demand to ask for)
+            Make_IA_Global_Move_and_Udpate_structures(move, board, players, Log, Log_Board, State_Of_RockandCheck, Pawn_Move_State, Captured_Pieces_and_Score, IA_color, level_IA);
+            
             // if after the move made by the IA, it's in check, we need to undo the move and make another one
             int color_we_are_checking_IA = NO_COLOR;
             if (players->color_player_that_is_playing == WHITE){
@@ -1844,11 +1708,8 @@ int main (){
             bool check_state = Is_Check(color_we_are_checking_IA, board);
             // if the king of the color is in check after making a move, we need to remove the move, since it cannot be check after playing
             if (check_state == true){
-                Undo_Last_Move(board, Log, Captured_Pieces_and_Score, State_Of_RockandCheck, players, Pawn_Move_State);
-                // the board is also removed from the board log, ajusting the actual size is enough
-                Log_Board->actual_size = Log_Board->actual_size - 1;
+                Undo_Last_Move(board, Log, Log_Board, Captured_Pieces_and_Score, State_Of_RockandCheck, players, Pawn_Move_State);
             }
-
         }
     
 
@@ -1989,7 +1850,7 @@ int main (){
             SDL_RenderPresent(renderer);
 
             // we now need to look at the check state of the game
-            int check_mate_state = Is_Check_Mate(players->color_player_that_is_playing, board, State_Of_RockandCheck, Log, Pawn_Move_State, Captured_Pieces_and_Score, players, type_promoted_pawn);
+            int check_mate_state = Is_Check_Mate(players->color_player_that_is_playing, board, State_Of_RockandCheck, Log, Log_Board, Pawn_Move_State, Captured_Pieces_and_Score, players, type_promoted_pawn);
 
             // if a draw is happening the player that is playing now loose, so the opposite of the player we're checking
             if (check_mate_state == DRAW){
@@ -2029,6 +1890,10 @@ int main (){
         }
         
     }
+
+    int checkmate = Is_Check_Mate(players->color_player_that_is_playing, board, State_Of_RockandCheck, Log, Log_Board, Pawn_Move_State, Captured_Pieces_and_Score, players, type_promoted_pawn);
+    int ScoreBoard = Evaluate_Board(board, checkmate);
+    printf("ScoreBoard : %d\n", ScoreBoard);
 
     // free the move
     Destroy_Move(move);
