@@ -1,7 +1,7 @@
 #include "IA.h"
 
 
-#define DEPTH 1
+#define DEPTH 2
 #define CHECKMATE 1000
 #define STALEMATE 0
 
