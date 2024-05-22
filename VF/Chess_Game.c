@@ -65,7 +65,7 @@ SDL_Renderer* renderer = NULL;
 ///////////////////////////////////////////////////////////////////////////////
 // Define a font for rendering digits
 ///////////////////////////////////////////////////////////////////////////////
-const int font[10][FONT_WIDTH] = {
+const int font_bis[10][FONT_WIDTH] = {
     {0x00, 0x7E, 0x81, 0x81, 0x81, 0x81, 0x81, 0x81, 0x81, 0x7E}, // 0
     {0x00, 0x00, 0x42, 0x82, 0xFF, 0xFF, 0x80, 0x00, 0x00, 0x00}, // 1
     {0x00, 0x42, 0x87, 0x89, 0x91, 0xA1, 0xC1, 0x42, 0x00, 0x00}, // 2
@@ -1686,8 +1686,15 @@ int main (){
         else if (players->is_playing == Player2 && players->is_player2_an_IA == IA){
             is_player_playing_IA = true;
         }
+        // getting the checkmate state before the IA plays so that it doesn't try to play if the game is already over
+        int checkmate_before_IA = Is_Check_Mate(players->color_player_that_is_playing, board, State_Of_RockandCheck, Log, Log_Board, Pawn_Move_State, Captured_Pieces_and_Score, players, type_promoted_pawn);
+        // if the game is not running anymore, we need to quit the game
+        bool is_game_ending = false;
+        if (checkmate_before_IA == BLACK_CHECKMATE || checkmate_before_IA == WHITE_CHECKMATE || checkmate_before_IA == DRAW){
+            is_game_ending = true;
+        }
         // if it's the IA turn to play, we make it play
-        if (is_player_playing_IA == true && has_match_started == true && is_pawn_promotion_happening == false){
+        if (is_player_playing_IA == true && has_match_started == true && is_pawn_promotion_happening == false && is_game_ending == false){
             int IA_color = players->color_player_that_is_playing;
             // the move changed is here supposed to be possible; otherwise the game will stop working
             IA_Play(move, board, level_IA, IA_color, Log, Log_Board, State_Of_RockandCheck, Pawn_Move_State, Captured_Pieces_and_Score, players);
@@ -1818,14 +1825,7 @@ int main (){
             
             while (number > 0) {
                 int digit = number % 10;
-                SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255); // Set color to black
-                for (int i = 0; i < FONT_HEIGHT; i++) {
-                    for (int j = 0; j < FONT_WIDTH; j++) {
-                        if (font[digit][j] & (1 << (FONT_WIDTH - i - 1))) {
-                            SDL_RenderDrawPoint(renderer, x + j, y + i);
-                        }
-                    }
-                }
+                Show_Digit(renderer, digit, x, y, font_bis);
                 x -= FONT_WIDTH/3; // Move right for the next digit
                 number /= 10;
             }
@@ -1890,10 +1890,6 @@ int main (){
         }
         
     }
-
-    int checkmate = Is_Check_Mate(players->color_player_that_is_playing, board, State_Of_RockandCheck, Log, Log_Board, Pawn_Move_State, Captured_Pieces_and_Score, players, type_promoted_pawn);
-    int ScoreBoard = Evaluate_Board(board, checkmate);
-    printf("ScoreBoard : %d\n", ScoreBoard);
 
     // free the move
     Destroy_Move(move);

@@ -1654,7 +1654,7 @@ bool Are_They_Possibles_Moves(int color, Piece*** board_init, State_Of_Rock_and_
                         int type_promoted_pawn_real = NOTHING;
                         if (is_pawn_promotion_happening == true){
                             color_promoted_pawn = board[move_possible->previous_row][move_possible->previous_col]->color;
-                            type_promoted_pawn_real = type_promoted_pawn;
+                            type_promoted_pawn_real = QUEEN;
                         }
 
                         // getting the check state of the game before the move is made 
@@ -1783,7 +1783,7 @@ bool Are_They_Possibles_Moves(int color, Piece*** board_init, State_Of_Rock_and_
 
 Move** Get_Valid_Moves(int* number_of_moves, int color_playing, Piece*** board_init, State_Of_Rock_and_Check* State_Of_Rock_and_Check_init, Move_Log_array* Move_Log_init, Board_Log_array* Board_Log_init, Tiles_Pawn* Pawn_Move_State_init, Captured_Piece_and_Score* Captured_Pieces_and_Score_init, Players* players_init){
 
-    int max_number_of_moves = 8*8*8;
+    int max_number_of_moves = 8*8*8*8; // this represents the maximum number of moves possible, but we will return an array of moves that will be smaller than this number, I could have optimized this by getting the number of possible moves before, it's more memory efficient but costs more time
     // getting an array of moves that will be returned
     Move** valid_moves = (Move**)malloc(max_number_of_moves*sizeof(Move*));
     // if the memory allocation failed

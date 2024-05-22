@@ -1201,10 +1201,14 @@ bool Is_Case_threatened(int color, int row, int col, Piece*** board){
 
     // the queen will be done with both the rook and the bishop
 
-    // looking if a rook or a queen if threatening the king
+    // looking if a rook or a queen is threatening the king
     // looking for the 4 possible directions of the rook and the queen 
     // looking to the right
     if (col < 7){
+        // if there is a king 
+        if (board[row][col+1]->type == KING && board[row][col+1]->color != color){
+            return true;
+        }
         for (int j = col + 1; j < 8; j++){
             // if we found a piece in the line to the right
             if (board[row][j]->type != NOTHING){
@@ -1221,6 +1225,10 @@ bool Is_Case_threatened(int color, int row, int col, Piece*** board){
     }
     // looking to the left
     if (col > 0){
+        // if there is a king 
+        if (board[row][col-1]->type == KING && board[row][col-1]->color != color){
+            return true;
+        }
         for (int j = col - 1; j >= 0; j--){
             // if we found a piece in the line to the left
             if (board[row][j]->type != NOTHING){
@@ -1237,6 +1245,10 @@ bool Is_Case_threatened(int color, int row, int col, Piece*** board){
     }
     // looking up
     if (row > 0){
+        // if there is a king 
+        if (board[row-1][col]->type == KING && board[row-1][col]->color != color){
+            return true;
+        }
         for (int i = row - 1; i >= 0; i--){
             // if we found a piece in the line up
             if (board[i][col]->type != NOTHING){
@@ -1253,6 +1265,10 @@ bool Is_Case_threatened(int color, int row, int col, Piece*** board){
     }
     // looking down
     if (row < 7){
+        // if there is a king 
+        if (board[row+1][col]->type == KING && board[row+1][col]->color != color){
+            return true;
+        }
         for (int i = row + 1; i < 8; i++){
             // if we found a piece in the line down
             if (board[i][col]->type != NOTHING){
@@ -1268,10 +1284,14 @@ bool Is_Case_threatened(int color, int row, int col, Piece*** board){
         }
     }
 
-    // looking if a bishop or a queen if threatening the king
+    // looking if a bishop or a queen is threatening the king
     // looking for the 4 possible directions of the bishop and the queen
     // looking to the right and down
     if (row < 7 && col < 7){
+        // if there is a king 
+        if (board[row+1][col+1]->type == KING && board[row+1][col+1]->color != color){
+            return true;
+        }
         for (int i = row + 1, j = col + 1; i < 8 && j < 8; i++, j++){
             // if we found a piece in the diagonal to the right and down
             if (board[i][j]->type != NOTHING){
@@ -1288,6 +1308,10 @@ bool Is_Case_threatened(int color, int row, int col, Piece*** board){
     }
     // looking to the left and down
     if (row < 7 && col > 0){
+        // if there is a king 
+        if (board[row+1][col-1]->type == KING && board[row+1][col-1]->color != color){
+            return true;
+        }
         for (int i = row + 1, j = col - 1; i < 8 && j >= 0; i++, j--){
             // if we found a piece in the diagonal to the left and down
             if (board[i][j]->type != NOTHING){
@@ -1304,6 +1328,10 @@ bool Is_Case_threatened(int color, int row, int col, Piece*** board){
     }
     // looking to the right and up
     if (row > 0 && col < 7){
+        // if there is a king 
+        if (board[row-1][col+1]->type == KING && board[row-1][col+1]->color != color){
+            return true;
+        }
         for (int i = row - 1, j = col + 1; i >= 0 && j < 8; i--, j++){
             // if we found a piece in the diagonal to the right and up
             if (board[i][j]->type != NOTHING){
@@ -1320,6 +1348,10 @@ bool Is_Case_threatened(int color, int row, int col, Piece*** board){
     }
     // looking to the left and up
     if (row > 0 && col > 0){
+        // if there is a king 
+        if (board[row-1][col-1]->type == KING && board[row-1][col-1]->color != color){
+            return true;
+        }
         for (int i = row - 1, j = col - 1; i >= 0 && j >= 0; i--, j--){
             // if we found a piece in the diagonal to the left and up
             if (board[i][j]->type != NOTHING){
@@ -1334,7 +1366,7 @@ bool Is_Case_threatened(int color, int row, int col, Piece*** board){
             }
         }
     }
-
+    
     // default
     return false;
 }
@@ -1420,6 +1452,10 @@ bool Is_Check(int color, Piece*** board){
     // looking for the 4 possible directions of the rook and the queen 
     // looking to the right
     if (king->col < 7){
+        // if there is a king 
+        if (board[king->row][king->col+1]->type == KING && board[king->row][king->col+1]->color != color){
+            return true;
+        }
         for (int j = king->col + 1; j < 8; j++){
             // if we found a piece in the line to the right
             if (board[king->row][j]->type != NOTHING){
@@ -1436,6 +1472,10 @@ bool Is_Check(int color, Piece*** board){
     }
     // looking to the left
     if (king->col > 0){
+        // if there is a king 
+        if (board[king->row][king->col-1]->type == KING && board[king->row][king->col-1]->color != color){
+            return true;
+        }
         for (int j = king->col - 1; j >= 0; j--){
             // if we found a piece in the line to the left
             if (board[king->row][j]->type != NOTHING){
@@ -1452,6 +1492,10 @@ bool Is_Check(int color, Piece*** board){
     }
     // looking up
     if (king->row > 0){
+        // if there is a king 
+        if (board[king->row-1][king->col]->type == KING && board[king->row-1][king->col]->color != color){
+            return true;
+        }
         for (int i = king->row - 1; i >= 0; i--){
             // if we found a piece in the line up
             if (board[i][king->col]->type != NOTHING){
@@ -1468,6 +1512,10 @@ bool Is_Check(int color, Piece*** board){
     }
     // looking down
     if (king->row < 7){
+        // if there is a king 
+        if (board[king->row+1][king->col]->type == KING && board[king->row+1][king->col]->color != color){
+            return true;
+        }
         for (int i = king->row + 1; i < 8; i++){
             // if we found a piece in the line down
             if (board[i][king->col]->type != NOTHING){
@@ -1487,6 +1535,10 @@ bool Is_Check(int color, Piece*** board){
     // looking for the 4 possible directions of the bishop and the queen
     // looking to the right and down
     if (king->row < 7 && king->col < 7){
+        // if there is a king 
+        if (board[king->row+1][king->col+1]->type == KING && board[king->row+1][king->col+1]->color != color){
+            return true;
+        }
         for (int i = king->row + 1, j = king->col + 1; i < 8 && j < 8; i++, j++){
             // if we found a piece in the diagonal to the right and down
             if (board[i][j]->type != NOTHING){
@@ -1503,6 +1555,10 @@ bool Is_Check(int color, Piece*** board){
     }
     // looking to the left and down
     if (king->row < 7 && king->col > 0){
+        // if there is a king 
+        if (board[king->row+1][king->col-1]->type == KING && board[king->row+1][king->col-1]->color != color){
+            return true;
+        }
         for (int i = king->row + 1, j = king->col - 1; i < 8 && j >= 0; i++, j--){
             // if we found a piece in the diagonal to the left and down
             if (board[i][j]->type != NOTHING){
@@ -1519,6 +1575,10 @@ bool Is_Check(int color, Piece*** board){
     }
     // looking to the right and up
     if (king->row > 0 && king->col < 7){
+        // if there is a king 
+        if (board[king->row-1][king->col+1]->type == KING && board[king->row-1][king->col+1]->color != color){
+            return true;
+        }
         for (int i = king->row - 1, j = king->col + 1; i >= 0 && j < 8; i--, j++){
             // if we found a piece in the diagonal to the right and up
             if (board[i][j]->type != NOTHING){
@@ -1535,6 +1595,10 @@ bool Is_Check(int color, Piece*** board){
     }
     // looking to the left and up
     if (king->row > 0 && king->col > 0){
+        // if there is a king 
+        if (board[king->row-1][king->col-1]->type == KING && board[king->row-1][king->col-1]->color != color){
+            return true;
+        }
         for (int i = king->row - 1, j = king->col - 1; i >= 0 && j >= 0; i--, j--){
             // if we found a piece in the diagonal to the left and up
             if (board[i][j]->type != NOTHING){

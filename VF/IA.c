@@ -1,9 +1,110 @@
 #include "IA.h"
 
 
-#define DEPTH 3
-#define CHECKMATE 10000
+#define DEPTH 1
+#define CHECKMATE 1000
 #define STALEMATE 0
+
+
+// arrays that defines the preferencial position of each type of piece
+int knightScores[BOARD_SIZE][BOARD_SIZE] = {{0, 1, 2, 2, 2, 2, 1, 0},
+                                            {1, 2, 3, 3, 3, 3, 2, 1},
+                                            {2, 3, 4, 4, 4, 4, 3, 2},
+                                            {2, 3, 4, 5, 5, 4, 3, 2},
+                                            {2, 3, 4, 5, 5, 4, 3, 2},
+                                            {2, 3, 4, 4, 4, 4, 3, 2},
+                                            {1, 2, 3, 3, 3, 3, 2, 1},
+                                            {0, 1, 2, 2, 2, 2, 1, 0}};
+
+int whiteBishopScores[BOARD_SIZE][BOARD_SIZE] = {{0, 1, 1, 1, 1, 1, 1, 0},
+                                                {1, 2, 2, 2, 2, 2, 2, 1},
+                                                {1, 2, 3, 4, 4, 3, 2, 1},
+                                                {1, 3, 3, 4, 4, 3, 3, 1},
+                                                {1, 2, 5, 4, 4, 5, 2, 1},
+                                                {1, 4, 4, 4, 4, 4, 4, 1},
+                                                {1, 4, 2, 2, 2, 2, 4, 1},
+                                                {2, 1, 1, 1, 1, 1, 1, 2}};
+
+int blackBishopScores[BOARD_SIZE][BOARD_SIZE] = {{2, 1, 1, 1, 1, 1, 1, 2},
+                                                {1, 4, 2, 2, 2, 2, 4, 1},
+                                                {1, 4, 4, 4, 4, 4, 4, 1},
+                                                {1, 2, 5, 4, 4, 5, 2, 1},
+                                                {1, 3, 3, 4, 4, 3, 3, 1},
+                                                {1, 2, 3, 4, 4, 3, 2, 1},
+                                                {1, 2, 2, 2, 2, 2, 2, 1},
+                                                {0, 1, 1, 1, 1, 1, 1, 0}};
+
+int whiteRookScores[BOARD_SIZE][BOARD_SIZE] = {{2, 2, 2, 2, 2, 2, 2, 2},
+                                                {3, 5, 5, 5, 5, 5, 5, 3},
+                                                {0, 1, 1, 1, 1, 1, 1, 0},
+                                                {0, 1, 1, 1, 1, 1, 1, 0},
+                                                {0, 1, 1, 1, 1, 1, 1, 0},
+                                                {0, 1, 1, 1, 1, 1, 1, 0},
+                                                {0, 1, 1, 1, 1, 1, 1, 0},
+                                                {1, 1, 2, 3, 3, 2, 1, 1}};
+
+int blackRookScores[BOARD_SIZE][BOARD_SIZE] = {{1, 1, 2, 3, 3, 2, 1, 1},
+                                                {0, 1, 1, 1, 1, 1, 1, 0},
+                                                {0, 1, 1, 1, 1, 1, 1, 0},
+                                                {0, 1, 1, 1, 1, 1, 1, 0},
+                                                {0, 1, 1, 1, 1, 1, 1, 0},
+                                                {0, 1, 1, 1, 1, 1, 1, 0},
+                                                {3, 5, 5, 5, 5, 5, 5, 3},
+                                                {2, 2, 2, 2, 2, 2, 2, 2}};
+
+int whiteQueenScores[BOARD_SIZE][BOARD_SIZE] = {{0, 1, 1, 2, 2, 1, 1, 0},
+                                                {1, 3, 3, 3, 3, 3, 3, 1},
+                                                {1, 3, 5, 5, 5, 5, 3, 1},
+                                                {2, 3, 5, 5, 5, 5, 3, 2},
+                                                {3, 3, 5, 5, 5, 5, 3, 2},
+                                                {1, 5, 5, 5, 5, 5, 3, 1},
+                                                {1, 3, 5, 5, 5, 3, 3, 1},
+                                                {0, 1, 1, 0, 0, 1, 1, 0}};
+
+int blackQueenScores[BOARD_SIZE][BOARD_SIZE] = {{0, 1, 1, 0, 0, 1, 1, 0},
+                                                {1, 3, 5, 5, 5, 3, 3, 1},
+                                                {1, 5, 5, 5, 5, 5, 3, 1},
+                                                {3, 3, 5, 5, 5, 5, 3, 2},
+                                                {2, 3, 5, 5, 5, 5, 3, 2},
+                                                {1, 3, 5, 5, 5, 5, 3, 1},
+                                                {1, 3, 3, 3, 3, 3, 3, 1},
+                                                {0, 1, 1, 2, 2, 1, 1, 0}};
+
+int whiteKingScores[BOARD_SIZE][BOARD_SIZE] = {{2, 1, 1, 0, 0, 1, 2, 2},
+                                                {2, 1, 1, 0, 0, 1, 2, 2},
+                                                {3, 2, 2, 0, 0, 2, 2, 3},
+                                                {3, 2, 2, 0, 0, 2, 2, 3},
+                                                {3, 3, 2, 1, 1, 2, 3, 3},
+                                                {3, 3, 3, 3, 3, 3, 3, 3},
+                                                {4, 4, 3, 3, 3, 3, 3, 3},
+                                                {4, 5, 4, 3, 3, 4, 5, 4}};
+
+int blackKingScores[BOARD_SIZE][BOARD_SIZE] = {{4, 5, 4, 3, 3, 4, 5, 4},
+                                                {4, 4, 3, 3, 3, 3, 3, 3},
+                                                {3, 3, 3, 3, 3, 3, 3, 3},
+                                                {3, 3, 2, 1, 1, 2, 3, 3},
+                                                {3, 2, 2, 0, 0, 2, 2, 3},
+                                                {3, 2, 2, 0, 0, 2, 2, 3},
+                                                {2, 1, 1, 0, 0, 1, 2, 2},
+                                                {2, 1, 1, 0, 0, 1, 2, 2}};
+
+int whitePawnScores[BOARD_SIZE][BOARD_SIZE] = {{1, 1, 1, 1, 1, 1, 1, 1},
+                                                {5, 5, 5, 5, 5, 5, 5, 5},
+                                                {2, 2, 3, 3, 3, 3, 2, 2},
+                                                {2, 2, 2, 3, 3, 2, 2, 2},
+                                                {2, 2, 2, 3, 3, 2, 2, 2},
+                                                {1, 2, 0, 2, 2, 0, 2, 1},
+                                                {1, 2, 2, 0, 0, 2, 2, 1},
+                                                {1, 1, 1, 1, 1, 1, 1, 1}};
+
+int blackPawnScores[BOARD_SIZE][BOARD_SIZE] = {{1, 1, 1, 1, 1, 1, 1, 1},
+                                                {1, 2, 2, 0, 0, 2, 2, 1},
+                                                {1, 2, 0, 2, 2, 0, 2, 1},
+                                                {2, 2, 2, 3, 3, 2, 2, 2},
+                                                {2, 2, 2, 3, 3, 2, 2, 2},
+                                                {2, 2, 3, 3, 3, 3, 2, 2},
+                                                {5, 5, 5, 5, 5, 5, 5, 5},
+                                                {1, 1, 1, 1, 1, 1, 1, 1}};
 
 
 int Evaluate_Board(Piece*** board, int Checkmate){
@@ -19,79 +120,6 @@ int Evaluate_Board(Piece*** board, int Checkmate){
         return STALEMATE; // it's a draw
     }
     
-    // arrays that defines the preferencial position of each type of piece
-    int knightScores[BOARD_SIZE][BOARD_SIZE] = {{1, 1, 1, 1, 1, 1, 1, 1},
-                                                {1, 2, 2, 2, 2, 2, 2, 1},
-                                                {1, 2, 3, 3, 3, 3, 2, 1},
-                                                {1, 2, 3, 4, 4, 3, 2, 1},
-                                                {1, 2, 3, 4, 4, 3, 2, 1},
-                                                {1, 2, 3, 3, 3, 3, 2, 1},
-                                                {1, 2, 2, 2, 2, 2, 2, 1},
-                                                {1, 1, 1, 1, 1, 1, 1, 1}};
-
-    int bishopScores[BOARD_SIZE][BOARD_SIZE] = {{4, 3, 2, 1, 1, 2, 3, 4},
-                                                {3, 4, 3, 2, 2, 3, 4, 3},
-                                                {2, 3, 4, 3, 3, 4, 3, 2},
-                                                {1, 2, 3, 4, 4, 3, 2, 1},
-                                                {1, 2, 3, 4, 4, 3, 2, 1},
-                                                {2, 3, 4, 3, 3, 4, 3, 2},
-                                                {3, 4, 3, 2, 2, 3, 4, 3},
-                                                {4, 3, 2, 1, 1, 2, 3, 4}};
-
-    int queenScores[BOARD_SIZE][BOARD_SIZE] = {{1, 1, 1, 3, 1, 1, 1, 1},
-                                                {1, 2, 3, 3, 3, 1, 1, 1},
-                                                {1, 4, 3, 3, 3, 4, 2, 1},
-                                                {1, 2, 3, 3, 3, 2, 2, 1},
-                                                {1, 2, 3, 3, 3, 2, 2, 1},
-                                                {1, 4, 3, 3, 3, 4, 2, 1},
-                                                {1, 1, 2, 3, 3, 1, 1, 1},
-                                                {1, 1, 1, 3, 1, 1, 1, 1}};
-
-    int rookScores[BOARD_SIZE][BOARD_SIZE] = {{4, 3, 4, 4, 4, 4, 3, 4},
-                                                {4, 4, 4, 4, 4, 4, 4, 4},
-                                                {1, 1, 2, 3, 3, 2, 1, 1},
-                                                {1, 2, 3, 4, 4, 3, 2, 1},
-                                                {1, 2, 3, 4, 4, 3, 2, 1},
-                                                {1, 1, 2, 2, 2, 2, 1, 1},
-                                                {4, 4, 4, 4, 4, 4, 4, 4},
-                                                {4, 3, 4, 4, 4, 4, 3, 4}};
-
-    int whiteKingScores[BOARD_SIZE][BOARD_SIZE] = {{0, 0, 0, 0, 0, 0, 0, 0},
-                                                    {0, 0, 0, 0, 0, 0, 0, 0},
-                                                    {0, 0, 0, 0, 0, 0, 0, 0},
-                                                    {0, 0, 0, 0, 0, 0, 0, 0},
-                                                    {0, 0, 0, 0, 0, 0, 0, 0},
-                                                    {0, 0, 0, 0, 0, 0, 0, 0},
-                                                    {1, 1, 1, 1, 1, 1, 1, 1},
-                                                    {5, 4, 3, 2, 2, 3, 4, 5}};
-
-    int whitePawnScores[BOARD_SIZE][BOARD_SIZE] = {{8, 8, 8, 8, 8, 8, 8, 8},
-                                                    {8, 8, 8, 8, 8, 8, 8, 8},
-                                                    {5, 6, 6, 7, 7, 6, 6, 5},
-                                                    {2, 3, 3, 5, 5, 3, 3, 2},
-                                                    {1, 2, 3, 4, 4, 3, 2, 1},
-                                                    {1, 2, 2, 2, 2, 2, 2, 1},
-                                                    {1, 1, 1, 0, 0, 1, 1, 1},
-                                                    {0, 0, 0, 0, 0, 0, 0, 0}};
-
-    int blackKingScores[BOARD_SIZE][BOARD_SIZE] = {{1, 1, 1, 1, 1, 1, 1, 1},
-                                                    {5, 4, 3, 2, 2, 3, 4, 5},
-                                                    {0, 0, 0, 0, 0, 0, 0, 0},
-                                                    {0, 0, 0, 0, 0, 0, 0, 0},
-                                                    {0, 0, 0, 0, 0, 0, 0, 0},
-                                                    {0, 0, 0, 0, 0, 0, 0, 0},
-                                                    {0, 0, 0, 0, 0, 0, 0, 0},
-                                                    {0, 0, 0, 0, 0, 0, 0, 0}};
-
-    int blackPawnScores[BOARD_SIZE][BOARD_SIZE] = {{0, 0, 0, 0, 0, 0, 0, 0},
-                                                    {1, 1, 1, 0, 0, 1, 1, 1},
-                                                    {1, 2, 2, 2, 2, 2, 2, 1},
-                                                    {1, 2, 3, 4, 4, 3, 2, 1},
-                                                    {2, 3, 3, 5, 5, 3, 3, 2},
-                                                    {5, 6, 6, 7, 7, 6, 6, 5},
-                                                    {8, 8, 8, 8, 8, 8, 8, 8},
-                                                    {8, 8, 8, 8, 8, 8, 8, 8}};
-
     // getting a score of the board 
     // a positive score means that it's good for the white player
     // a negative score means that it's good for the black player
@@ -113,13 +141,13 @@ int Evaluate_Board(Piece*** board, int Checkmate){
                             piece_position_score = knightScores[i][j];
                             break;
                         case BISHOP:
-                            piece_position_score = bishopScores[i][j];
+                            piece_position_score = whiteBishopScores[i][j];
                             break;
                         case ROOK:
-                            piece_position_score = rookScores[i][j];
+                            piece_position_score = whiteRookScores[i][j];
                             break;
                         case QUEEN:
-                            piece_position_score = queenScores[i][j];
+                            piece_position_score = whiteQueenScores[i][j];
                             break;
                         case KING:
                             piece_position_score = whiteKingScores[i][j];
@@ -136,13 +164,13 @@ int Evaluate_Board(Piece*** board, int Checkmate){
                             piece_position_score = knightScores[i][j];
                             break;
                         case BISHOP:
-                            piece_position_score = bishopScores[i][j];
+                            piece_position_score = blackBishopScores[i][j];
                             break;
                         case ROOK:
-                            piece_position_score = rookScores[i][j];
+                            piece_position_score = blackRookScores[i][j];
                             break;
                         case QUEEN:
-                            piece_position_score = queenScores[i][j];
+                            piece_position_score = blackQueenScores[i][j];
                             break;
                         case KING:
                             piece_position_score = blackKingScores[i][j];
@@ -157,9 +185,10 @@ int Evaluate_Board(Piece*** board, int Checkmate){
 }
 
 
-int find_Move_Nega_Max_Alpha_Beta(Move* move, Piece*** board, Move_Log_array* Move_Log, Board_Log_array* Board_Log, State_Of_Rock_and_Check* state_of_rock_and_check, Tiles_Pawn* Pawn_Move_State, Captured_Piece_and_Score* Captured_Pieces_and_Score, Players* players, int depth, int alpha, int beta){
+int Nega_Max_Alpha_Beta_Search(Move* move, Piece*** board, Move_Log_array* Move_Log, Board_Log_array* Board_Log, State_Of_Rock_and_Check* state_of_rock_and_check, Tiles_Pawn* Pawn_Move_State, Captured_Piece_and_Score* Captured_Pieces_and_Score, Players* players, int depth, int alpha, int beta){
     
-    if (depth <= 0){
+    if (depth == 0){
+        // first version
         int checkmate_state = Is_Check_Mate(players->color_player_that_is_playing, board, state_of_rock_and_check, Move_Log, Board_Log, Pawn_Move_State, Captured_Pieces_and_Score, players, NOTHING);
         int turncolor = 0;
         if (players->color_player_that_is_playing == WHITE){
@@ -168,7 +197,7 @@ int find_Move_Nega_Max_Alpha_Beta(Move* move, Piece*** board, Move_Log_array* Mo
         else if (players->color_player_that_is_playing == BLACK){
             turncolor = -1;
         }
-        printf("Checkmate state : %d && Board Value : %d\n", checkmate_state, turncolor * Evaluate_Board(board, checkmate_state));
+        // printf("Checkmate state : %d && Board Value : %d\n", checkmate_state, turncolor * Evaluate_Board(board, checkmate_state));
         return turncolor * Evaluate_Board(board, checkmate_state);
     }
 
@@ -181,19 +210,49 @@ int find_Move_Nega_Max_Alpha_Beta(Move* move, Piece*** board, Move_Log_array* Mo
         printf("Move %d : %d %d %d %d\n", i, Valid_Moves[i]->previous_row, Valid_Moves[i]->previous_col, Valid_Moves[i]->destination_row, Valid_Moves[i]->destination_col);
     }
     */
+
+    // if there are no valid moves
+    if (number_of_valid_moves == 0){
+        // if the player is in check 
+        if (Is_Check(players->color_player_that_is_playing, board) == true){
+            // free the memory of the valid moves
+            if (Valid_Moves != NULL && number_of_valid_moves > 0){
+                for (int i=0; i<number_of_valid_moves; i++){
+                    Destroy_Move(Valid_Moves[i]);
+                }
+                free(Valid_Moves);
+            }
+            return -CHECKMATE;
+        }
+        // free the memory of the valid moves
+        if (Valid_Moves != NULL && number_of_valid_moves > 0){
+            for (int i=0; i<number_of_valid_moves; i++){
+                Destroy_Move(Valid_Moves[i]);
+            }
+            free(Valid_Moves);
+        }
+        return STALEMATE;
+    }
+
+    // going through all the valid moves
     for (int i=0; i<number_of_valid_moves; i++){
 
         // make the move on the board
         Make_IA_Global_Move_and_Udpate_structures(Valid_Moves[i], board, players, Move_Log, Board_Log, state_of_rock_and_check, Pawn_Move_State, Captured_Pieces_and_Score, players->color_player_that_is_playing, HARD);
-        bool check_state = Is_Check(players->color_player_that_is_playing, board);
-        if (check_state == true){
-            Undo_Last_Move(board, Move_Log, Board_Log, Captured_Pieces_and_Score, state_of_rock_and_check, players, Pawn_Move_State);
-            continue;
-        }
 
         // recursive call
-        int score = - find_Move_Nega_Max_Alpha_Beta(move, board, Move_Log, Board_Log, state_of_rock_and_check, Pawn_Move_State, Captured_Pieces_and_Score, players, depth - 1, -alpha, -beta);
-        printf("Score of the move (%d,%d) --> (%d,%d) : %d\n", Valid_Moves[i]->previous_row, Valid_Moves[i]->previous_col, Valid_Moves[i]->destination_row, Valid_Moves[i]->destination_col, score);
+        int score = 0;
+        int color_that_was_playing = NO_COLOR;
+        if (players->color_player_that_is_playing == WHITE){
+            color_that_was_playing = BLACK;
+        }
+        else if (players->color_player_that_is_playing == BLACK){
+            color_that_was_playing = WHITE;
+        }
+        if (Is_Check(color_that_was_playing, board) == false){
+            score = - Nega_Max_Alpha_Beta_Search(move, board, Move_Log, Board_Log, state_of_rock_and_check, Pawn_Move_State, Captured_Pieces_and_Score, players, depth - 1, -beta, -alpha);
+            // printf("Score of the move (%d,%d) --> (%d,%d) : %d\n", Valid_Moves[i]->previous_row, Valid_Moves[i]->previous_col, Valid_Moves[i]->destination_row, Valid_Moves[i]->destination_col, score);
+        }
 
         // Undo the last Move made 
         Undo_Last_Move(board, Move_Log, Board_Log, Captured_Pieces_and_Score, state_of_rock_and_check, players, Pawn_Move_State);
@@ -205,16 +264,34 @@ int find_Move_Nega_Max_Alpha_Beta(Move* move, Piece*** board, Move_Log_array* Mo
                 move->previous_col = Valid_Moves[i]->previous_col;
                 move->destination_row = Valid_Moves[i]->destination_row;
                 move->destination_col = Valid_Moves[i]->destination_col;
-                printf("Move chosen : %d %d %d %d / of score : %d\n", move->previous_row, move->previous_col, move->destination_row, move->destination_col, score);
+                // printf("Move chosen : %d %d %d %d / of score : %d\n", move->previous_row, move->previous_col, move->destination_row, move->destination_col, score);
             }
         }
-        if (score >= beta){
-            printf("score return : %d\n", score);
-            return score;
+        if (score > beta){
+            
+            // free the memory of the valid moves
+            if (Valid_Moves != NULL && number_of_valid_moves > 0){
+                for (int i=0; i<number_of_valid_moves; i++){
+                    Destroy_Move(Valid_Moves[i]);
+                }
+                free(Valid_Moves);
+            }
+
+            // printf("score return : %d\n", beta);
+            return beta;
         }
 
     }
-    printf("alpha return : %d\n", alpha);
+
+    // free the memory of the valid moves
+    if (Valid_Moves != NULL && number_of_valid_moves > 0){
+        for (int i=0; i<number_of_valid_moves; i++){
+            Destroy_Move(Valid_Moves[i]);
+        }
+        free(Valid_Moves);
+    }
+
+    // printf("alpha return : %d\n", alpha);
     return alpha;
 }
 
@@ -341,134 +418,32 @@ void IA_Play(Move* move, Piece*** board, int level, int IA_color, Move_Log_array
         Move* best_move = Create_Move(-1, -1, -1, -1);
 
         // find the best move according to the Alpha-Beta algorithm
-        int score = find_Move_Nega_Max_Alpha_Beta(best_move, board, Move_Log, Board_Log, state_of_rock_and_check, Pawn_Move_State, Captured_Pieces_and_Score, players, DEPTH, -CHECKMATE, CHECKMATE);
+        int score = Nega_Max_Alpha_Beta_Search(best_move, board, Move_Log, Board_Log, state_of_rock_and_check, Pawn_Move_State, Captured_Pieces_and_Score, players, DEPTH, -CHECKMATE, CHECKMATE);
         printf("Score of the best move (%d,%d) --> (%d,%d) : %d\n", best_move->previous_row, best_move->previous_col, best_move->destination_row, best_move->destination_col, score);
 
-        if (best_move->previous_row != -1 && best_move->previous_col != -1 && best_move->destination_row != -1 && best_move->destination_col != -1){
-               
-                // the move need not to put the king in check
-                Make_IA_Global_Move_and_Udpate_structures(best_move, board, players, Move_Log, Board_Log, state_of_rock_and_check, Pawn_Move_State, Captured_Pieces_and_Score, players->color_player_that_is_playing, HARD);
-                // if after the move made by the IA, it's in check, we need to undo the move and make another one
-                int color_we_are_checking_IA = NO_COLOR;
-                if (players->color_player_that_is_playing == WHITE){
-                    color_we_are_checking_IA = BLACK;
-                }
-                else if (players->color_player_that_is_playing == BLACK){
-                    color_we_are_checking_IA = WHITE;
-                }
-                // get the check state of the player that was playing the last move
-                bool check_state = Is_Check(color_we_are_checking_IA, board);
-                // if the king of the color is in check after making a move, we need to remove the move, since it cannot be check after playing
-                if (check_state == false){
-
-                    move->previous_row = best_move->previous_row;
-                    move->previous_col = best_move->previous_col;
-                    move->destination_row = best_move->destination_row;
-                    move->destination_col = best_move->destination_col;
-
-                }
-                Undo_Last_Move(board, Move_Log, Board_Log, Captured_Pieces_and_Score, state_of_rock_and_check, players, Pawn_Move_State);
-                                   
+        // the move need not to put the king in check
+        Make_IA_Global_Move_and_Udpate_structures(best_move, board, players, Move_Log, Board_Log, state_of_rock_and_check, Pawn_Move_State, Captured_Pieces_and_Score, players->color_player_that_is_playing, HARD);
+        // if after the move made by the IA, it's in check, we need to undo the move and make another one
+        int color_we_are_checking_IA = NO_COLOR;
+        if (players->color_player_that_is_playing == WHITE){
+            color_we_are_checking_IA = BLACK;
         }
-        
-        // otherwise we do the methode of the medium level (just in case it doesn't work but it should work)
-        else{
-            // getting the random move 
-            while (is_move_correct == false){
-                move->previous_row = Random_Int(0, 7);
-                move->previous_col = Random_Int(0, 7);
-                move->destination_row = Random_Int(0, 7);
-                move->destination_col = Random_Int(0, 7);
-                if (Is_Move_Valid(move, board, state_of_rock_and_check, Pawn_Move_State) == true && board[move->previous_row][move->previous_col]->color == IA_color){
-                    is_move_correct = true;
-                }
-            }
-            // creating the temporary move
-            Move* move_temp = Create_Move(-1, -1, -1, -1);
-            // integer to track the value of the piece captured
-            int value_of_piece_captured = 0;
-            // if a piece can be captured, the IA will capture it by changing the move accoordingly
-            // going through the starting position of the IA pieces
-            for (int i = 0; i < 8; i++){
-                for (int j = 0; j < 8; j++){
-                    // we check if it's a valid starting position for the piece
-                    if (board[i][j]->type != NOTHING && board[i][j]->color == IA_color){
-                        // going through the destination position of the IA pieces
-                        for (int k = 0; k < 8; k++){
-                            for (int l = 0; l < 8; l++){
-                                move_temp->previous_row = i;
-                                move_temp->previous_col = j;
-                                move_temp->destination_row = k;
-                                move_temp->destination_col = l;
-                                // here : a white piece of the IA color can capture a black piece
-                                if (IA_color == WHITE && board[k][l]->color == BLACK && Is_Move_Valid(move_temp, board, state_of_rock_and_check, Pawn_Move_State) == true){
-                                    // the move need not to put the king in check
-                                    Make_IA_Global_Move_and_Udpate_structures(move_temp, board, players, Move_Log, Board_Log, state_of_rock_and_check, Pawn_Move_State, Captured_Pieces_and_Score, players->color_player_that_is_playing, MEDIUM);
-                                    // if after the move made by the IA, it's in check, we need to undo the move and make another one
-                                    int color_we_are_checking_IA = NO_COLOR;
-                                    if (players->color_player_that_is_playing == WHITE){
-                                        color_we_are_checking_IA = BLACK;
-                                    }
-                                    else if (players->color_player_that_is_playing == BLACK){
-                                        color_we_are_checking_IA = WHITE;
-                                    }
-                                    // get the check state of the player that was playing the last move
-                                    bool check_state = Is_Check(color_we_are_checking_IA, board);
-                                    // if the king of the color is in check after making a move, we need to remove the move, since it cannot be check after playing
-                                    if (check_state == false){
-
-                                        // we check if the value of the piece captured is higher than the one we already have
-                                        if (value_of_piece_captured < board[k][l]->value){
-                                            move->previous_row = i;
-                                            move->previous_col = j;
-                                            move->destination_row = k;
-                                            move->destination_col = l;
-                                            value_of_piece_captured = board[k][l]->value;
-                                        }
-
-                                    }
-                                    Undo_Last_Move(board, Move_Log, Board_Log, Captured_Pieces_and_Score, state_of_rock_and_check, players, Pawn_Move_State);
-                                    
-                                }
-                                // here : a black piece of the IA color can capture a white piece
-                                else if (IA_color == BLACK && board[k][l]->color == WHITE && Is_Move_Valid(move_temp, board, state_of_rock_and_check, Pawn_Move_State) == true){
-                                    // the move need not to put the king in check
-                                    Make_IA_Global_Move_and_Udpate_structures(move_temp, board, players, Move_Log, Board_Log, state_of_rock_and_check, Pawn_Move_State, Captured_Pieces_and_Score, players->color_player_that_is_playing, MEDIUM);
-                                    // if after the move made by the IA, it's in check, we need to undo the move and make another one
-                                    int color_we_are_checking_IA = NO_COLOR;
-                                    if (players->color_player_that_is_playing == WHITE){
-                                        color_we_are_checking_IA = BLACK;
-                                    }
-                                    else if (players->color_player_that_is_playing == BLACK){
-                                        color_we_are_checking_IA = WHITE;
-                                    }
-                                    // get the check state of the player that was playing the last move
-                                    bool check_state = Is_Check(color_we_are_checking_IA, board);
-                                    // if the king of the color is in check after making a move, we need to remove the move, since it cannot be check after playing
-                                    if (check_state == false){
-
-                                        // we check if the value of the piece captured is higher than the one we already have
-                                        if (value_of_piece_captured < board[k][l]->value){
-                                            move->previous_row = i;
-                                            move->previous_col = j;
-                                            move->destination_row = k;
-                                            move->destination_col = l;
-                                            value_of_piece_captured = board[k][l]->value;
-                                        }
-
-                                    }
-                                    Undo_Last_Move(board, Move_Log, Board_Log, Captured_Pieces_and_Score, state_of_rock_and_check, players, Pawn_Move_State);
-                                    
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            // Destroying the temporary move
-            Destroy_Move(move_temp);
+        else if (players->color_player_that_is_playing == BLACK){
+            color_we_are_checking_IA = WHITE;
         }
-        
+        // get the check state of the player that was playing the last move
+        bool check_state = Is_Check(color_we_are_checking_IA, board);
+        // if the king of the color is in check after making a move, we need to remove the move, since it cannot be check after playing
+        if (check_state == false){
+
+            move->previous_row = best_move->previous_row;
+            move->previous_col = best_move->previous_col;
+            move->destination_row = best_move->destination_row;
+            move->destination_col = best_move->destination_col;
+
+        }
+        Undo_Last_Move(board, Move_Log, Board_Log, Captured_Pieces_and_Score, state_of_rock_and_check, players, Pawn_Move_State);
+       
         Destroy_Move(best_move);
     }
 }

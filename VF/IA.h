@@ -15,7 +15,7 @@
 /**
  * A summary of the supported functions is given below:
  * Evaluate_Board : function that evaluates the board score
- * find_Move_Nega_Max_Alpha_Beta : function that returns the best move for the IA following a Alpha-Beta algorithm (minimax with alpha-beta pruning)
+ * Nega_Max_Alpha_Beta_Search : function that returns the best move for the IA following a Alpha-Beta algorithm (minimax with alpha-beta pruning)
  * Find_Best_Move : function that finds the best move for the IA (using the Alpha-Beta algorithm)
  * IA_Play : function that makes the IA play depending on the level
 **/
@@ -53,7 +53,7 @@ int Evaluate_Board(Piece*** board, int Checkmate);
  * @return int : the score of the best move (modify directly the move parameter)
 **/
 /////////////////////////////////////////////////////////////////////////////////////
-int find_Move_Nega_Max_Alpha_Beta(Move* move, Piece*** board, Move_Log_array* Move_Log, Board_Log_array* Board_Log, State_Of_Rock_and_Check* state_of_rock_and_check, Tiles_Pawn* Pawn_Move_State, Captured_Piece_and_Score* Captured_Pieces_and_Score, Players* players, int depth, int alpha, int beta);
+int Nega_Max_Alpha_Beta_Search(Move* move, Piece*** board, Move_Log_array* Move_Log, Board_Log_array* Board_Log, State_Of_Rock_and_Check* state_of_rock_and_check, Tiles_Pawn* Pawn_Move_State, Captured_Piece_and_Score* Captured_Pieces_and_Score, Players* players, int depth, int alpha, int beta);
 
 
 /////////////////////////////////////////////////////////////////////////////////////
