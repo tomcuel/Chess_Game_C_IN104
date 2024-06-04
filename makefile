@@ -10,7 +10,9 @@ all:
 	make -C V2 
 	make -C V3
 	make -C V4
-	make -C VF
+	make -C V5
+	make -C V6
+	make -C V7
 	make -C Images
 	make -C Sounds
 
@@ -26,7 +28,9 @@ realclean:
 	make -C V2 realclean
 	make -C V3 realclean
 	make -C V4 realclean
-	make -C VF realclean
+	make -C V5 realclean
+	make -C V6 realclean
+	make -C V7 realclean
 	make -C Images realclean
 	make -C Sounds realclean
 

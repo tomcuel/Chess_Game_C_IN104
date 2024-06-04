@@ -2,6 +2,7 @@
 
 Here is a project to be carried out in pairs during a computer science course.
 Our job is to code a chess game in C using the SDL library.
+I keep upgrading it above the lesson from the V6
 
 # About SDL
 Here's the website to find out more about this library (which allows us to make graphics and play on them, for example): 
@@ -9,6 +10,7 @@ Here's the website to find out more about this library (which allows us to make 
 - the wiki_lib is very useful to be able to easily search function, things that can be done and how to implement, it's making us gain time
 - --> one way to do it is by searching from the type of category of functions that act on differents parts : https://wiki.libsdl.org/SDL2/APIByCategory
 - --> the other way is by searching the name, but it requires to know well the library and what it can do : https://wiki.libsdl.org/SDL2/CategoryAPI
+- We've tried to download the ttf extension to use fonts but we haven't been able to do so, thus the graphics aren't quite what we could have done with it, but still we've been able do pretty much what we wanted
 
 # What we need to do 
 We will have various tasks to complete as part of this project: 
@@ -27,10 +29,10 @@ We will have various tasks to complete as part of this project:
 
 
 # To play the game : 
-- click on buttons, depeding on the button you will need to do it twice to make sure that it was really what was attended
+- click on buttons, depending on the button you will need to do it twice to make sure that it was really what was attended (to confirm it)
 - some parameters to choose how to play the game will be chosen through differents menus
 - to start the timer in the game, you will need to press only once the button start
-- then you can play the game, but also quitting it or doing a lot of different things
+- then you can play the game, but also quitting it or doing a lot of different things during it 
 - a victory menu suggests you some ways you would like to continue the game into 
 
 # Concerning what has been done :
@@ -52,10 +54,22 @@ We will have various tasks to complete as part of this project:
 - fixes the problems of the IA and add the intermediate level
 - also adds the pawn promotion, the undo button
 - and all that is related to the check (as well as Checkmate and Stalemate)
-## VF : 
+## V5 : 
 - adding littles features linked to stalemate conditions
 - parsing more into separate functions using references to others folders
-- adding an IA using the alpha_beta_pruning algorithm with a very basic heuristic (will need to be upgraded later on), the depth need to be changed by hands, but later on it will not be the case (warnin a depth above 3 take very long for now)
+- adding an IA using the alpha_beta_pruning algorithm with a very basic heuristic (will need to be upgraded later on), the depth need to be changed by hands in the IA.c file, but later on it will not be the case (warning a depth above 3 take very long for now)
+## V6 : 
+- The victory display menu is now a blur with the chess game in the background 
+- Reversing the board when it's up to the black to play (1v1 game or 1vIA) 
+- Fixing some bugs linked to the code 
+- Timer will also work for the IA 
+- Adding the IAvIA type of match where you can select which level of IA will play against which level of IA
+- Changing how the menus looks concerning the difficulty choices and the gameplay mode 
+- Warning : only the EASY and MEDIUM IA level are working in this version 
+## V7 : 
+- development of the IA by changing the heuristic by ordering moves, iterative deepening to make a compromise between searching the best play and managing time, but also suggestions concerning the moves to do depending on the part of the game we're in 
+
+
 
 # Structure of the code : 
 
