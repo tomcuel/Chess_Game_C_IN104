@@ -175,9 +175,11 @@ void Show_Updated_Timer(SDL_Renderer* renderer, int time_player_white, int time_
  * @param Buttons : the buttons to show
  * @param is_pawn_promotion_happening : if the pawn promotion is happening : will show different buttons in this case
  * @param color_promoted_pawn : the color of the promoted pawn
+ * @param is_game_paused : if the game is paused or not
+ * @param is_IA_v_IA_mode : if the game is in IA vs IA mode
 **/
 /////////////////////////////////////////////////////////////////////////////////////
-void Show_Menu_Button_in_Game(SDL_Renderer* renderer, Button** Buttons, bool is_pawn_promotion_happening, int color_promoted_pawn);
+void Show_Menu_Button_in_Game(SDL_Renderer* renderer, Button** Buttons, bool is_pawn_promotion_happening, int color_promoted_pawn, bool is_game_paused, bool is_IA_v_IA_mode);
 
 
 /////////////////////////////////////////////////////////////////////////////////////

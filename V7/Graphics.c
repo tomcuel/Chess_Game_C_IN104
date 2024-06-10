@@ -248,28 +248,33 @@ Button** Create_Buttons(int number_of_buttons){
     Buttons[UNDO_BUTTON]->rect.w = 170;
     Buttons[UNDO_BUTTON]->rect.h = 100;
 
+    Buttons[PAUSE_BUTTON]->rect.x = 850+355/2-170/2;
+    Buttons[PAUSE_BUTTON]->rect.y = 750;
+    Buttons[PAUSE_BUTTON]->rect.w = 170;
+    Buttons[PAUSE_BUTTON]->rect.h = 100;
+
     Buttons[PAWN_PROMOTION_BUTTON]->rect.x = 850+355/2-170/2;
     Buttons[PAWN_PROMOTION_BUTTON]->rect.y = 50;
     Buttons[PAWN_PROMOTION_BUTTON]->rect.w = 170;
     Buttons[PAWN_PROMOTION_BUTTON]->rect.h = 100;
 
     Buttons[QUEEN_BUTTON]->rect.x = 850+355/2-170/2;
-    Buttons[QUEEN_BUTTON]->rect.y = 250;
+    Buttons[QUEEN_BUTTON]->rect.y = 175;
     Buttons[QUEEN_BUTTON]->rect.w = 170;
     Buttons[QUEEN_BUTTON]->rect.h = 100;
 
     Buttons[ROOK_BUTTON]->rect.x = 850+355/2-170/2;
-    Buttons[ROOK_BUTTON]->rect.y = 400;
+    Buttons[ROOK_BUTTON]->rect.y = 325;
     Buttons[ROOK_BUTTON]->rect.w = 170;
     Buttons[ROOK_BUTTON]->rect.h = 100;
 
     Buttons[BISHOP_BUTTON]->rect.x = 850+355/2-170/2;
-    Buttons[BISHOP_BUTTON]->rect.y = 550;
+    Buttons[BISHOP_BUTTON]->rect.y = 475;
     Buttons[BISHOP_BUTTON]->rect.w = 170;
     Buttons[BISHOP_BUTTON]->rect.h = 100;
 
     Buttons[KNIGHT_BUTTON]->rect.x = 850+355/2-170/2;
-    Buttons[KNIGHT_BUTTON]->rect.y = 700;
+    Buttons[KNIGHT_BUTTON]->rect.y = 625;
     Buttons[KNIGHT_BUTTON]->rect.w = 170;
     Buttons[KNIGHT_BUTTON]->rect.h = 100;
 
@@ -565,8 +570,8 @@ void Show_Chess_Board(SDL_Renderer* renderer, Piece*** board, Move_Log_array* Mo
     rect.h = SQUARE_SIZE;
 
     // making the empty chessboard
-    for (int i = 0; i < 8; i++) {
-        for (int j = 0; j < 8; j++) {
+    for (int i = 0; i < BOARD_SIZE; i++) {
+        for (int j = 0; j < BOARD_SIZE; j++) {
             rect.x = j * SQUARE_SIZE+WINDOW_LEFT_MARGIN;
             rect.y = i * SQUARE_SIZE+WINDOW_TOP_MARGIN;
             if (is_reversed == false){
@@ -581,7 +586,7 @@ void Show_Chess_Board(SDL_Renderer* renderer, Piece*** board, Move_Log_array* Mo
                 SDL_RenderFillRect(renderer, &rect);
             }
             else if (is_reversed == true){
-                if ((7-i + j) % 2 == 0) {
+                if ((7-i + 7-j) % 2 == 0) {
                     // case light square
                     SDL_SetRenderDrawColor(renderer, 238, 238, 210, 255); // light square color
                 }
@@ -602,6 +607,8 @@ void Show_Chess_Board(SDL_Renderer* renderer, Piece*** board, Move_Log_array* Mo
         rect_check.y = white_king->row * SQUARE_SIZE + WINDOW_TOP_MARGIN;
         if (is_reversed == true){
             rect_check.y = (7-white_king->row) * SQUARE_SIZE + WINDOW_TOP_MARGIN;
+            rect_check.x = (7-white_king->col) * SQUARE_SIZE + WINDOW_LEFT_MARGIN;
+
         }
         rect_check.w = SQUARE_SIZE;
         rect_check.h = SQUARE_SIZE;
@@ -615,6 +622,7 @@ void Show_Chess_Board(SDL_Renderer* renderer, Piece*** board, Move_Log_array* Mo
         rect_check.y = black_king->row * SQUARE_SIZE + WINDOW_TOP_MARGIN;
         if (is_reversed == true){
             rect_check.y = (7-black_king->row) * SQUARE_SIZE + WINDOW_TOP_MARGIN;
+            rect_check.x = (7-black_king->col) * SQUARE_SIZE + WINDOW_LEFT_MARGIN;
         }
         rect_check.w = SQUARE_SIZE;
         rect_check.h = SQUARE_SIZE;
@@ -629,6 +637,7 @@ void Show_Chess_Board(SDL_Renderer* renderer, Piece*** board, Move_Log_array* Mo
         rect_previous_move.y = Move_Log_Array->Move_Log[Move_Log_Array->actual_size-1]->move->previous_row * SQUARE_SIZE + WINDOW_TOP_MARGIN;
         if (is_reversed == true){
             rect_previous_move.y = (7-Move_Log_Array->Move_Log[Move_Log_Array->actual_size-1]->move->previous_row) * SQUARE_SIZE + WINDOW_TOP_MARGIN;
+            rect_previous_move.x = (7-Move_Log_Array->Move_Log[Move_Log_Array->actual_size-1]->move->previous_col) * SQUARE_SIZE + WINDOW_LEFT_MARGIN;
         }
         rect_previous_move.w = SQUARE_SIZE;
         rect_previous_move.h = SQUARE_SIZE;
@@ -640,6 +649,7 @@ void Show_Chess_Board(SDL_Renderer* renderer, Piece*** board, Move_Log_array* Mo
         rect_destination_move.y = Move_Log_Array->Move_Log[Move_Log_Array->actual_size-1]->move->destination_row * SQUARE_SIZE + WINDOW_TOP_MARGIN;
         if (is_reversed == true){
             rect_destination_move.y = (7-Move_Log_Array->Move_Log[Move_Log_Array->actual_size-1]->move->destination_row) * SQUARE_SIZE + WINDOW_TOP_MARGIN;
+            rect_destination_move.x = (7-Move_Log_Array->Move_Log[Move_Log_Array->actual_size-1]->move->destination_col) * SQUARE_SIZE + WINDOW_LEFT_MARGIN;
         }
         rect_destination_move.w = SQUARE_SIZE;
         rect_destination_move.h = SQUARE_SIZE;
@@ -709,6 +719,7 @@ void Show_Chess_Board(SDL_Renderer* renderer, Piece*** board, Move_Log_array* Mo
                 SDL_Rect destRect = {board[i][j]->col * SQUARE_SIZE+WINDOW_LEFT_MARGIN, board[i][j]->row * SQUARE_SIZE+WINDOW_TOP_MARGIN, SQUARE_SIZE, SQUARE_SIZE}; // Adjust the coordinates and size as needed here
                 if (is_reversed == true){
                     destRect.y = (7-board[i][j]->row) * SQUARE_SIZE+WINDOW_TOP_MARGIN;
+                    destRect.x = (7-board[i][j]->col) * SQUARE_SIZE+WINDOW_TOP_MARGIN;
                 }
 
                 // Add image to renderer
@@ -760,36 +771,36 @@ void Show_Chess_Board(SDL_Renderer* renderer, Piece*** board, Move_Log_array* Mo
         else if (is_reversed == true){
             switch (letter){
                 case 'A':
-                    SDL_SetRenderDrawColor(renderer, 238, 238, 210, 255);
-                    drawLetterH(renderer, WINDOW_LEFT_MARGIN+8*SQUARE_SIZE-5-15, WINDOW_TOP_MARGIN+8*SQUARE_SIZE-5-15, 15, 15);
+                    SDL_SetRenderDrawColor(renderer, 118, 150, 86, 255);
+                    drawLetterA(renderer, WINDOW_LEFT_MARGIN+8*SQUARE_SIZE-5-15, WINDOW_TOP_MARGIN+8*SQUARE_SIZE-5-15, 15, 15);
                     break;
                 case 'B':
-                    SDL_SetRenderDrawColor(renderer, 118, 150, 86, 255);
-                    drawLetterG(renderer, WINDOW_LEFT_MARGIN+7*SQUARE_SIZE-5-15, WINDOW_TOP_MARGIN+8*SQUARE_SIZE-5-15, 15, 15);
+                    SDL_SetRenderDrawColor(renderer, 238, 238, 210, 255);
+                    drawLetterB(renderer, WINDOW_LEFT_MARGIN+7*SQUARE_SIZE-5-15, WINDOW_TOP_MARGIN+8*SQUARE_SIZE-5-15, 15, 15);
                     break;
                 case 'C':
-                    SDL_SetRenderDrawColor(renderer, 238, 238, 210, 255);
-                    drawLetterF(renderer, WINDOW_LEFT_MARGIN+6*SQUARE_SIZE-5-15, WINDOW_TOP_MARGIN+8*SQUARE_SIZE-5-15, 15, 15);
+                    SDL_SetRenderDrawColor(renderer, 118, 150, 86, 255);
+                    drawLetterC(renderer, WINDOW_LEFT_MARGIN+6*SQUARE_SIZE-5-15, WINDOW_TOP_MARGIN+8*SQUARE_SIZE-5-15, 15, 15);
                     break;
                 case 'D':
-                    SDL_SetRenderDrawColor(renderer, 118, 150, 86, 255);
-                    drawLetterE(renderer, WINDOW_LEFT_MARGIN+5*SQUARE_SIZE-5-15, WINDOW_TOP_MARGIN+8*SQUARE_SIZE-5-15, 15, 15);
+                    SDL_SetRenderDrawColor(renderer, 238, 238, 210, 255);
+                    drawLetterD(renderer, WINDOW_LEFT_MARGIN+5*SQUARE_SIZE-5-15, WINDOW_TOP_MARGIN+8*SQUARE_SIZE-5-15, 15, 15);
                     break;
                 case 'E':
-                    SDL_SetRenderDrawColor(renderer, 238, 238, 210, 255);
-                    drawLetterD(renderer, WINDOW_LEFT_MARGIN+4*SQUARE_SIZE-5-15, WINDOW_TOP_MARGIN+8*SQUARE_SIZE-5-15, 15, 15);
+                    SDL_SetRenderDrawColor(renderer, 118, 150, 86, 255);
+                    drawLetterE(renderer, WINDOW_LEFT_MARGIN+4*SQUARE_SIZE-5-15, WINDOW_TOP_MARGIN+8*SQUARE_SIZE-5-15, 15, 15);
                     break;
                 case 'F':
-                    SDL_SetRenderDrawColor(renderer, 118, 150, 86, 255);
-                    drawLetterC(renderer, WINDOW_LEFT_MARGIN+3*SQUARE_SIZE-5-15, WINDOW_TOP_MARGIN+8*SQUARE_SIZE-5-15, 15, 15);
+                    SDL_SetRenderDrawColor(renderer, 238, 238, 210, 255);
+                    drawLetterF(renderer, WINDOW_LEFT_MARGIN+3*SQUARE_SIZE-5-15, WINDOW_TOP_MARGIN+8*SQUARE_SIZE-5-15, 15, 15);
                     break;
                 case 'G':
-                    SDL_SetRenderDrawColor(renderer, 238, 238, 210, 255);
-                    drawLetterB(renderer, WINDOW_LEFT_MARGIN+2*SQUARE_SIZE-5-15, WINDOW_TOP_MARGIN+8*SQUARE_SIZE-5-15, 15, 15);
+                    SDL_SetRenderDrawColor(renderer, 118, 150, 86, 255);
+                    drawLetterG(renderer, WINDOW_LEFT_MARGIN+2*SQUARE_SIZE-5-15, WINDOW_TOP_MARGIN+8*SQUARE_SIZE-5-15, 15, 15);
                     break;
                 case 'H':
-                    SDL_SetRenderDrawColor(renderer, 118, 150, 86, 255);
-                    drawLetterA(renderer, WINDOW_LEFT_MARGIN+1*SQUARE_SIZE-5-15, WINDOW_TOP_MARGIN+8*SQUARE_SIZE-5-15, 15, 15);
+                    SDL_SetRenderDrawColor(renderer, 238, 238, 210, 255);
+                    drawLetterH(renderer, WINDOW_LEFT_MARGIN+1*SQUARE_SIZE-5-15, WINDOW_TOP_MARGIN+8*SQUARE_SIZE-5-15, 15, 15);
                     break;
             }
         }
@@ -836,35 +847,35 @@ void Show_Chess_Board(SDL_Renderer* renderer, Piece*** board, Move_Log_array* Mo
         else if (is_reversed == true){
             switch (number){
                 case 1 : 
-                    SDL_SetRenderDrawColor(renderer, 238, 238, 210, 255);
+                    SDL_SetRenderDrawColor(renderer, 118, 150, 86, 255);
                     drawNumber1(renderer, WINDOW_LEFT_MARGIN+5, WINDOW_TOP_MARGIN+0*SQUARE_SIZE+5, 15, 15);
                     break;
                 case 2 :
-                    SDL_SetRenderDrawColor(renderer, 118, 150, 86, 255);
+                    SDL_SetRenderDrawColor(renderer, 238, 238, 210, 255);
                     drawNumber2(renderer, WINDOW_LEFT_MARGIN+5, WINDOW_TOP_MARGIN+1*SQUARE_SIZE+5, 15, 15);
                     break;
                 case 3 :
-                    SDL_SetRenderDrawColor(renderer, 238, 238, 210, 255);
+                    SDL_SetRenderDrawColor(renderer, 118, 150, 86, 255);
                     drawNumber3(renderer, WINDOW_LEFT_MARGIN+5, WINDOW_TOP_MARGIN+2*SQUARE_SIZE+5, 15, 15);
                     break;
                 case 4 :
-                    SDL_SetRenderDrawColor(renderer, 118, 150, 86, 255);
+                    SDL_SetRenderDrawColor(renderer, 238, 238, 210, 255);
                     drawNumber4(renderer, WINDOW_LEFT_MARGIN+5, WINDOW_TOP_MARGIN+3*SQUARE_SIZE+5, 15, 15);
                     break;
                 case 5 :
-                    SDL_SetRenderDrawColor(renderer, 238, 238, 210, 255);
+                    SDL_SetRenderDrawColor(renderer, 118, 150, 86, 255);
                     drawNumber5(renderer, WINDOW_LEFT_MARGIN+5, WINDOW_TOP_MARGIN+4*SQUARE_SIZE+5, 15, 15);
                     break;
                 case 6 :
-                    SDL_SetRenderDrawColor(renderer, 118, 150, 86, 255);
+                    SDL_SetRenderDrawColor(renderer, 238, 238, 210, 255);
                     drawNumber6(renderer, WINDOW_LEFT_MARGIN+5, WINDOW_TOP_MARGIN+5*SQUARE_SIZE+5, 15, 15);
                     break;
                 case 7 :
-                    SDL_SetRenderDrawColor(renderer, 238, 238, 210, 255);
+                    SDL_SetRenderDrawColor(renderer, 118, 150, 86, 255);
                     drawNumber7(renderer, WINDOW_LEFT_MARGIN+5, WINDOW_TOP_MARGIN+6*SQUARE_SIZE+5, 15, 15);
                     break;
                 case 8 :
-                    SDL_SetRenderDrawColor(renderer, 118, 150, 86, 255);
+                    SDL_SetRenderDrawColor(renderer, 238, 238, 210, 255);
                     drawNumber8(renderer, WINDOW_LEFT_MARGIN+5, WINDOW_TOP_MARGIN+7*SQUARE_SIZE+5, 15, 15);
                     break;
             }
@@ -1281,7 +1292,7 @@ void Show_Updated_Timer(SDL_Renderer* renderer, int time_player_white, int time_
 }
 
 
-void Show_Menu_Button_in_Game(SDL_Renderer* renderer, Button** Buttons, bool is_pawn_promotion_happening, int color_promoted_pawn){
+void Show_Menu_Button_in_Game(SDL_Renderer* renderer, Button** Buttons, bool is_pawn_promotion_happening, int color_promoted_pawn, bool is_game_paused, bool is_IA_v_IA_mode){
     
     // display the start buttons
     if (Buttons[START_BUTTON]->state == UNACTIVE){
@@ -1302,6 +1313,38 @@ void Show_Menu_Button_in_Game(SDL_Renderer* renderer, Button** Buttons, bool is_
     }
     else if (Buttons[UNDO_BUTTON]->state == ACTIVE){
         add_image_to_render("../Images/Buttons/Active_Undo_Button.bmp", renderer, Buttons[UNDO_BUTTON]->rect, false);
+    }
+
+    // display the pause button only is the IA v IA mode 
+    if (is_IA_v_IA_mode == true){
+        if (is_game_paused == false){
+            add_image_to_render("../Images/Buttons/Unactive_Pause_Button.bmp", renderer, Buttons[PAUSE_BUTTON]->rect, false);
+        }
+        else if (is_game_paused == true){
+            add_image_to_render("../Images/Buttons/Active_Pause_Button.bmp", renderer, Buttons[PAUSE_BUTTON]->rect, false);
+        }
+        // display the a red rectangle around the pause button when the game is paused
+        if (is_game_paused == true){
+            SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255); // Set color to red
+            SDL_RenderDrawRect(renderer, &Buttons[PAUSE_BUTTON]->rect);
+            // making it thicker
+            // Draw top line
+            for (int i = 0; i < 5; ++i) {
+                SDL_RenderDrawLine(renderer, Buttons[PAUSE_BUTTON]->rect.x, Buttons[PAUSE_BUTTON]->rect.y + i, Buttons[PAUSE_BUTTON]->rect.x + Buttons[PAUSE_BUTTON]->rect.w, Buttons[PAUSE_BUTTON]->rect.y + i);
+            }
+            // Draw right line
+            for (int i = 0; i < 5; ++i) {
+                SDL_RenderDrawLine(renderer, Buttons[PAUSE_BUTTON]->rect.x + Buttons[PAUSE_BUTTON]->rect.w - i, Buttons[PAUSE_BUTTON]->rect.y, Buttons[PAUSE_BUTTON]->rect.x + Buttons[PAUSE_BUTTON]->rect.w - i, Buttons[PAUSE_BUTTON]->rect.y + Buttons[PAUSE_BUTTON]->rect.h);
+            }
+            // Draw bottom line
+            for (int i = 0; i < 5; ++i) {
+                SDL_RenderDrawLine(renderer, Buttons[PAUSE_BUTTON]->rect.x, Buttons[PAUSE_BUTTON]->rect.y + Buttons[PAUSE_BUTTON]->rect.h - i, Buttons[PAUSE_BUTTON]->rect.x + Buttons[PAUSE_BUTTON]->rect.w, Buttons[PAUSE_BUTTON]->rect.y + Buttons[PAUSE_BUTTON]->rect.h - i);
+            }
+            // Draw left line
+            for (int i = 0; i < 5; ++i) {
+                SDL_RenderDrawLine(renderer, Buttons[PAUSE_BUTTON]->rect.x + i, Buttons[PAUSE_BUTTON]->rect.y, Buttons[PAUSE_BUTTON]->rect.x + i, Buttons[PAUSE_BUTTON]->rect.y + Buttons[PAUSE_BUTTON]->rect.h);
+            }
+        }
     }
 
     // we display the pawn promotion buttons : always but active or unactive 
@@ -1367,7 +1410,7 @@ void Show_Trajectory(SDL_Renderer* renderer, Piece*** board, Move* move, State_O
                         Draw_Filled_Circle(renderer, move->previous_col*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, i*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
                     }
                     else if (is_reversed == true){
-                        Draw_Filled_Circle(renderer, move->previous_col*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (7-i)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
+                        Draw_Filled_Circle(renderer, (7-move->previous_col)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (7-i)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
                     }
                 }
                 // if we have a piece of the same color, we stop the trajectory
@@ -1380,7 +1423,7 @@ void Show_Trajectory(SDL_Renderer* renderer, Piece*** board, Move* move, State_O
                         Draw_Filled_Circle(renderer, move->previous_col*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, i*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
                     }
                     else if (is_reversed == true){
-                        Draw_Filled_Circle(renderer, move->previous_col*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (7-i)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
+                        Draw_Filled_Circle(renderer, (7-move->previous_col)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (7-i)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
                     }
                     break;
                 }
@@ -1393,7 +1436,7 @@ void Show_Trajectory(SDL_Renderer* renderer, Piece*** board, Move* move, State_O
                         Draw_Filled_Circle(renderer, move->previous_col*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, i*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
                     }
                     else if (is_reversed == true){
-                        Draw_Filled_Circle(renderer, move->previous_col*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (7-i)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
+                        Draw_Filled_Circle(renderer, (7-move->previous_col)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (7-i)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
                     }
                 }
                 // if we have a piece of the same color, we stop the trajectory
@@ -1406,7 +1449,7 @@ void Show_Trajectory(SDL_Renderer* renderer, Piece*** board, Move* move, State_O
                         Draw_Filled_Circle(renderer, move->previous_col*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, i*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
                     }
                     else if (is_reversed == true){
-                        Draw_Filled_Circle(renderer, move->previous_col*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (7-i)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
+                        Draw_Filled_Circle(renderer, (7-move->previous_col)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (7-i)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
                     }
                     break;
                 }
@@ -1419,7 +1462,7 @@ void Show_Trajectory(SDL_Renderer* renderer, Piece*** board, Move* move, State_O
                         Draw_Filled_Circle(renderer, j*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, move->previous_row*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
                     }
                     else if (is_reversed == true){
-                        Draw_Filled_Circle(renderer, j*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (7-move->previous_row)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
+                        Draw_Filled_Circle(renderer, (7-j)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (7-move->previous_row)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
                     }
                 }
                 // if we have a piece of the same color, we stop the trajectory
@@ -1432,7 +1475,7 @@ void Show_Trajectory(SDL_Renderer* renderer, Piece*** board, Move* move, State_O
                         Draw_Filled_Circle(renderer, j*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, move->previous_row*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
                     }
                     else if (is_reversed == true){
-                        Draw_Filled_Circle(renderer, j*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (7-move->previous_row)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
+                        Draw_Filled_Circle(renderer, (7-j)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (7-move->previous_row)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
                     }
                     break;
                 }
@@ -1445,7 +1488,7 @@ void Show_Trajectory(SDL_Renderer* renderer, Piece*** board, Move* move, State_O
                         Draw_Filled_Circle(renderer, j*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, move->previous_row*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
                     }
                     else if (is_reversed == true){
-                        Draw_Filled_Circle(renderer, j*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (7-move->previous_row)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
+                        Draw_Filled_Circle(renderer, (7-j)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (7-move->previous_row)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
                     }
                 }
                 // if we have a piece of the same color, we stop the trajectory
@@ -1458,7 +1501,7 @@ void Show_Trajectory(SDL_Renderer* renderer, Piece*** board, Move* move, State_O
                         Draw_Filled_Circle(renderer, j*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, move->previous_row*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
                     }
                     else if (is_reversed == true){
-                        Draw_Filled_Circle(renderer, j*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (7-move->previous_row)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
+                        Draw_Filled_Circle(renderer, (7-j)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (7-move->previous_row)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
                     }
                     break;
                 }
@@ -1478,7 +1521,7 @@ void Show_Trajectory(SDL_Renderer* renderer, Piece*** board, Move* move, State_O
                         Draw_Filled_Circle(renderer, j*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, i*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
                     }
                     else if (is_reversed == true){
-                        Draw_Filled_Circle(renderer, j*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (7-i)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
+                        Draw_Filled_Circle(renderer, (7-j)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (7-i)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
                     }
                 }
                 // if we have a piece of the same color, we stop the trajectory
@@ -1491,7 +1534,7 @@ void Show_Trajectory(SDL_Renderer* renderer, Piece*** board, Move* move, State_O
                         Draw_Filled_Circle(renderer, j*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, i*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
                     }
                     else if (is_reversed == true){
-                        Draw_Filled_Circle(renderer, j*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (7-i)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
+                        Draw_Filled_Circle(renderer, (7-j)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (7-i)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
                     }
                     break;
                 }
@@ -1504,7 +1547,7 @@ void Show_Trajectory(SDL_Renderer* renderer, Piece*** board, Move* move, State_O
                         Draw_Filled_Circle(renderer, j*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, i*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
                     }
                     else if (is_reversed == true){
-                        Draw_Filled_Circle(renderer, j*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (7-i)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
+                        Draw_Filled_Circle(renderer, (7-j)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (7-i)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
                     }
                 }
                 // if we have a piece of the same color, we stop the trajectory
@@ -1517,7 +1560,7 @@ void Show_Trajectory(SDL_Renderer* renderer, Piece*** board, Move* move, State_O
                         Draw_Filled_Circle(renderer, j*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, i*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
                     }
                     else if (is_reversed == true){
-                        Draw_Filled_Circle(renderer, j*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (7-i)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
+                        Draw_Filled_Circle(renderer, (7-j)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (7-i)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
                     }
                     break;
                 }
@@ -1530,7 +1573,7 @@ void Show_Trajectory(SDL_Renderer* renderer, Piece*** board, Move* move, State_O
                         Draw_Filled_Circle(renderer, j*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, i*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
                     }
                     else if (is_reversed == true){
-                        Draw_Filled_Circle(renderer, j*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (7-i)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
+                        Draw_Filled_Circle(renderer, (7-j)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (7-i)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
                     }
                 }
                 // if we have a piece of the same color, we stop the trajectory
@@ -1543,7 +1586,7 @@ void Show_Trajectory(SDL_Renderer* renderer, Piece*** board, Move* move, State_O
                         Draw_Filled_Circle(renderer, j*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, i*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
                     }
                     else if (is_reversed == true){
-                        Draw_Filled_Circle(renderer, j*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (7-i)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
+                        Draw_Filled_Circle(renderer, (7-j)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (7-i)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
                     }
                     break;
                 }
@@ -1556,7 +1599,7 @@ void Show_Trajectory(SDL_Renderer* renderer, Piece*** board, Move* move, State_O
                         Draw_Filled_Circle(renderer, j*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, i*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
                     }
                     else if (is_reversed == true){
-                        Draw_Filled_Circle(renderer, j*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (7-i)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
+                        Draw_Filled_Circle(renderer, (7-j)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (7-i)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
                     }
                 }
                 // if we have a piece of the same color, we stop the trajectory
@@ -1569,7 +1612,7 @@ void Show_Trajectory(SDL_Renderer* renderer, Piece*** board, Move* move, State_O
                         Draw_Filled_Circle(renderer, j*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, i*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
                     }
                     else if (is_reversed == true){
-                        Draw_Filled_Circle(renderer, j*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (7-i)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
+                        Draw_Filled_Circle(renderer, (7-j)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (7-i)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
                     }
                     break;
                 }
@@ -1587,7 +1630,7 @@ void Show_Trajectory(SDL_Renderer* renderer, Piece*** board, Move* move, State_O
                     Draw_Filled_Circle(renderer, (move->previous_col-1)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (move->previous_row-2)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
                 }
                 else if (is_reversed == true){
-                    Draw_Filled_Circle(renderer, (move->previous_col-1)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (7-(move->previous_row-2))*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
+                    Draw_Filled_Circle(renderer, (7-(move->previous_col-1))*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (7-(move->previous_row-2))*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
                 }
             }
             // we then draw the trajectory of the knight in the direction of the top right
@@ -1596,7 +1639,7 @@ void Show_Trajectory(SDL_Renderer* renderer, Piece*** board, Move* move, State_O
                     Draw_Filled_Circle(renderer, (move->previous_col+1)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (move->previous_row-2)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
                 }
                 else if (is_reversed == true){
-                    Draw_Filled_Circle(renderer, (move->previous_col+1)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (7-(move->previous_row-2))*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
+                    Draw_Filled_Circle(renderer, (7-(move->previous_col+1))*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (7-(move->previous_row-2))*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
                 }
             }
             // we then draw the trajectory of the knight in the direction of the right top
@@ -1605,7 +1648,7 @@ void Show_Trajectory(SDL_Renderer* renderer, Piece*** board, Move* move, State_O
                     Draw_Filled_Circle(renderer, (move->previous_col+2)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (move->previous_row-1)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
                 }
                 else if (is_reversed == true){
-                    Draw_Filled_Circle(renderer, (move->previous_col+2)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (7-(move->previous_row-1))*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
+                    Draw_Filled_Circle(renderer, (7-(move->previous_col+2))*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (7-(move->previous_row-1))*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
                 }
             }
             // we then draw the trajectory of the knight in the direction of the right bottom
@@ -1614,7 +1657,7 @@ void Show_Trajectory(SDL_Renderer* renderer, Piece*** board, Move* move, State_O
                     Draw_Filled_Circle(renderer, (move->previous_col+2)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (move->previous_row+1)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
                 }
                 else if (is_reversed == true){
-                    Draw_Filled_Circle(renderer, (move->previous_col+2)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (7-(move->previous_row+1))*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
+                    Draw_Filled_Circle(renderer, (7-(move->previous_col+2))*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (7-(move->previous_row+1))*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
                 }
             }
             // we then draw the trajectory of the knight in the direction of the bottom right
@@ -1623,7 +1666,7 @@ void Show_Trajectory(SDL_Renderer* renderer, Piece*** board, Move* move, State_O
                     Draw_Filled_Circle(renderer, (move->previous_col+1)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (move->previous_row+2)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
                 }
                 else if (is_reversed == true){
-                    Draw_Filled_Circle(renderer, (move->previous_col+1)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (7-(move->previous_row+2))*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
+                    Draw_Filled_Circle(renderer, (7-(move->previous_col+1))*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (7-(move->previous_row+2))*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
                 }
             }
             // we then draw the trajectory of the knight in the direction of the bottom left
@@ -1632,7 +1675,7 @@ void Show_Trajectory(SDL_Renderer* renderer, Piece*** board, Move* move, State_O
                     Draw_Filled_Circle(renderer, (move->previous_col-1)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (move->previous_row+2)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
                 }
                 else if (is_reversed == true){
-                    Draw_Filled_Circle(renderer, (move->previous_col-1)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (7-(move->previous_row+2))*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
+                    Draw_Filled_Circle(renderer, (7-(move->previous_col-1))*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (7-(move->previous_row+2))*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
                 }
             }
             // we then draw the trajectory of the knight in the direction of the left bottom
@@ -1641,7 +1684,7 @@ void Show_Trajectory(SDL_Renderer* renderer, Piece*** board, Move* move, State_O
                     Draw_Filled_Circle(renderer, (move->previous_col-2)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (move->previous_row+1)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
                 }
                 else if (is_reversed == true){
-                    Draw_Filled_Circle(renderer, (move->previous_col-2)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (7-(move->previous_row+1))*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
+                    Draw_Filled_Circle(renderer, (7-(move->previous_col-2))*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (7-(move->previous_row+1))*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
                 }
             }
             // we then draw the trajectory of the knight in the direction of the left top
@@ -1650,7 +1693,7 @@ void Show_Trajectory(SDL_Renderer* renderer, Piece*** board, Move* move, State_O
                     Draw_Filled_Circle(renderer, (move->previous_col-2)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (move->previous_row-1)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
                 }
                 else if (is_reversed == true){
-                    Draw_Filled_Circle(renderer, (move->previous_col-2)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (7-(move->previous_row-1))*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
+                    Draw_Filled_Circle(renderer, (7-(move->previous_col-2))*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (7-(move->previous_row-1))*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
                 }
             }
 
@@ -1666,7 +1709,7 @@ void Show_Trajectory(SDL_Renderer* renderer, Piece*** board, Move* move, State_O
                     Draw_Filled_Circle(renderer, move->previous_col*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (move->previous_row-1)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
                 }
                 else if (is_reversed == true){
-                    Draw_Filled_Circle(renderer, move->previous_col*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (7-(move->previous_row-1))*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
+                    Draw_Filled_Circle(renderer, (7-move->previous_col)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (7-(move->previous_row-1))*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
                 }
             }
             // we then draw the trajectory of the king in the direction of the top right
@@ -1675,7 +1718,7 @@ void Show_Trajectory(SDL_Renderer* renderer, Piece*** board, Move* move, State_O
                     Draw_Filled_Circle(renderer, (move->previous_col+1)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (move->previous_row-1)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
                 }
                 else if (is_reversed == true){
-                    Draw_Filled_Circle(renderer, (move->previous_col+1)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (7-(move->previous_row-1))*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
+                    Draw_Filled_Circle(renderer, (7-(move->previous_col+1))*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (7-(move->previous_row-1))*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
                 }
             }
             // we then draw the trajectory of the king in the direction of the right
@@ -1684,7 +1727,7 @@ void Show_Trajectory(SDL_Renderer* renderer, Piece*** board, Move* move, State_O
                     Draw_Filled_Circle(renderer, (move->previous_col+1)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, move->previous_row*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
                 }
                 else if (is_reversed == true){
-                    Draw_Filled_Circle(renderer, (move->previous_col+1)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (7-move->previous_row)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
+                    Draw_Filled_Circle(renderer, (7-(move->previous_col+1))*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (7-move->previous_row)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
                 }
             }
             // we then draw the trajectory of the king in the direction of the bottom right
@@ -1693,7 +1736,7 @@ void Show_Trajectory(SDL_Renderer* renderer, Piece*** board, Move* move, State_O
                     Draw_Filled_Circle(renderer, (move->previous_col+1)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (move->previous_row+1)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
                 }
                 else if (is_reversed == true){
-                    Draw_Filled_Circle(renderer, (move->previous_col+1)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (7-(move->previous_row+1))*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
+                    Draw_Filled_Circle(renderer, (7-(move->previous_col+1))*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (7-(move->previous_row+1))*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
                 }
             }
             // we then draw the trajectory of the king in the direction of the bottom
@@ -1702,7 +1745,7 @@ void Show_Trajectory(SDL_Renderer* renderer, Piece*** board, Move* move, State_O
                     Draw_Filled_Circle(renderer, move->previous_col*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (move->previous_row+1)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
                 }
                 else if (is_reversed == true){
-                    Draw_Filled_Circle(renderer, move->previous_col*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (7-(move->previous_row+1))*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
+                    Draw_Filled_Circle(renderer, (7-move->previous_col)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (7-(move->previous_row+1))*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
                 }
             }
             // we then draw the trajectory of the king in the direction of the bottom left
@@ -1711,7 +1754,7 @@ void Show_Trajectory(SDL_Renderer* renderer, Piece*** board, Move* move, State_O
                     Draw_Filled_Circle(renderer, (move->previous_col-1)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (move->previous_row+1)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
                 }
                 else if (is_reversed == true){
-                    Draw_Filled_Circle(renderer, (move->previous_col-1)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (7-(move->previous_row+1))*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
+                    Draw_Filled_Circle(renderer, (7-(move->previous_col-1))*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (7-(move->previous_row+1))*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
                 }
             }
             // we then draw the trajectory of the king in the direction of the left
@@ -1720,7 +1763,7 @@ void Show_Trajectory(SDL_Renderer* renderer, Piece*** board, Move* move, State_O
                     Draw_Filled_Circle(renderer, (move->previous_col-1)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, move->previous_row*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
                 }
                 else if (is_reversed == true){
-                    Draw_Filled_Circle(renderer, (move->previous_col-1)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (7-move->previous_row)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
+                    Draw_Filled_Circle(renderer, (7-(move->previous_col-1))*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (7-move->previous_row)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
                 }
             }
             // we then draw the trajectory of the king in the direction of the top left
@@ -1729,7 +1772,7 @@ void Show_Trajectory(SDL_Renderer* renderer, Piece*** board, Move* move, State_O
                     Draw_Filled_Circle(renderer, (move->previous_col-1)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (move->previous_row-1)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
                 }
                 else if (is_reversed == true){
-                    Draw_Filled_Circle(renderer, (move->previous_col-1)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (7-(move->previous_row-1))*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
+                    Draw_Filled_Circle(renderer, (7-(move->previous_col-1))*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (7-(move->previous_row-1))*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
                 }
             }
 
@@ -1742,7 +1785,7 @@ void Show_Trajectory(SDL_Renderer* renderer, Piece*** board, Move* move, State_O
                     Draw_Filled_Circle(renderer, 0*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, 7*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
                 }
                 else if (is_reversed == true){
-                    Draw_Filled_Circle(renderer, 0*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (7-7)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
+                    Draw_Filled_Circle(renderer, (7-0)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (7-7)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
                 }
             }
             // short white rock
@@ -1752,7 +1795,7 @@ void Show_Trajectory(SDL_Renderer* renderer, Piece*** board, Move* move, State_O
                     Draw_Filled_Circle(renderer, 7*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, 7*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
                 }
                 else if (is_reversed == true){
-                    Draw_Filled_Circle(renderer, 7*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (7-7)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
+                    Draw_Filled_Circle(renderer, (7-7)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (7-7)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
                 }
             }
             // long black rock
@@ -1762,7 +1805,7 @@ void Show_Trajectory(SDL_Renderer* renderer, Piece*** board, Move* move, State_O
                     Draw_Filled_Circle(renderer, 0*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, 0*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
                 }
                 else if (is_reversed == true){
-                    Draw_Filled_Circle(renderer, 0*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (7-0)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
+                    Draw_Filled_Circle(renderer, (7-0)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (7-0)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
                 }
             }
             // short black rock
@@ -1772,7 +1815,7 @@ void Show_Trajectory(SDL_Renderer* renderer, Piece*** board, Move* move, State_O
                     Draw_Filled_Circle(renderer, 7*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, 0*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
                 }
                 else if (is_reversed == true){
-                    Draw_Filled_Circle(renderer, 7*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (7-0)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
+                    Draw_Filled_Circle(renderer, (7-7)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (7-0)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
                 }
             }
             Destroy_Move(rock_king_move);
@@ -1796,7 +1839,7 @@ void Show_Trajectory(SDL_Renderer* renderer, Piece*** board, Move* move, State_O
                             Draw_Filled_Circle(renderer, move_pawn->previous_col*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (move_pawn->previous_row-1)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
                         }
                         else if (is_reversed == true){
-                            Draw_Filled_Circle(renderer, move_pawn->previous_col*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (7-(move_pawn->previous_row-1))*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
+                            Draw_Filled_Circle(renderer, (7-move_pawn->previous_col)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (7-(move_pawn->previous_row-1))*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
                         }
                     }
                 }
@@ -1808,7 +1851,7 @@ void Show_Trajectory(SDL_Renderer* renderer, Piece*** board, Move* move, State_O
                             Draw_Filled_Circle(renderer, move_pawn->previous_col*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (move_pawn->previous_row-2)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
                         }
                         else if (is_reversed == true){
-                            Draw_Filled_Circle(renderer, move_pawn->previous_col*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (7-(move_pawn->previous_row-2))*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
+                            Draw_Filled_Circle(renderer, (7-move_pawn->previous_col)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (7-(move_pawn->previous_row-2))*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
                         }
                     }
                 }
@@ -1820,7 +1863,7 @@ void Show_Trajectory(SDL_Renderer* renderer, Piece*** board, Move* move, State_O
                             Draw_Filled_Circle(renderer, (move_pawn->previous_col+1)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (move_pawn->previous_row-1)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
                         }
                         else if (is_reversed == true){
-                            Draw_Filled_Circle(renderer, (move_pawn->previous_col+1)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (7-(move_pawn->previous_row-1))*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
+                            Draw_Filled_Circle(renderer, (7-(move_pawn->previous_col+1))*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (7-(move_pawn->previous_row-1))*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
                         }
                     }
                 }
@@ -1832,7 +1875,7 @@ void Show_Trajectory(SDL_Renderer* renderer, Piece*** board, Move* move, State_O
                             Draw_Filled_Circle(renderer, (move_pawn->previous_col-1)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (move_pawn->previous_row-1)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
                         }
                         else if (is_reversed == true){
-                            Draw_Filled_Circle(renderer, (move_pawn->previous_col-1)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (7-(move_pawn->previous_row-1))*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
+                            Draw_Filled_Circle(renderer, (7-(move_pawn->previous_col-1))*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (7-(move_pawn->previous_row-1))*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
                         }
                     }
                 }
@@ -1851,7 +1894,7 @@ void Show_Trajectory(SDL_Renderer* renderer, Piece*** board, Move* move, State_O
                             Draw_Filled_Circle(renderer, move_pawn->previous_col*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (move_pawn->previous_row+1)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
                         }
                         else if (is_reversed == true){
-                            Draw_Filled_Circle(renderer, move_pawn->previous_col*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (7-(move_pawn->previous_row+1))*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
+                            Draw_Filled_Circle(renderer, (7-move_pawn->previous_col)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (7-(move_pawn->previous_row+1))*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
                         }
                     }
                 }
@@ -1863,7 +1906,7 @@ void Show_Trajectory(SDL_Renderer* renderer, Piece*** board, Move* move, State_O
                             Draw_Filled_Circle(renderer, move_pawn->previous_col*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (move_pawn->previous_row+2)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
                         }
                         else if (is_reversed == true){
-                            Draw_Filled_Circle(renderer, move_pawn->previous_col*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (7-(move_pawn->previous_row+2))*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
+                            Draw_Filled_Circle(renderer, (7-move_pawn->previous_col)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (7-(move_pawn->previous_row+2))*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
                         }
                     }
                 }
@@ -1875,7 +1918,7 @@ void Show_Trajectory(SDL_Renderer* renderer, Piece*** board, Move* move, State_O
                             Draw_Filled_Circle(renderer, (move_pawn->previous_col+1)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (move_pawn->previous_row+1)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
                         }
                         else if (is_reversed == true){
-                            Draw_Filled_Circle(renderer, (move_pawn->previous_col+1)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (7-(move_pawn->previous_row+1))*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
+                            Draw_Filled_Circle(renderer, (7-(move_pawn->previous_col+1))*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (7-(move_pawn->previous_row+1))*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
                         }
                     }
                 }
@@ -1887,13 +1930,12 @@ void Show_Trajectory(SDL_Renderer* renderer, Piece*** board, Move* move, State_O
                             Draw_Filled_Circle(renderer, (move_pawn->previous_col-1)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (move_pawn->previous_row+1)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
                         }
                         else if (is_reversed == true){
-                            Draw_Filled_Circle(renderer, (move_pawn->previous_col-1)*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (7-(move_pawn->previous_row+1))*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
+                            Draw_Filled_Circle(renderer, (7-(move_pawn->previous_col-1))*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_LEFT_MARGIN, (7-(move_pawn->previous_row+1))*SQUARE_SIZE+SQUARE_SIZE/2+WINDOW_TOP_MARGIN, 10);
                         }
                     }
                 }
                 
             }
-
             Destroy_Move(move_pawn);
         }
 
