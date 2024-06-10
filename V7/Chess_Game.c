@@ -94,7 +94,7 @@ int initialize_SDL() {
         return -1;
     }
     window = SDL_CreateWindow(
-        "A simple game loop using C & SDL",
+        "Chess Game using C & SDL",
         SDL_WINDOWPOS_CENTERED,
         SDL_WINDOWPOS_CENTERED,
         WINDOW_WIDTH,
@@ -194,6 +194,8 @@ int main (){
     Button** Buttons = Create_Buttons(NUMBER_OF_BUTTONS);
 
     bool has_match_started = false; // boolean to make the timer start; -1 for false, 1 for true
+    bool is_game_on_pause = false; // boolean to make the IA stop played when we click on the pause button
+    bool is_game_IA_vs_IA = false; // boolean to know if we have an IA vs IA game (to show the pause button)
 
     // making the timer for each player, the time mode will be asked after so this constant here will have no effect later 
     int timer_game_mode=5;
@@ -235,7 +237,9 @@ int main (){
     // SDL_rect to draw the red boundary when we move a piece to know it's the piece that is selected
     SDL_Rect draw_red_boundary_move={0, 0, 0, 0};
 
+    // Creating an SDL_Event to handle the events
     SDL_Event event;
+
     // playing the game while we don't quit it :
     while (is_running_game != -1) {
         
@@ -245,15 +249,13 @@ int main (){
             if (event.type == SDL_QUIT) {
                 is_running_game = -1;
             } 
+            
             // what happens when a key is pressed (the escape key to quit the game)
             else if (event.type == SDL_KEYDOWN) {
                 switch (event.key.keysym.sym) {
                     case SDLK_ESCAPE:
                         is_running_game = -1;
                         break;
-                    case SDLK_RETURN:
-                        is_running_game++;
-                        break; 
                 }
             }
 
@@ -276,6 +278,7 @@ int main (){
                             draw_red_boundary_move.w = Buttons[PLAYER_VS_PLAYER_BUTTON]->rect.w;
                             draw_red_boundary_move.h = Buttons[PLAYER_VS_PLAYER_BUTTON]->rect.h;
                             Buttons[PLAYER_VS_PLAYER_BUTTON]->state = ACTIVE;
+                            is_game_IA_vs_IA = false;
                             Setup_Players(players, WHITE, BLACK, HUMAN, HUMAN);
                             level_IA = NONE;
                         }
@@ -306,6 +309,7 @@ int main (){
                             draw_red_boundary_move.w = Buttons[PLAYER_VS_AI_BUTTON]->rect.w;
                             draw_red_boundary_move.h = Buttons[PLAYER_VS_AI_BUTTON]->rect.h;
                             Buttons[PLAYER_VS_AI_BUTTON]->state = ACTIVE;
+                            is_game_IA_vs_IA = false;
                             Setup_Players(players, WHITE, BLACK, HUMAN, IA);
                         }
 
@@ -335,6 +339,7 @@ int main (){
                             draw_red_boundary_move.w = Buttons[AI_VS_AI_BUTTON]->rect.w;
                             draw_red_boundary_move.h = Buttons[AI_VS_AI_BUTTON]->rect.h;
                             Buttons[AI_VS_AI_BUTTON]->state = ACTIVE;
+                            is_game_IA_vs_IA = true;
                             Setup_Players(players, WHITE, BLACK, IA, IA);
                         }
 
@@ -1615,12 +1620,16 @@ int main (){
 
                         // if the two clicks have be done, we go back to the IA_type choice
                         if (is_clicked_1 == 1 && is_clicked_2 == 1){
-                            if (players->is_player1_an_IA == IA || players->is_player2_an_IA == IA){
+                            if (players->is_player1_an_IA == IA && players->is_player2_an_IA == IA){
+                                is_running_game = DIFFICULTY_CHOICE_BLACK_IA;
+                            }
+                            else if (players->is_player1_an_IA == IA || players->is_player2_an_IA == IA){
                                 is_running_game = DIFFICULTY_CHOICE;
                             }
                             else if (players->is_player1_an_IA == HUMAN && players->is_player2_an_IA == HUMAN){
                                 is_running_game = GAMEPLAY_CHOICE;
                             }
+                            
                             has_match_started = false;
                             is_clicked_1 = 0;
                             is_clicked_2 = 0;
@@ -1681,8 +1690,8 @@ int main (){
                         // it can also be when the board is reversed others conditions on the players status 
                         // then it's the first coordinate of the move
                         if (is_clicked_1==0 && ((board[row][col]->type != NOTHING && board[row][col]->color == players->color_player_that_is_playing && players->color_player_that_is_playing == WHITE)
-                                            || (board[7-row][col]->color== players->color_player_that_is_playing && players->is_player1_an_IA == IA && players->is_player2_an_IA == HUMAN && players->color_player_that_is_playing == BLACK) 
-                                            || (board[7-row][col]->color== players->color_player_that_is_playing && players->is_player1_an_IA == HUMAN && players->is_player2_an_IA == HUMAN && players->color_player_that_is_playing == BLACK))) {
+                                            || (board[7-row][7-col]->color== players->color_player_that_is_playing && players->is_player1_an_IA == IA && players->is_player2_an_IA == HUMAN && players->color_player_that_is_playing == BLACK) 
+                                            || (board[7-row][7-col]->color== players->color_player_that_is_playing && players->is_player1_an_IA == HUMAN && players->is_player2_an_IA == HUMAN && players->color_player_that_is_playing == BLACK))) {
                             // update the click, of the source piece here
                             is_clicked_1 = 1;
                             // start the move
@@ -1696,10 +1705,9 @@ int main (){
                             // if we play with the black pieces, we need to reverse the row (against an IA or in a 1V1)
                             if ((players->is_player1_an_IA == IA && players->is_player2_an_IA == HUMAN) || (players->is_player1_an_IA == HUMAN && players->is_player2_an_IA == HUMAN && players->color_player_that_is_playing == BLACK)){
                                 move->previous_row = 7-row;
-                                move->previous_col = col;
+                                move->previous_col = 7-col;
                             }
-
-                            
+                            // the first click has been made
                             is_clicked_on_board = true;
                         }
 
@@ -1712,11 +1720,10 @@ int main (){
                             // if we play with the black pieces, we need to reverse the row (against an IA or in a 1V1)
                             if ((players->is_player1_an_IA == IA && players->is_player2_an_IA == HUMAN) || (players->is_player1_an_IA == HUMAN && players->is_player2_an_IA == HUMAN && players->color_player_that_is_playing == BLACK)){
                                 move->destination_row = 7-row;
-                                move->destination_col = col;
+                                move->destination_col = 7-col;
                             }
                             // the second click has been made
                             is_clicked_2 = 1;
-
                         }
 
                         if (is_clicked_1 == 1 && is_clicked_2 == 1) {
@@ -1764,7 +1771,6 @@ int main (){
                             if (is_pawn_promotion_happening == true){
                                 color_promoted_pawn = board[move->previous_row][move->previous_col]->color;
                             }
-
 
                             // getting the check state of the game before the move is made 
                             bool check_state_before_move_bool = Is_Check(players->color_player_that_is_playing, board);
@@ -1886,7 +1892,6 @@ int main (){
                                     play_sound("../Sounds/Chess_Game_Sounds/check.wav");
                                 }
                             }
-
                         }
 
                     }
@@ -2098,6 +2103,7 @@ int main (){
                         if (is_clicked_1 == 1 && is_clicked_2 == 1){
                             is_running_game = CHESSBOARD_RENDER;
                             has_match_started = false;
+                            is_game_on_pause = false;
                             // reset the players, the board, the log, the captured pieces, the state of the rock and the check, the timer
                             
                             players->is_playing = Player1;
@@ -2250,6 +2256,22 @@ int main (){
                             }
 
                         }
+                    }
+
+                    // for the pause button 
+                    else if (is_point_in_rect(event.button.x, event.button.y, Buttons[PAUSE_BUTTON]->rect) && players->is_player1_an_IA == IA && players->is_player2_an_IA == IA){
+
+                        // if the game was paused, we need to unpause it
+                        if (is_game_on_pause == true){
+                            is_game_on_pause = false;
+                        }
+                        // if the game was not paused, we need to pause it
+                        else if (is_game_on_pause == false){
+                            is_game_on_pause = true;
+                        }
+
+                        is_clicked_1 = 0;
+                        is_clicked_2 = 0;
                     }
 
                     // when we don't click on anything, we reset the buttons state
@@ -2440,82 +2462,99 @@ int main (){
         }
 
 
-        // Getting the time of the game before the IA plays
-        Uint32 Start_Time = SDL_GetTicks();
-
-        // to know if it's to the IA to play
-        bool is_player_playing_IA = false;
-        if (players->is_playing == Player1 && players->is_player1_an_IA == IA){
-            is_player_playing_IA = true;
-        }
-        else if (players->is_playing == Player2 && players->is_player2_an_IA == IA){
-            is_player_playing_IA = true;
-        }
-        // getting the checkmate state before the IA plays so that it doesn't try to play if the game is already over
-        int checkmate_before_IA = Is_Check_Mate(players->color_player_that_is_playing, board, State_Of_RockandCheck, Log, Log_Board, Pawn_Move_State, Captured_Pieces_and_Score, players, type_promoted_pawn);
-        // if the game is not running anymore, we need to quit the game
-        bool is_game_ending = false;
-        if (checkmate_before_IA == BLACK_CHECKMATE || checkmate_before_IA == WHITE_CHECKMATE || checkmate_before_IA == DRAW){
-            is_game_ending = true;
-        }
-        // if we're in a IA vs IA game, we need to change the level of the IA according to each IA playing 
-        if (players->is_player1_an_IA == IA && players->is_player2_an_IA == IA){
-            if (players->is_playing == Player1){
-                level_IA = level_WHITE_IA;
-            }
-            else if (players->is_playing == Player2){
-                level_IA = level_BLACK_IA;
-            }
-        }
-        // if it's the IA turn to play, we make it play
-        if (is_player_playing_IA == true && has_match_started == true && is_pawn_promotion_happening == false && is_game_ending == false){
-            int IA_color = players->color_player_that_is_playing;
-            // the move changed is here supposed to be possible; otherwise the game will stop working
-            IA_Play(move, board, level_IA, IA_color, Log, Log_Board, State_Of_RockandCheck, Pawn_Move_State, Captured_Pieces_and_Score, players);
-            // printf("IA_color : %d\n", IA_color);
-            if (move->previous_row == -1 || move->previous_col == -1 || move->destination_row == -1 || move->destination_col == -1){
-                loosing_player = players->is_playing;
-                continue;
+        // if we don't click on something on the board, the IA can make a play 
+        if (is_game_on_pause == false){
+            // putting a delay between two moves in a IA v IA match 
+            if (players->is_player1_an_IA == IA && players->is_player2_an_IA == IA && has_match_started == true && is_pawn_promotion_happening == false && is_running_game == CHESSBOARD_RENDER){
+                // delay of 1 second between two moves to be able to see the moves
+                SDL_Delay(1000);
             }
 
-            // making the move for the IA (as for the player but there is no sound played, no demand to ask for)
-            Make_IA_Global_Move_and_Udpate_structures(move, board, players, Log, Log_Board, State_Of_RockandCheck, Pawn_Move_State, Captured_Pieces_and_Score, IA_color, level_IA);
+            // Getting the time of the game before the IA plays
+            Uint32 Start_Time = SDL_GetTicks();
+
+            // to know if it's to the IA to play
+            bool is_player_playing_IA = false;
+            if (players->is_playing == Player1 && players->is_player1_an_IA == IA){
+                is_player_playing_IA = true;
+            }
+            else if (players->is_playing == Player2 && players->is_player2_an_IA == IA){
+                is_player_playing_IA = true;
+            }
+            // getting the checkmate state before the IA plays so that it doesn't try to play if the game is already over
+            int checkmate_before_IA = Is_Check_Mate(players->color_player_that_is_playing, board, State_Of_RockandCheck, Log, Log_Board, Pawn_Move_State, Captured_Pieces_and_Score, players, type_promoted_pawn);
+            // if the game is not running anymore, we need to quit the game
+            bool is_game_ending = false;
+            if (checkmate_before_IA == BLACK_CHECKMATE || checkmate_before_IA == WHITE_CHECKMATE || checkmate_before_IA == DRAW){
+                is_game_ending = true;
+                if (checkmate_before_IA == BLACK_CHECKMATE){
+                    loosing_player = Player2;
+                }
+                else if (checkmate_before_IA == WHITE_CHECKMATE){
+                    loosing_player = Player1;
+                }
+                else if (checkmate_before_IA == DRAW){
+                    loosing_player = Draw_Player;
+                }
+            }
+            // if we're in a IA vs IA game, we need to change the level of the IA according to each IA playing 
+            if (players->is_player1_an_IA == IA && players->is_player2_an_IA == IA){
+                if (players->is_playing == Player1){
+                    level_IA = level_WHITE_IA;
+                }
+                else if (players->is_playing == Player2){
+                    level_IA = level_BLACK_IA;
+                }
+            }
+            // if it's the IA turn to play, we make it play
+            if (is_player_playing_IA == true && has_match_started == true && is_pawn_promotion_happening == false && is_game_ending == false){
+                int IA_color = players->color_player_that_is_playing;
+                // the move changed is here supposed to be possible; otherwise the game will stop working
+                IA_Play(move, board, level_IA, IA_color, Log, Log_Board, State_Of_RockandCheck, Pawn_Move_State, Captured_Pieces_and_Score, players);
+                // printf("IA_color : %d\n", IA_color);
+                if (move->previous_row == -1 || move->previous_col == -1 || move->destination_row == -1 || move->destination_col == -1){
+                    loosing_player = players->is_playing;
+                    continue;
+                }
+
+                // making the move for the IA (as for the player but there is no sound played, no demand to ask for)
+                Make_IA_Global_Move_and_Udpate_structures(move, board, players, Log, Log_Board, State_Of_RockandCheck, Pawn_Move_State, Captured_Pieces_and_Score, IA_color, level_IA);
+                
+                // if after the move made by the IA, it's in check, we need to undo the move and make another one
+                int color_we_are_checking_IA = NO_COLOR;
+                if (players->color_player_that_is_playing == WHITE){
+                    color_we_are_checking_IA = BLACK;
+                }
+                else if (players->color_player_that_is_playing == BLACK){
+                    color_we_are_checking_IA = WHITE;
+                }
+                // get the check state of the player that was playing the last move
+                bool check_state = Is_Check(color_we_are_checking_IA, board);
+                // if the king of the color is in check after making a move, we need to remove the move, since it cannot be check after playing
+                if (check_state == true){
+                    Undo_Last_Move(board, Log, Log_Board, Captured_Pieces_and_Score, State_Of_RockandCheck, players, Pawn_Move_State);
+                }
+            }
             
-            // if after the move made by the IA, it's in check, we need to undo the move and make another one
-            int color_we_are_checking_IA = NO_COLOR;
-            if (players->color_player_that_is_playing == WHITE){
-                color_we_are_checking_IA = BLACK;
-            }
-            else if (players->color_player_that_is_playing == BLACK){
-                color_we_are_checking_IA = WHITE;
-            }
-            // get the check state of the player that was playing the last move
-            bool check_state = Is_Check(color_we_are_checking_IA, board);
-            // if the king of the color is in check after making a move, we need to remove the move, since it cannot be check after playing
-            if (check_state == true){
-                Undo_Last_Move(board, Log, Log_Board, Captured_Pieces_and_Score, State_Of_RockandCheck, players, Pawn_Move_State);
-            }
-        }
-        
-        // Getting the time of the game after the IA plays
-        Uint32 End_Time = SDL_GetTicks();
-        // Getting the time the IA took to play
-        Uint32 Time_Taken_By_IA = End_Time - Start_Time;
-        // if the IA hasn't played in less than 1 second, we need to remove the time it took to play from the time of the player that is playing
-        if (Time_Taken_By_IA > 1000){
-            // if the player currently playing is player1, it means that it was player 2 that played, so we removed the time to player 2
-            if (players->is_playing == Player1){
-                seconds_remaining_player_2 = seconds_remaining_player_2 - Time_Taken_By_IA/1000 + time_of_blitz_mode; // we had the blitz time mode after each move
-            }
-            // if the player currently playing is player2, it means that it was player 1 that played, so we removed the time to player 1
-            else if (players->is_playing == Player2){
-                seconds_remaining_player_1 = seconds_remaining_player_1 - Time_Taken_By_IA/1000 + time_of_blitz_mode; // we had the blitz time mode after each move
+            // Getting the time of the game after the IA plays
+            Uint32 End_Time = SDL_GetTicks();
+            // Getting the time the IA took to play
+            Uint32 Time_Taken_By_IA = End_Time - Start_Time;
+            // if the IA hasn't played in less than 1 second, we need to remove the time it took to play from the time of the player that is playing
+            if (Time_Taken_By_IA > 1000){
+                // if the player currently playing is player1, it means that it was player 2 that played, so we removed the time to player 2
+                if (players->is_playing == Player1){
+                    seconds_remaining_player_2 = seconds_remaining_player_2 - Time_Taken_By_IA/1000 + time_of_blitz_mode; // we had the blitz time mode after each move
+                }
+                // if the player currently playing is player2, it means that it was player 1 that played, so we removed the time to player 1
+                else if (players->is_playing == Player2){
+                    seconds_remaining_player_1 = seconds_remaining_player_1 - Time_Taken_By_IA/1000 + time_of_blitz_mode; // we had the blitz time mode after each move
+                }
             }
         }
 
 
-        // the timer is also present when we're in the game 
-        // the game need to be running
+        // the timer is also present when we're in the game (the game needs to be running to have a timer)
         if (is_running_game == CHESSBOARD_RENDER && has_match_started == true){
 
             // Countdown for each player at the end of the event that happened
@@ -2560,7 +2599,7 @@ int main (){
         }
 
 
-        // the render is not the same if we're in the game or in the menu
+        // if we're in one of the menu, we show the corresponding menu
         if (is_running_game == GAMEPLAY_CHOICE || is_running_game == COLOR_CHOICE || is_running_game == DIFFICULTY_CHOICE || is_running_game == DIFFICULTY_CHOICE_WHITE_IA || is_running_game == DIFFICULTY_CHOICE_BLACK_IA || is_running_game == TIME_CHOICE){
             // reset the renderer, the screen of the graphic card
             SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
@@ -2575,6 +2614,8 @@ int main (){
             // in the menu, we reset the game parameters
             players->is_playing = Player1;
             loosing_player = -1;
+            is_game_on_pause = false;
+            has_match_started = false;
             seconds_remaining_player_1 = timer_game_mode;
             seconds_remaining_player_2 = timer_game_mode;
 
@@ -2603,7 +2644,7 @@ int main (){
             SDL_RenderClear(renderer);
 
             // show the buttons in the game
-            Show_Menu_Button_in_Game(renderer, Buttons, is_pawn_promotion_happening, color_promoted_pawn);
+            Show_Menu_Button_in_Game(renderer, Buttons, is_pawn_promotion_happening, color_promoted_pawn, is_game_on_pause, is_game_IA_vs_IA);
 
             // if we're playing with the black pieces against the IA, we need to rotate the board and all the things shown related to the board
             // it's also the case when we play the black in a 1vs1 game
@@ -2702,7 +2743,7 @@ int main (){
             SDL_RenderClear(renderer);
 
             // show the buttons in the game
-            Show_Menu_Button_in_Game(renderer, Buttons, is_pawn_promotion_happening, color_promoted_pawn);
+            Show_Menu_Button_in_Game(renderer, Buttons, is_pawn_promotion_happening, color_promoted_pawn, is_game_on_pause, is_game_IA_vs_IA);
 
             // show the chess board
             SDL_Rect for_victory_menu = {0,0,0,0};
@@ -2774,6 +2815,7 @@ int main (){
         }
         
     }
+    
     // free the move
     Destroy_Move(move);
 

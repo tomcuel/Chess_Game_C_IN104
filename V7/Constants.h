@@ -36,10 +36,10 @@
 // to print numbers
 #define FONT_WIDTH 50
 #define FONT_HEIGHT 50
-
 // to print the ":"
 #define FONT_WIDTH_COLON 5
 #define FONT_HEIGHT_COLON 40
+
 
 /////////////////////////////////////////////////////////////////////////////////////
 // Defining the constants linked to the size of the board (8x8 for a chess game)
@@ -48,11 +48,6 @@
 #define BOARD_SIZE 8
 #define NUMBER_OF_PIECES 32
 #define NUMBER_OF_NEIGHBORS_PAWN 4 // number of neighbors a pawn can have : here we consider one for each diagonal, one on its right and one on its left
-
-/////////////////////////////////////////////////////////////////////////////////////
-// Defining the game mode
-/////////////////////////////////////////////////////////////////////////////////////
-enum {PLAYER_VS_PLAYER, PLAYER_VS_AI};
 
 
 /////////////////////////////////////////////////////////////////////////////////////
@@ -129,7 +124,7 @@ enum {NO_EN_PASSANT, EN_PASSANT};
 // Enum that represents the type the name of the different buttons in the menu, next to the chessboard
 // there are 21 buttons in total, there will do an array of buttons to get their state
 /////////////////////////////////////////////////////////////////////////////////////
-#define NUMBER_OF_BUTTONS 47
+#define NUMBER_OF_BUTTONS 48
 
 enum { 
     // during gameplay choice 
@@ -183,6 +178,7 @@ enum {
     NEW_GAME_BUTTON_IN_GAME,
     QUIT_BUTTON_IN_GAME,
     UNDO_BUTTON,
+    PAUSE_BUTTON,
     QUEEN_BUTTON,
     ROOK_BUTTON,
     BISHOP_BUTTON,
