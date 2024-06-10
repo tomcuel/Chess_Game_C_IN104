@@ -38,6 +38,7 @@
  * Is_Check_Mate - to get know if the king is in check mate or not, or if it is in check or in draw
  * Are_They_Possibles_Moves - to get the number of possibles moves for a player at this state of the game
  * Get_Valid_Moves - to get the valid moves for a player at this state of the game
+ * Get_Valid_Moves_that_Capture - to get the valid moves that can capture a piece 
  * 
  * Are_Board_Equal - to know if two boards are equal
  * Is_Draw_Forced_By_Log - to know if a draw happened because of the log of the moves (repitition of the same board (same log state) or 50 moves without capture or pawn move)
@@ -331,7 +332,28 @@ bool Are_They_Possibles_Moves(int color, Piece*** board_init, State_Of_Rock_and_
  * @param players_init - the players
  * @return Move** - the valid moves array
 **/
+/////////////////////////////////////////////////////////////////////////////////////
 Move** Get_Valid_Moves(int* number_of_moves, int color_playing, Piece*** board_init, State_Of_Rock_and_Check* State_Of_Rock_and_Check_init, Move_Log_array* Move_Log_init, Board_Log_array* Board_Log_init, Tiles_Pawn* Pawn_Move_State_init, Captured_Piece_and_Score* Captured_Pieces_and_Score_init, Players* players_init);
+
+
+/////////////////////////////////////////////////////////////////////////////////////
+// Function to get the valid moves that can capture a piece 
+// (will be used in the IA alpha-beta function to determine if a move is valuable even if it's not a capture)
+/**
+ * @param number_of_moves - the number of valid moves
+ * @param color_playing - the color of the player playing
+ * @param board_init - the board where we're currently playing
+ * @param State_Of_Rock_and_Check_init - the state of the rock and check state
+ * @param Move_Log_init - the log of the moves that have been made
+ * @param Board_Log_init - the log of the board
+ * @param Pawn_Move_State_init - the state of the pawn to know if it has moved 2 squares or not
+ * @param Captured_Pieces_and_Score_init - the structure that contains the captured pieces and the score
+ * @param players_init - the players
+ * @return Move** - the valid moves array
+**/
+/////////////////////////////////////////////////////////////////////////////////////
+Move** Get_Valid_Moves_that_Capture(int* number_of_moves, int color_playing, Piece*** board_init, State_Of_Rock_and_Check* State_Of_Rock_and_Check_init, Move_Log_array* Move_Log_init, Board_Log_array* Board_Log_init, Tiles_Pawn* Pawn_Move_State_init, Captured_Piece_and_Score* Captured_Pieces_and_Score_init, Players* players_init);
+
 
 /////////////////////////////////////////////////////////////////////////////////////
 // Function to know if two boards are equal

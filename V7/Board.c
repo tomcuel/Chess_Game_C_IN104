@@ -1003,7 +1003,7 @@ int Random_Int(int min, int max) {
 
 
 void Make_Pawn_Promotion_for_IA(Move* move, Piece*** board, Move_Log_array* Log, int level_IA){
-     // a level EASY IA will play a random move
+    // a level EASY IA will play a random move
     if (level_IA == EASY){
         int random_piece = Random_Int(1, 4);
         switch (random_piece){
@@ -1028,7 +1028,7 @@ void Make_Pawn_Promotion_for_IA(Move* move, Piece*** board, Move_Log_array* Log,
         board[move->destination_row][move->destination_col]->type = QUEEN;
     }
 
-    // a level HARD is still to be implemented
+    // a level HARD IA will play a random move, but will try to capture a piece if it can if a knight fork happened 
     if (level_IA == HARD){
         // here it might depend if we treathe a king, if we can take more than one piece by making a fork, …
         // it's bewteen a queen and a knight
@@ -1040,6 +1040,12 @@ void Make_Pawn_Promotion_for_IA(Move* move, Piece*** board, Move_Log_array* Log,
             board[move->destination_row][move->destination_col]->type = QUEEN;
         }
     }
+
+    // for the level MASTER and GRANDMASTER, it will take the queen 
+    if (level_IA == MASTER || level_IA == GRANDMASTER){
+        board[move->destination_row][move->destination_col]->type = QUEEN;
+    }
+
 }
 
 
@@ -1952,6 +1958,211 @@ Move** Get_Valid_Moves(int* number_of_moves, int color_playing, Piece*** board_i
                             bool check_state = Is_Check(color_playing, board);
                             // if the king is not checked, we can make the move
                             if (check_state == false){
+                                
+                                // adding the move to the array of valid moves
+                                valid_moves[*number_of_moves]->previous_row = move_temp->previous_row;
+                                valid_moves[*number_of_moves]->previous_col = move_temp->previous_col;
+                                valid_moves[*number_of_moves]->destination_row = move_temp->destination_row;
+                                valid_moves[*number_of_moves]->destination_col = move_temp->destination_col;
+                                *number_of_moves = *number_of_moves + 1;
+                                
+                            }
+                            // we need to undo the move since it's just a test
+                            Undo_Last_Move(board, Move_Log, Board_Log, Captured_Pieces_and_Score, State_Of_Rock_and_Check, players, Pawn_Move_State);
+
+                        }                        
+
+                    }
+                }
+            }
+        }
+    }
+    // destroying the temporary move
+    Destroy_Move(move_temp);
+    // free the memory
+    Clear_Board(board);
+    Destroy_State_Of_Rock_and_Check(State_Of_Rock_and_Check);
+    Destroy_Move_Log_array(Move_Log);
+    Destroy_Board_Log(Board_Log);
+    Destroy_Tiles_Pawn(Pawn_Move_State);
+    Destroy_Captured_Piece_and_Score(Captured_Pieces_and_Score, Captured_Pieces_and_Score->max_number_of_pieces);
+    Destroy_Players(players);
+    // returning the array of valid moves
+    return valid_moves;
+}
+
+
+Move** Get_Valid_Moves_that_Capture(int* number_of_moves, int color_playing, Piece*** board_init, State_Of_Rock_and_Check* State_Of_Rock_and_Check_init, Move_Log_array* Move_Log_init, Board_Log_array* Board_Log_init, Tiles_Pawn* Pawn_Move_State_init, Captured_Piece_and_Score* Captured_Pieces_and_Score_init, Players* players_init){
+
+    int max_number_of_moves = 8*8*8*8; // this represents the maximum number of moves possible, but we will return an array of moves that will be smaller than this number, I could have optimized this by getting the number of possible moves before, it's more memory efficient but costs more time
+    // getting an array of moves that will be returned
+    Move** valid_moves = (Move**)malloc(max_number_of_moves*sizeof(Move*));
+    // if the memory allocation failed
+    if (valid_moves == NULL){
+        printf("Error: memory allocation failed\n");
+        exit(1);
+    }
+    for (int i=0; i<max_number_of_moves; i++){
+        valid_moves[i] = Create_Move(-1, -1, -1, -1);
+        // if the memory allocation failed
+        if (valid_moves[i] == NULL){
+            printf("Error: memory allocation failed\n");
+            exit(1);
+        }
+    }
+
+    // creating a copy of each structure to be able to modify them without changing the original ones
+    Piece*** board = Create_Copy_Board(board_init);
+    
+    State_Of_Rock_and_Check* State_Of_Rock_and_Check = Copy_State_Of_Rock_and_Check(State_Of_Rock_and_Check_init);
+    
+    Move_Log_array* Move_Log = Copy_Move_Log_array(Move_Log_init);
+
+    Board_Log_array* Board_Log = Create_Copy_Board_Log(Board_Log_init);
+    
+    Tiles_Pawn* Pawn_Move_State = Copy_Tiles_Pawn(Pawn_Move_State_init);
+    
+    Captured_Piece_and_Score* Captured_Pieces_and_Score = Copy_Captured_Piece_and_Score(Captured_Pieces_and_Score_init);
+    
+    Players* players = Copy_Players(players_init);
+
+    // creating the temporary move
+    Move* move_temp = Create_Move(-1, -1, -1, -1);
+    for (int i = 0; i < BOARD_SIZE; i++){
+        for (int j = 0; j < BOARD_SIZE; j++){
+            // we check if it's a valid starting position for the piece
+            if (board[i][j]->type != NOTHING && board[i][j]->color == color_playing){
+                // going through the destination position of the IA pieces
+                for (int k = 0; k < BOARD_SIZE; k++){
+                    for (int l = 0; l < BOARD_SIZE; l++){
+                        Change_Move(move_temp, i, j, k, l);
+                        // if the move is valid, we add it to the array of valid moves
+
+                        // getting if a rock was done
+                        int is_rock_possible_type = Is_Rock_Possible(move_temp, State_Of_Rock_and_Check, board);
+                        // getting if an en passant was done
+                        bool is_en_passant_done = Is_En_Passant_Possible(move_temp, board, Pawn_Move_State);
+                        int en_passant_type = NO_EN_PASSANT;
+                        // if we have an en passant, we need to get the corresponding int
+                        if (is_en_passant_done == true){
+                            en_passant_type = EN_PASSANT;
+                        }
+                        
+                        // if a piece is taken, we need to know what type and what color it is, in case we want to undo it later, we can track the piece that has been taken to reinstall it on the board
+                        int piece_taken_type = NOTHING;
+                        int piece_taken_color = NO_COLOR;
+                        // if a move is valid, then we can also ask if a piece is taken, and if it's the case, we can know what type and what color it is
+                        if (Will_Capture(move_temp, board) == true && Is_Move_Valid(move_temp, board, State_Of_Rock_and_Check, Pawn_Move_State) == true){
+                            piece_taken_type = board[move_temp->destination_row][move_temp->destination_col]->type;
+                            piece_taken_color = board[move_temp->destination_row][move_temp->destination_col]->color;
+                        }
+                        // udpating the datas concerning the en passant move, so the log can be able to undo it, because techincally, the piece is not taken, it's just removed from the board
+                        if (is_en_passant_done == true){
+                            if (board[move_temp->previous_row][move_temp->previous_col]->color == WHITE){
+                                piece_taken_type = PAWN;
+                                piece_taken_color = BLACK;
+                            }
+                            else if (board[move_temp->previous_row][move_temp->previous_col]->color == BLACK){
+                                piece_taken_type = PAWN;
+                                piece_taken_color = WHITE;
+                            }
+                        }
+
+                        // concerning the pawn promotion
+                        bool is_pawn_promotion_happening = Is_Pawn_Promotion_Possible(move_temp, board);
+                        int color_promoted_pawn = NO_COLOR;
+                        int type_promoted_pawn_real = NOTHING;
+                        if (is_pawn_promotion_happening == true){
+                            color_promoted_pawn = board[move_temp->previous_row][move_temp->previous_col]->color;
+                            type_promoted_pawn_real = QUEEN;
+                        }
+
+                        // getting the check state of the game before the move is made 
+                        bool check_state_before_move_bool = Is_Check(players->color_player_that_is_playing, board);
+                        int check_state_before_move = NO_COLOR;
+                        if (check_state_before_move_bool == true){
+                            if (players->color_player_that_is_playing == WHITE){
+                                check_state_before_move = WHITE_CHECK;
+                            }
+                            else if (players->color_player_that_is_playing == BLACK){
+                                check_state_before_move = BLACK_CHECK;
+                            }
+                        }
+
+                        // getting if the move is about a pawn 
+                        bool pawn_move_done = false;
+                        if (board[move_temp->previous_row][move_temp->previous_col]->type == PAWN){
+                            pawn_move_done = true;
+                        }
+
+                        if (Is_Move_Valid(move_temp, board, State_Of_Rock_and_Check, Pawn_Move_State) == true){
+
+                            // making the move log update that is crucial for Make_Move to work since we go searching for an index actual_size-1 and only adding an element to Move_Log will make actual_size-1 positive, not to have a segmentation fault
+                            // but only a valid move will be added to the log
+                            Move_Log_Element* element = Create_Element_Move_Log();
+                            Change_Move_Log_Element(element, move_temp->previous_row, move_temp->previous_col, move_temp->destination_row, move_temp->destination_col, check_state_before_move, piece_taken_type, piece_taken_color, is_rock_possible_type, en_passant_type, color_promoted_pawn, type_promoted_pawn_real, pawn_move_done);
+                            // printf("en passant done ? : %d\n", element->en_passant_type_done);
+                            // printf("rock type : %d\n",element->rock_type);
+                            Move_Log_array_MESSAGE_TYPE message = Add_Element_to_the_end_of_Move_Log_array(Move_Log, element);
+                            if (message != LOG_LIST_SUCCESS){
+                                printf("Error: the log is full\n");
+                            }
+
+                            Destroy_Move_Log_Element(element);
+
+                            // trying to make the rock effective by getting the real moves linked to the rock that has been made
+                            if (is_rock_possible_type != NO_ROCK){
+                                Move* king_move_during_rock=Create_King_Move_during_Rock(move_temp, board, State_Of_Rock_and_Check);
+                                Move* rook_move_during_rock=Create_Rook_Move_during_Rock(move_temp, board, State_Of_Rock_and_Check);
+                                // we need to make the two moves, the king and the rock, and put the places there were to zero 
+                                // but also udpating the parameters others than the log, to keep track of the state of the game
+                                Make_Rock_Move(board, move_temp, king_move_during_rock, rook_move_during_rock, players);
+                                Change_Others_Structures_during_Rock(Move_Log, Captured_Pieces_and_Score, State_Of_Rock_and_Check, players, board);
+
+                                // free the memory
+                                Destroy_Move(king_move_during_rock);
+                                Destroy_Move(rook_move_during_rock);
+
+                                // since it's a rock, we can reset the tile pawn structure for the next turn
+                                Reset_Tiles_Pawn(Pawn_Move_State);
+
+                            }
+                            // en passant move
+                            else if (is_en_passant_done == true){
+
+                                // we need to clear the piece that has been eaten by the en passant on the board, before making the move, because we need the initial position of the pawn to know where to clear the piece
+                                Clear_En_Passant_Piece(move_temp, board, Pawn_Move_State);
+                                
+                                // making the move and updating the parameters others than the log, to keep track of the state of the game
+                                Make_Move(board, move_temp, players);
+                                Change_Others_Structures(Move_Log, Captured_Pieces_and_Score, State_Of_Rock_and_Check, players, board);
+                                
+                                // en passant mean that we can reset the tile pawn structure for the next turn
+                                Reset_Tiles_Pawn(Pawn_Move_State);
+
+                            }
+                            // classic move
+                            else if (is_rock_possible_type == NO_ROCK && is_en_passant_done == false){
+                                // we need to file the tile pawn structure for the next turn, before making the move, because we need the initial position of the pawn to know if it can move two squares
+                                Fill_Tile_Pawn(move_temp, board, Pawn_Move_State);
+
+                                // making the move and updating the parameters others than the log, to keep track of the state of the game
+                                Make_Move(board, move_temp, players);
+                                Change_Others_Structures(Move_Log, Captured_Pieces_and_Score, State_Of_Rock_and_Check, players, board);
+
+                            }
+                            // changing the player that is playing is included in the Make_Move function
+
+                            // adding the board to the board log
+                            Move_Log_array_MESSAGE_TYPE adding_board_to_board_log = Add_Board_at_Last_Index_in_Array(Board_Log, board);
+                            if (adding_board_to_board_log != LOG_LIST_SUCCESS){
+                                printf("Error: the log is full\n");
+                            }
+
+                            // get the check state of the game
+                            bool check_state = Is_Check(color_playing, board);
+                            // if the king is not checked, we can make the move
+                            if (check_state == false && Move_Log->Move_Log[Move_Log->actual_size-1]->taken_piece_type != NOTHING){
                                 
                                 // adding the move to the array of valid moves
                                 valid_moves[*number_of_moves]->previous_row = move_temp->previous_row;
