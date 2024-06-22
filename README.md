@@ -10,7 +10,7 @@ Here's the website to find out more about this library (which allows us to make 
 - the wiki_lib is very useful to be able to easily search function, things that can be done and how to implement, it's making us gain time
 - --> one way to do it is by searching from the type of category of functions that act on differents parts : https://wiki.libsdl.org/SDL2/APIByCategory
 - --> the other way is by searching the name, but it requires to know well the library and what it can do : https://wiki.libsdl.org/SDL2/CategoryAPI
-- We've tried to download the ttf extension to use fonts but we haven't been able to do so, thus the graphics aren't quite what we could have done with it, but still we've been able do pretty much what we wanted
+- We've tried to download the ttf extension to use fonts but we haven't been able to do so at the beginning, thus the graphics aren't quite what we could have done with it, but still we've been able do pretty much what we wanted, I succeed to make it work but too late, it will only be useful in the V8
 
 # What we need to do 
 We will have various tasks to complete as part of this project: 
@@ -67,9 +67,13 @@ We will have various tasks to complete as part of this project:
 - Changing how the menus looks concerning the difficulty choices and the gameplay mode 
 - Warning : only the EASY and MEDIUM IA level are working in this version 
 ## V7 : 
-- development of the IA by changing the heuristic by ordering moves, iterative deepening to make a compromise between searching the best play and managing time, but also suggestions concerning the moves to do depending on the part of the game we're in 
+- Adding the pause and the delay to be able to see the IA make its moves and to undo a certain amount of moves
+- Sevelopment of the IA by changing the heuristic by ordering moves, suggesting moves depending on the state of the game
+- Iterative deepening (transposition table to gain time with hashing function (string with letters corresponding to a board and score calculated for a certain move on this board) if possible, and an opening book) to make a compromise between searching the best play and managing time, but also suggestions concerning the moves to do depending on the part of the game we're in will not be done here, but I could have done it if the game was optimized for it, it should have consider bitboard on the first place instaed of array of structures to gain a lot of time during searchs
+- I don't know why but IA Medium vs IA Hard in depth 2 does crash when the match is played between these two, it's mostly due to the game that isn't optimized, I could have use bitboard to represent things
 
-
+## V8 : 
+- The Log of the move will be implemented with the visual thanks to the fonts, but create and read files to make the game at the same point as it wwas after the download
 
 # Structure of the code : 
 
