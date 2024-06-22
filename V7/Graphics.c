@@ -124,30 +124,20 @@ Button** Create_Buttons(int number_of_buttons){
     Buttons[DIFFICULTY_CHOICE_BUTTON]->rect.w = 300;
     Buttons[DIFFICULTY_CHOICE_BUTTON]->rect.h = 200;
 
-    Buttons[EASY_DIFFICULTY_BUTTON]->rect.x = 100;
-    Buttons[EASY_DIFFICULTY_BUTTON]->rect.y = 50;
+    Buttons[EASY_DIFFICULTY_BUTTON]->rect.x = 150;
+    Buttons[EASY_DIFFICULTY_BUTTON]->rect.y = 300;
     Buttons[EASY_DIFFICULTY_BUTTON]->rect.w = 300;
     Buttons[EASY_DIFFICULTY_BUTTON]->rect.h = 200;
 
-    Buttons[GRANDMASTER_DIFFICULTY_BUTTON]->rect.x = WINDOW_WIDTH-300-100;
-    Buttons[GRANDMASTER_DIFFICULTY_BUTTON]->rect.y = 50;
-    Buttons[GRANDMASTER_DIFFICULTY_BUTTON]->rect.w = 300;
-    Buttons[GRANDMASTER_DIFFICULTY_BUTTON]->rect.h = 200;
-
-    Buttons[MODERATE_DIFFICULTY_BUTTON]->rect.x = 100;
+    Buttons[MODERATE_DIFFICULTY_BUTTON]->rect.x =  WINDOW_WIDTH/2 - 150;
     Buttons[MODERATE_DIFFICULTY_BUTTON]->rect.y = 300;
     Buttons[MODERATE_DIFFICULTY_BUTTON]->rect.w = 300;
     Buttons[MODERATE_DIFFICULTY_BUTTON]->rect.h = 200;
 
-    Buttons[HARD_DIFFICULTY_BUTTON]->rect.x = WINDOW_WIDTH/2 - 150;
+    Buttons[HARD_DIFFICULTY_BUTTON]->rect.x = WINDOW_WIDTH - 150 - 300;
     Buttons[HARD_DIFFICULTY_BUTTON]->rect.y = 300;
     Buttons[HARD_DIFFICULTY_BUTTON]->rect.w = 300;
     Buttons[HARD_DIFFICULTY_BUTTON]->rect.h = 200;
-
-    Buttons[MASTER_DIFFICULTY_BUTTON]->rect.x = WINDOW_WIDTH-400;
-    Buttons[MASTER_DIFFICULTY_BUTTON]->rect.y = 300;
-    Buttons[MASTER_DIFFICULTY_BUTTON]->rect.w = 300;
-    Buttons[MASTER_DIFFICULTY_BUTTON]->rect.h = 200;
 
     Buttons[QUIT_BUTTON_IA_CHOICE]->rect.x = 50;
     Buttons[QUIT_BUTTON_IA_CHOICE]->rect.y = 650;
@@ -432,20 +422,6 @@ void Show_Load_Menu(SDL_Renderer* renderer, int menu_type, Button** Buttons, int
         }
         else{
             add_image_to_render("../Images/Buttons/Unactive_Hard_Button.bmp", renderer, Buttons[HARD_DIFFICULTY_BUTTON]->rect, false);
-        }
-        // adding the Master difficulty button
-        if (Buttons[MASTER_DIFFICULTY_BUTTON]->state == ACTIVE){
-            add_image_to_render("../Images/Buttons/Active_Master_Button.bmp", renderer, Buttons[MASTER_DIFFICULTY_BUTTON]->rect, false);
-        }
-        else{
-            add_image_to_render("../Images/Buttons/Unactive_Master_Button.bmp", renderer, Buttons[MASTER_DIFFICULTY_BUTTON]->rect, false);
-        }
-        // adding the Grandmaster difficulty button
-        if (Buttons[GRANDMASTER_DIFFICULTY_BUTTON]->state == ACTIVE){
-            add_image_to_render("../Images/Buttons/Active_Grandmaster_Button.bmp", renderer, Buttons[GRANDMASTER_DIFFICULTY_BUTTON]->rect, false);
-        }
-        else{
-            add_image_to_render("../Images/Buttons/Unactive_Grandmaster_Button.bmp", renderer, Buttons[GRANDMASTER_DIFFICULTY_BUTTON]->rect, false);
         }
 
         // button to quit the IA choice menu and the game also

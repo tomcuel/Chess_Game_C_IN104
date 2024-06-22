@@ -42,6 +42,7 @@
 
 
 #include "SDL2/SDL.h"
+#include "SDL_ttf.h"
 
 
 #include "Constants.h"
@@ -55,7 +56,7 @@
 
 
 // initialize the window and the renderer
-#define max_size_log_array 1000 // 1000 moves maximum should be well enough for a game (could be raised if needed)
+#define max_size_log_array 10000 // 10000 moves maximum should be well enough for a game (could be raised if needed)
 int is_running_game = -1; // setup to -1 for false before the initialization of the game
 int last_frame_time = 0;
 SDL_Window* window = NULL;
@@ -99,7 +100,7 @@ int initialize_SDL() {
         SDL_WINDOWPOS_CENTERED,
         WINDOW_WIDTH,
         WINDOW_HEIGHT,
-        SDL_WINDOW_FULLSCREEN // SDL_WINDOW_FULLSCREEN can be used to make the window fullscreen, 0 to be in the window opened
+        0 // SDL_WINDOW_FULLSCREEN can be used to make the window fullscreen, 0 to be in the window opened
     );
     if (!window) {
         printf("Window creation failed: %s\n", SDL_GetError());
@@ -681,66 +682,6 @@ int main (){
 
                     }
 
-                    // for the master difficulty button
-                    else if (is_point_in_rect(event.button.x, event.button.y, Buttons[MASTER_DIFFICULTY_BUTTON]->rect)){
-                        
-                        // the first click is making the button be circle by a red rectangle to make the user know it has been selected
-                        if (is_clicked_1 == 0){
-                            is_clicked_1 = 1;
-                            is_clicked_2 = 0;
-                            draw_red_boundary_move.x = Buttons[MASTER_DIFFICULTY_BUTTON]->rect.x;
-                            draw_red_boundary_move.y = Buttons[MASTER_DIFFICULTY_BUTTON]->rect.y;
-                            draw_red_boundary_move.w = Buttons[MASTER_DIFFICULTY_BUTTON]->rect.w;
-                            draw_red_boundary_move.h = Buttons[MASTER_DIFFICULTY_BUTTON]->rect.h;
-                            Buttons[MASTER_DIFFICULTY_BUTTON]->state = ACTIVE;
-                            level_IA = MASTER;
-                        }
-
-                        // if another click is done, we cancel the selection
-                        else if (is_clicked_1 == 1 && is_clicked_2 == 0){
-                            is_clicked_2 = 1;
-                            Reset_Buttons_State(Buttons);
-                        }
-
-                        // if two clicks have been done, we cancel the selection
-                        if (is_clicked_1 == 1 && is_clicked_2 == 1){
-                            is_clicked_1 = 0;
-                            is_clicked_2 = 0;
-                            Reset_Buttons_State(Buttons);
-                        }
-
-                    }
-
-                    // for the grandmaster difficulty button
-                    else if (is_point_in_rect(event.button.x, event.button.y, Buttons[GRANDMASTER_DIFFICULTY_BUTTON]->rect)){
-                        
-                        // the first click is making the button be circle by a red rectangle to make the user know it has been selected
-                        if (is_clicked_1 == 0){
-                            is_clicked_1 = 1;
-                            is_clicked_2 = 0;
-                            draw_red_boundary_move.x = Buttons[GRANDMASTER_DIFFICULTY_BUTTON]->rect.x;
-                            draw_red_boundary_move.y = Buttons[GRANDMASTER_DIFFICULTY_BUTTON]->rect.y;
-                            draw_red_boundary_move.w = Buttons[GRANDMASTER_DIFFICULTY_BUTTON]->rect.w;
-                            draw_red_boundary_move.h = Buttons[GRANDMASTER_DIFFICULTY_BUTTON]->rect.h;
-                            Buttons[GRANDMASTER_DIFFICULTY_BUTTON]->state = ACTIVE;
-                            level_IA = GRANDMASTER;
-                        }
-
-                        // if another click is done, we cancel the selection
-                        else if (is_clicked_1 == 1 && is_clicked_2 == 0){
-                            is_clicked_2 = 1;
-                            Reset_Buttons_State(Buttons);
-                        }
-
-                        // if two clicks have been done, we cancel the selection
-                        if (is_clicked_1 == 1 && is_clicked_2 == 1){
-                            is_clicked_1 = 0;
-                            is_clicked_2 = 0;
-                            Reset_Buttons_State(Buttons);
-                        }
-
-                    }
-
                     // for the quit button 
                     else if (is_point_in_rect(event.button.x, event.button.y, Buttons[QUIT_BUTTON_IA_CHOICE]->rect) && Buttons[EASY_DIFFICULTY_BUTTON]->state == UNACTIVE && Buttons[MODERATE_DIFFICULTY_BUTTON]->state == UNACTIVE && Buttons[HARD_DIFFICULTY_BUTTON]->state == UNACTIVE){
                         
@@ -947,66 +888,6 @@ int main (){
 
                     }
 
-                    // for the master difficulty button
-                    else if (is_point_in_rect(event.button.x, event.button.y, Buttons[MASTER_DIFFICULTY_BUTTON]->rect)){
-                        
-                        // the first click is making the button be circle by a red rectangle to make the user know it has been selected
-                        if (is_clicked_1 == 0){
-                            is_clicked_1 = 1;
-                            is_clicked_2 = 0;
-                            draw_red_boundary_move.x = Buttons[MASTER_DIFFICULTY_BUTTON]->rect.x;
-                            draw_red_boundary_move.y = Buttons[MASTER_DIFFICULTY_BUTTON]->rect.y;
-                            draw_red_boundary_move.w = Buttons[MASTER_DIFFICULTY_BUTTON]->rect.w;
-                            draw_red_boundary_move.h = Buttons[MASTER_DIFFICULTY_BUTTON]->rect.h;
-                            Buttons[MASTER_DIFFICULTY_BUTTON]->state = ACTIVE;
-                            level_WHITE_IA = MASTER;
-                        }
-
-                        // if another click is done, we cancel the selection
-                        else if (is_clicked_1 == 1 && is_clicked_2 == 0){
-                            is_clicked_2 = 1;
-                            Reset_Buttons_State(Buttons);
-                        }
-
-                        // if two clicks have been done, we cancel the selection
-                        if (is_clicked_1 == 1 && is_clicked_2 == 1){
-                            is_clicked_1 = 0;
-                            is_clicked_2 = 0;
-                            Reset_Buttons_State(Buttons);
-                        }
-
-                    }
-
-                    // for the grandmaster difficulty button
-                    else if (is_point_in_rect(event.button.x, event.button.y, Buttons[GRANDMASTER_DIFFICULTY_BUTTON]->rect)){
-                        
-                        // the first click is making the button be circle by a red rectangle to make the user know it has been selected
-                        if (is_clicked_1 == 0){
-                            is_clicked_1 = 1;
-                            is_clicked_2 = 0;
-                            draw_red_boundary_move.x = Buttons[GRANDMASTER_DIFFICULTY_BUTTON]->rect.x;
-                            draw_red_boundary_move.y = Buttons[GRANDMASTER_DIFFICULTY_BUTTON]->rect.y;
-                            draw_red_boundary_move.w = Buttons[GRANDMASTER_DIFFICULTY_BUTTON]->rect.w;
-                            draw_red_boundary_move.h = Buttons[GRANDMASTER_DIFFICULTY_BUTTON]->rect.h;
-                            Buttons[GRANDMASTER_DIFFICULTY_BUTTON]->state = ACTIVE;
-                            level_WHITE_IA = GRANDMASTER;
-                        }
-
-                        // if another click is done, we cancel the selection
-                        else if (is_clicked_1 == 1 && is_clicked_2 == 0){
-                            is_clicked_2 = 1;
-                            Reset_Buttons_State(Buttons);
-                        }
-
-                        // if two clicks have been done, we cancel the selection
-                        if (is_clicked_1 == 1 && is_clicked_2 == 1){
-                            is_clicked_1 = 0;
-                            is_clicked_2 = 0;
-                            Reset_Buttons_State(Buttons);
-                        }
-
-                    }
-
                     // for the quit button 
                     else if (is_point_in_rect(event.button.x, event.button.y, Buttons[QUIT_BUTTON_IA_CHOICE]->rect) && Buttons[EASY_DIFFICULTY_BUTTON]->state == UNACTIVE && Buttons[MODERATE_DIFFICULTY_BUTTON]->state == UNACTIVE && Buttons[HARD_DIFFICULTY_BUTTON]->state == UNACTIVE){
                         
@@ -1196,66 +1077,6 @@ int main (){
                             draw_red_boundary_move.h = Buttons[HARD_DIFFICULTY_BUTTON]->rect.h;
                             Buttons[HARD_DIFFICULTY_BUTTON]->state = ACTIVE;
                             level_BLACK_IA = HARD;
-                        }
-
-                        // if another click is done, we cancel the selection
-                        else if (is_clicked_1 == 1 && is_clicked_2 == 0){
-                            is_clicked_2 = 1;
-                            Reset_Buttons_State(Buttons);
-                        }
-
-                        // if two clicks have been done, we cancel the selection
-                        if (is_clicked_1 == 1 && is_clicked_2 == 1){
-                            is_clicked_1 = 0;
-                            is_clicked_2 = 0;
-                            Reset_Buttons_State(Buttons);
-                        }
-
-                    }
-
-                    // for the master difficulty button
-                    else if (is_point_in_rect(event.button.x, event.button.y, Buttons[MASTER_DIFFICULTY_BUTTON]->rect)){
-                        
-                        // the first click is making the button be circle by a red rectangle to make the user know it has been selected
-                        if (is_clicked_1 == 0){
-                            is_clicked_1 = 1;
-                            is_clicked_2 = 0;
-                            draw_red_boundary_move.x = Buttons[MASTER_DIFFICULTY_BUTTON]->rect.x;
-                            draw_red_boundary_move.y = Buttons[MASTER_DIFFICULTY_BUTTON]->rect.y;
-                            draw_red_boundary_move.w = Buttons[MASTER_DIFFICULTY_BUTTON]->rect.w;
-                            draw_red_boundary_move.h = Buttons[MASTER_DIFFICULTY_BUTTON]->rect.h;
-                            Buttons[MASTER_DIFFICULTY_BUTTON]->state = ACTIVE;
-                            level_BLACK_IA = MASTER;
-                        }
-
-                        // if another click is done, we cancel the selection
-                        else if (is_clicked_1 == 1 && is_clicked_2 == 0){
-                            is_clicked_2 = 1;
-                            Reset_Buttons_State(Buttons);
-                        }
-
-                        // if two clicks have been done, we cancel the selection
-                        if (is_clicked_1 == 1 && is_clicked_2 == 1){
-                            is_clicked_1 = 0;
-                            is_clicked_2 = 0;
-                            Reset_Buttons_State(Buttons);
-                        }
-
-                    }
-
-                    // for the grandmaster difficulty button
-                    else if (is_point_in_rect(event.button.x, event.button.y, Buttons[GRANDMASTER_DIFFICULTY_BUTTON]->rect)){
-                        
-                        // the first click is making the button be circle by a red rectangle to make the user know it has been selected
-                        if (is_clicked_1 == 0){
-                            is_clicked_1 = 1;
-                            is_clicked_2 = 0;
-                            draw_red_boundary_move.x = Buttons[GRANDMASTER_DIFFICULTY_BUTTON]->rect.x;
-                            draw_red_boundary_move.y = Buttons[GRANDMASTER_DIFFICULTY_BUTTON]->rect.y;
-                            draw_red_boundary_move.w = Buttons[GRANDMASTER_DIFFICULTY_BUTTON]->rect.w;
-                            draw_red_boundary_move.h = Buttons[GRANDMASTER_DIFFICULTY_BUTTON]->rect.h;
-                            Buttons[GRANDMASTER_DIFFICULTY_BUTTON]->state = ACTIVE;
-                            level_BLACK_IA = GRANDMASTER;
                         }
 
                         // if another click is done, we cancel the selection

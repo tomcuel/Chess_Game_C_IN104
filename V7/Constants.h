@@ -53,7 +53,7 @@
 /////////////////////////////////////////////////////////////////////////////////////
 // Defining the difficulty of the AI 
 /////////////////////////////////////////////////////////////////////////////////////
-enum {NONE, EASY, MEDIUM, HARD, MASTER, GRANDMASTER};
+enum {NONE, EASY, MEDIUM, HARD};
 
 
 /////////////////////////////////////////////////////////////////////////////////////
@@ -107,7 +107,7 @@ enum {NOTHING, PAWN, KNIGHT, BISHOP, ROOK, QUEEN, KING};
 #define BISHOP_VALUE 3
 #define ROOK_VALUE 5
 #define QUEEN_VALUE 9
-#define KING_VALUE 90
+#define KING_VALUE 10
 
 
 /////////////////////////////////////////////////////////////////////////////////////
@@ -151,8 +151,6 @@ enum {
     EASY_DIFFICULTY_BUTTON,
     MODERATE_DIFFICULTY_BUTTON,
     HARD_DIFFICULTY_BUTTON,
-    MASTER_DIFFICULTY_BUTTON,
-    GRANDMASTER_DIFFICULTY_BUTTON,
 
     QUIT_BUTTON_IA_CHOICE,
     MAIN_MENU_BUTTON_IA_CHOICE,

@@ -1,6 +1,6 @@
 CC = gcc
-CFLAGS = -Wall -Wfatal-errors
-LDFLAGS = -Iinclude -lSDL2main -lSDL2
+CFLAGS = -Wall -Wfatal-errors -I/opt/homebrew/include/SDL2
+LDFLAGS = -Iinclude -lSDL2main -lSDL2 -L/opt/homebrew/lib -lSDL2_ttf
 
 all: Chess_Game.x
 

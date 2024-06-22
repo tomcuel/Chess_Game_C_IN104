@@ -1040,12 +1040,6 @@ void Make_Pawn_Promotion_for_IA(Move* move, Piece*** board, Move_Log_array* Log,
             board[move->destination_row][move->destination_col]->type = QUEEN;
         }
     }
-
-    // for the level MASTER and GRANDMASTER, it will take the queen 
-    if (level_IA == MASTER || level_IA == GRANDMASTER){
-        board[move->destination_row][move->destination_col]->type = QUEEN;
-    }
-
 }
 
 
