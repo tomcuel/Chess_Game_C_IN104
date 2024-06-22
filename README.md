@@ -72,9 +72,6 @@ We will have various tasks to complete as part of this project:
 - Iterative deepening (transposition table to gain time with hashing function (string with letters corresponding to a board and score calculated for a certain move on this board) if possible, and an opening book) to make a compromise between searching the best play and managing time, but also suggestions concerning the moves to do depending on the part of the game we're in will not be done here, but I could have done it if the game was optimized for it, it should have consider bitboard on the first place instaed of array of structures to gain a lot of time during searchs
 - I don't know why but IA Medium vs IA Hard in depth 2 does crash when the match is played between these two, it's mostly due to the game that isn't optimized, I could have use bitboard to represent things
 
-## V8 : 
-- The Log of the move will be implemented with the visual thanks to the fonts, but create and read files to make the game at the same point as it wwas after the download
-
 # Structure of the code : 
 
 ## .h file : 
